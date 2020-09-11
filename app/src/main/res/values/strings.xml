@@ -9,4 +9,12 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="profil">Profil</string>
+
+    <string-array name="spinnerItems">
+        <item>item1item1item1</item>
+        <item>item2item1item1item1</item>
+        <item>item3item1</item>
+        <item>item4item1item1item1</item>
+    </string-array>
 </resources>
