@@ -12,18 +12,9 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -35,26 +26,30 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <androidx.appcompat.widget.SearchView
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:defaultQueryHint="Søk på eventer"
             app:iconifiedByDefault="false" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|right"
-            android:layout_marginRight="5dp">
+
+        <!--
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center_vertical|right"
+           android:layout_marginRight="5dp">
 
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:contentDescription="@string/profil"
-                android:src="@drawable/ic_baseline_account_circle_24"
-                />
-        </LinearLayout>
+              <ImageButton
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="?attr/colorPrimary"
+               android:contentDescription="@string/profil"
+               android:src="@drawable/ic_baseline_account_circle_24"
+               />
 
-    </androidx.appcompat.widget.Toolbar>
+       </LinearLayout>
+       -->
+
+   </androidx.appcompat.widget.Toolbar>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
