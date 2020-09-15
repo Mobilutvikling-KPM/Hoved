@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"/>
+    <item
+        android:id="@+id/newevent"
+        android:title="Nytt Event"
+        android:icon="@drawable/ic_baseline_post_add_24"/>
+    <item
+        android:id="@+id/myevents"
+        android:title="Mine Eventer"
+        android:icon="@drawable/ic_baseline_list_alt_24"/>
+    <item
+        android:id="@+id/friends"
+        android:title="Venner"
+        android:icon="@drawable/ic_baseline_group_24"/>
+    <item
+        android:id="@+id/profile"
+        android:title="Profil"
+        android:icon="@drawable/ic_baseline_account_circle_24"/>
+</menu>
