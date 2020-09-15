@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initRecyclerView()
-        addDataSet()
 
         val hjemFragment = HjemFragment()
         val mineEventFragment = MineEventFragment()
@@ -52,21 +50,8 @@ class MainActivity : AppCompatActivity() {
 
 
     //hent dataen fra Datasource klassen og putt den inn i adapteren
-    private fun addDataSet(){
-        val data = DataSource.createDataset()
-        eventAdapter.submitList(data);
-    }
+
 
     //Initierer og kobler recycleView til activityMain
-    private fun initRecyclerView(){
-        //Apply skjønner contexten selv.
-        recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            val topSpacingDecoration = TopSpacingItemDecoration(30)
-            addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter()
-            adapter = eventAdapter
 
-        }
-    }
 }

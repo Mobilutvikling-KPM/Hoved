@@ -2,40 +2,4 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/nyttEventFragment">
-    <fragment
-        android:id="@+id/nyttEventFragment"
-        android:name="com.example.myapplication.fragments.nyttevent.NyttEventFragment"
-        android:label="fragment_nytt_event"
-        tools:layout="@layout/fragment_nytt_event" />
-    <fragment
-        android:id="@+id/hjemFragment"
-        android:name="com.example.myapplication.fragments.hjem.HjemFragment"
-        android:label="fragment_hjem"
-        tools:layout="@layout/fragment_hjem" >
-        <action
-            android:id="@+id/action_hjemFragment_to_nyttEventFragment"
-            app:destination="@id/nyttEventFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/mineEventFragment"
-        android:name="com.example.myapplication.fragments.mineevents.MineEventFragment"
-        android:label="fragment_mine_event"
-        tools:layout="@layout/fragment_mine_event" />
-    <fragment
-        android:id="@+id/profilFragment"
-        android:name="com.example.myapplication.fragments.profil.ProfilFragment"
-        android:label="fragment_profil"
-        tools:layout="@layout/fragment_profil" />
-    <fragment
-        android:id="@+id/vennerFragment"
-        android:name="com.example.myapplication.fragments.venner.VennerFragment"
-        android:label="fragment_venner"
-        tools:layout="@layout/fragment_venner" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.myapplication.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
-</navigation>
+    android:id="@+id/nav_graph"/>
