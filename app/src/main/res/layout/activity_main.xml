@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +24,6 @@
         app:contentInsetStart="0dp"
         app:layout_anchorGravity="center"
         app:popupTheme="@style/AppTheme.PopupOverlay">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -62,11 +62,15 @@
     </androidx.appcompat.widget.Toolbar>
 
     <fragment
+        android:id="@+id/NavHost_Event_fragment"
+        android:name="com.example.myapplication.event.Event_liste_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
+        android:layout_above="@id/bottomNav"
+        app:navGraph="@navigation/event"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        />
 
     <FrameLayout
         android:id="@+id/container"
@@ -83,5 +87,7 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bot_menu" />
 
+
 </RelativeLayout>
+
 

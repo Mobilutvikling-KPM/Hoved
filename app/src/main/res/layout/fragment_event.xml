@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".event.EventFragment">
+
+    <ImageView
+        android:id="@+id/frontBilde"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="Bilde som viser arrangementet" />
+
+    <TextView
+        android:id="@+id/dato_og_tid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="21.08.21 klokken 15"/>
+
+    <TextView
+        android:id="@+id/tittel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Title"
+        android:text="Grilling i hagen!"
+        />
+
+
+    <TextView
+        android:id="@+id/by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nedre Bakkeveg 6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        >
+
+
+    <Button
+        android:id="@+id/button_bliMed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bli med"
+        style="?android:attr/buttonBarButtonStyle"
+        />
+
+        <Button
+            android:id="@+id/button_se_andre_påmeldte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Påmeldte"
+            style="?android:attr/buttonBarButtonStyle"
+           />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tittelBeskrivelse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Beskrivelse"/>
+
+    <TextView
+        android:id="@+id/beskrivelse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bli med å grille! Kjøp den maten du selv vil ha. Vi sørger for tilbehør! Dette blir gøy daa!
+
+Ps: husk godt humør"/>
+
+</LinearLayout>

@@ -39,25 +39,50 @@
                 android:id="@+id/event_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Title"
                 android:text="Tittelen til en event"
                 android:textColor="#000"
-                android:textSize="19sp" />
+                 />
+
+            <LinearLayout
+                android:id="@+id/tid_sted_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                app:layout_constraintBottom_toTopOf="@id/container1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_image">
+
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- Skift navnet til denne id'n -->
                 <TextView
-                    android:id="@+id/event_author"
-                    android:layout_width="match_parent"
+                    android:id="@+id/event_tid"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Ett navn"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingTop="15dp"
+                    android:text="21-09-20"
+
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/event_sted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    app:layout_constraintLeft_toRightOf="@id/event_tid"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    android:text=", Skien"/>
 
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/antall_påmeldte_frame"
@@ -74,6 +99,7 @@
                         android:src="@drawable/ic_baseline_group_24" />
 
                     <TextView
+                        android:id="@+id/ant_påmeldte_tall"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
@@ -81,7 +107,7 @@
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge"
                         android:gravity="center"
-                        android:text="12"
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
@@ -102,6 +128,7 @@
                         android:src="@drawable/ic_baseline_comment_24" />
 
                     <TextView
+                        android:id="@+id/antall_kommentar_tall"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
@@ -109,7 +136,7 @@
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge"
                         android:gravity="center"
-                        android:text="8"
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />

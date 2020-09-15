@@ -1,10 +1,9 @@
 package com.example.myapplication
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.DataSource
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.fragments.hjem.HjemFragment
@@ -13,6 +12,7 @@ import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,11 +47,4 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.container, fragment)
             commit()
         }
-
-
-    //hent dataen fra Datasource klassen og putt den inn i adapteren
-
-
-    //Initierer og kobler recycleView til activityMain
-
 }
