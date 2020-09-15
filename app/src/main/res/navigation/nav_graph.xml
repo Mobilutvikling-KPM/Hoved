@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.myapplication.profil.ProfilFragment"
+        android:name="com.example.myapplication.fragments.profil.ProfilFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_profil">
 
@@ -17,9 +17,9 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.myapplication.event.SecondFragment"
+        android:name="com.example.myapplication.fragments.mineevents.MineEventFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_mine_event">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

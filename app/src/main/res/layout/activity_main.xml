@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
-
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/bar"
@@ -31,31 +30,27 @@
             app:defaultQueryHint="Søk på eventer"
             app:iconifiedByDefault="false" />
 
-        <!--
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:gravity="center_vertical|right"
-           android:layout_marginRight="5dp">
+    </androidx.appcompat.widget.Toolbar>
 
-
-              <ImageButton
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="?attr/colorPrimary"
-               android:contentDescription="@string/profil"
-               android:src="@drawable/ic_baseline_account_circle_24"
-               />
-
-       </LinearLayout>
-       -->
-
-   </androidx.appcompat.widget.Toolbar>
-  
-  
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"/>
+        android:id="@+id/recycler_view"
+        android:layout_below="@id/toolbar" />
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNav" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bot_menu" />
+
+</RelativeLayout>
+
