@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +24,6 @@
         app:contentInsetStart="0dp"
         app:layout_anchorGravity="center"
         app:popupTheme="@style/AppTheme.PopupOverlay">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -61,12 +61,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycler_view"
-        android:layout_below="@id/toolbar" />
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -82,5 +76,7 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bot_menu" />
 
+
 </RelativeLayout>
+
 
