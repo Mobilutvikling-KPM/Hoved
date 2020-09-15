@@ -4,19 +4,14 @@ import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.fragments.hjem.HjemFragment
 import com.example.myapplication.fragments.mineevents.MineEventFragment
 import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -54,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.container, fragment)
             commit()
         }
+
 
     //hent dataen fra Datasource klassen og putt den inn i adapteren
     private fun addDataSet(){
