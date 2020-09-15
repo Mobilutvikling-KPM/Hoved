@@ -61,17 +61,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <fragment
-        android:id="@+id/NavHost_Event_fragment"
-        android:name="com.example.myapplication.event.Event_liste_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/bottomNav"
-        app:navGraph="@navigation/event"
-        app:defaultNavHost="true"
-        />
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
