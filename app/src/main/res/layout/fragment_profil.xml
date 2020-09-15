@@ -10,11 +10,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/frontBilde"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            android:contentDescription="Bilde som viser arrangementet" />
+
         <TextView
+            android:id="@+id/headingprofil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="10dp"
+            android:textSize="24dp"
             android:text="@string/min_profil" />
+        <TextView
+            android:id="@+id/pnavn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frontBilde"
+            android:text="Navn" />
+        <TextView
+            android:id="@+id/palder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pnavn"
+            android:text="Alder" />
+
+        <TextView
+            android:id="@+id/bio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/palder"
+            android:text="Bio" />
+        <TextView
+            android:id="@+id/Bio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bio"
+            android:text="Bio" />
+        <Button
+            android:id="@+id/redigerKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Bio"
+            android:text="Rediger" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/redigerKnapp"
+            android:text="Rediger" />
 
     </RelativeLayout>
 
