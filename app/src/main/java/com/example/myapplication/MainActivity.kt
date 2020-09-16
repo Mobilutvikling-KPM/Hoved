@@ -2,14 +2,14 @@ package com.example.myapplication
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import android.os.Bundle
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.event.Event_liste_fragment
 import com.example.myapplication.fragments.hjem.HjemFragment
 import com.example.myapplication.fragments.mineevents.MineEventFragment
 import com.example.myapplication.fragments.nyttevent.NyttEventFragment
+import com.example.myapplication.fragments.kategori.KategoriFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,12 +18,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var eventAdapter: EventRecyclerAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val kategoriFragment = KategoriFragment()
         val eventListeFragment = Event_liste_fragment()
         val hjemFragment = HjemFragment()
         val mineEventFragment = MineEventFragment()
@@ -32,6 +31,14 @@ class MainActivity : AppCompatActivity() {
         val vennerFragment = VennerFragment()
 
         makeCurrentFragment(eventListeFragment)
+
+        toolbar.setOnMenuItemClickListener() {
+            when(it.itemId) {
+                R.id.kategori -> makeCurrentFragment(kategoriFragment)
+            }
+            true
+        }
+
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.home -> makeCurrentFragment(eventListeFragment)
