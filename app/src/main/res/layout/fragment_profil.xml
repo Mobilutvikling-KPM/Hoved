@@ -10,11 +10,88 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/frontBilde"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            android:contentDescription="Bilde som viser arrangementet" />
+
         <TextView
+            style="@style/Title"
+            android:id="@+id/headingprofil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:text="@string/min_profil" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/profilInfo"
+            android:id="@+id/pnavn"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topPanel"
+            android:text="Navn" />
+        <TextView
+            style="@style/profilInfo"
+            android:id="@+id/palder"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pnavn"
+            android:text="Alder" />
+
+        <TextView
+            style="@style/profilInfo"
+            android:id="@+id/bio"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/palder"
+            android:text="Bio" />
+
+        <TextView
+            android:id="@+id/biotext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/bio"
+            android:text="@string/input" />
+        <Button
+            android:id="@+id/redigerKnapp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/biotext"
+            android:layout_centerHorizontal="true"
+            android:text="Rediger informasjon" />
+        <Button
+            android:id="@+id/instillingerKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/redigerKnapp"
+            android:layout_centerHorizontal="true"
+            android:text="Instillinger" />
+        <Button
+            android:id="@+id/slettKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/instillingerKnapp"
+            android:layout_centerHorizontal="true"
+            android:text="Slett bruker" />
 
     </RelativeLayout>
 
