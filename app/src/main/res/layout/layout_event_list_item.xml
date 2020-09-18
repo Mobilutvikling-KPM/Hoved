@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
     app:cardElevation="10dp"
+    android:layout_marginTop="25dp"
     app:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,10 +37,20 @@
             app:layout_constraintTop_toBottomOf="@id/event_image">
 
             <TextView
+                android:id="@+id/event_sted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp"
+                app:layout_constraintLeft_toRightOf="@id/event_tid"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:text="Skien"/>
+
+            <TextView
                 android:id="@+id/event_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Title"
+                style="@style/Liste_Title"
                 android:text="Tittelen til en event"
                 android:textColor="#000"
                  />
@@ -74,16 +85,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
-                <TextView
-                    android:id="@+id/event_sted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    app:layout_constraintLeft_toRightOf="@id/event_tid"
-                    app:layout_constraintTop_toTopOf="parent"
-
-                    android:text=", Skien"/>
-
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/antall_påmeldte_frame"
                     android:layout_width="?attr/actionBarSize"
@@ -93,8 +94,8 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_baseline_group_24" />
 
@@ -122,9 +123,10 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
                         android:src="@drawable/ic_baseline_comment_24" />
 
                     <TextView
@@ -132,7 +134,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="19dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge"
                         android:gravity="center"

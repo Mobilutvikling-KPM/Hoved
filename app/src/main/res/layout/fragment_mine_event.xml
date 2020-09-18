@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <RelativeLayout
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            style="@style/TopPanel"
-            android:id="@+id/panelImgMineEventer" />
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.mineevents.MineEventFragment">
+    >
 
         <TextView
-            style="@style/panelText"
-            android:id="@+id/headingprofil"
-            android:text="Påmeldte Eventer" />
-    </RelativeLayout>
-</ScrollView>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_margin="10dp"
+            style="@style/Title"
+            android:text="@string/mine_eventer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

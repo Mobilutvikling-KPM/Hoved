@@ -9,18 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
-import android.widget.Toast
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.myapplication.fragments.Communicator
 import kotlinx.android.synthetic.main.event_liste.*
 
 /**
@@ -29,7 +21,8 @@ import kotlinx.android.synthetic.main.event_liste.*
 class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
-  // var navController: NavController? = null
+    private lateinit var communicator: Communicator
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +52,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     private fun initRecyclerView(){
         //Apply skjønner contexten selv.
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(context)
-            val topSpacingDecoration = TopSpacingItemDecoration(30)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
             eventAdapter = EventRecyclerAdapter(this@Event_liste_fragment)
             adapter = eventAdapter
@@ -69,8 +62,13 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     }
 
     override fun onItemClick(item: Event, position: Int) {
-        Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show()
-       // item.navController!!.navigate(R.id.action_event_liste_fragment_to_eventFragment)
+        communicator = activity as Communicator
+        communicator.sendDataKomm(item.title, item.body,item.image,item.dato, item.sted, item.antPåmeldte, item.antKommentar)
+        //En intent som åpner en ny aktivitet og sender med data fra gjenstanden som er valgt
+//        val intent = Intent(activity, TraverseAppActivity::class.java)
+//        intent.putExtra("TITTEL", item.title)
+//        startActivity(intent)
+
 
     }
 }

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.myapplication.event.EventFragment
 import com.example.myapplication.event.Event_liste_fragment
+import com.example.myapplication.fragments.Communicator
 import com.example.myapplication.fragments.hjem.HjemFragment
 import com.example.myapplication.fragments.kategori.KategoriFragment
 import com.example.myapplication.fragments.mineevents.MineEventFragment
@@ -14,8 +16,7 @@ import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profil.*
 
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Communicator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,29 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-    private fun makeCurrentFragment(fragment: Fragment) =
+
+
+     fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.container, fragment)
             commit()
         }
+
+    override fun sendDataKomm(tittel: String, beskrivelse: String, image: String, dato: String, sted: String, antPåmeldte: String, antKommentar: String) {
+        val bundle = Bundle()
+        bundle.putString("tittel",tittel)
+        bundle.putString("beskrivelse",beskrivelse)
+        bundle.putString("image",image)
+        bundle.putString("dato",dato)
+        bundle.putString("sted",sted)
+        bundle.putString("antPåmeldte",antPåmeldte)
+        bundle.putString("antKommentar",antKommentar)
+
+        val transaction = this.supportFragmentManager.beginTransaction()
+        val eventFragment = EventFragment()
+        eventFragment.arguments = bundle
+        transaction.replace(R.id.container,eventFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 }
