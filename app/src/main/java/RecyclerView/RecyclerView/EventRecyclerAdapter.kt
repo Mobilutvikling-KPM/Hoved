@@ -1,12 +1,9 @@
 package RecyclerView.RecyclerView
 
 import RecyclerView.RecyclerView.Moduls.Event
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -66,7 +63,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 
         fun bind(event: Event){
             event_title.setText(event.title)
-            event_tid.setText(event.username)
+            event_tid.setText(event.dato)
             event_sted.setText(", " + event.sted)
             event_antPåmeldt.setText(event.antPåmeldte)
             event_anKommentar.setText(event.antKommentar)
@@ -87,13 +84,14 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
         fun initialize(item: Event, action:OnEventItemClickListener){
             event_title.text = item.title
             event_sted.text = item.sted
-            event_tid.text = item.username
+            event_tid.text = item.dato
             event_antPåmeldt.text = item.antPåmeldte
             event_anKommentar.text = item.antKommentar
             //Og bilde?
 
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
+               // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
             }
         }
     }

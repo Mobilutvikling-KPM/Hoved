@@ -19,9 +19,6 @@ class MineEventFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        if (container != null) {
-            container.removeAllViews()
-        }
         return inflater.inflate(R.layout.fragment_mine_event, container, false)
     }
 

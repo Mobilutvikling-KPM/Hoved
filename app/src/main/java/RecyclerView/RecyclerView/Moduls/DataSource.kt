@@ -45,7 +45,7 @@ class DataSource {
                 Event(
                     "Lan på Kroa",
                     "It's dangerous to go alone. Grab a game!",
-                    "https://kirken.no/imageservice/images/d47651cbe1194390af497542cf92a88c/692a5e7a891743db8ed5d87be4343f52.png?scale=both&mode=crop&width=1600&height=895",
+                    "https://forebyggendetjenester.com/_files/200000178-a46d2a5669/700/Lambertseter%20Gaming%20Center2.png",
                     "11-15-20",
                 "Bø",
                     "26",
@@ -89,7 +89,7 @@ class DataSource {
                 Event(
                     "Tennis",
                     "Slå ut all sinnet i ballen",
-                    "https://photoresources.wtatennis.com/photo-resources/2019/08/15/dbb59626-9254-4426-915e-57397b6d6635/tennis-origins-e1444901660593.jpg?width=1200&height=630",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSCzmPN0vFuCHa7HP6KiM4FOChJ5NvQgD89Yg&usqp=CAU",
                     "08-06-20",
                     "Tønsberg",
                 "7",

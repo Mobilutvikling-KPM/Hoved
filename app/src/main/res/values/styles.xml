@@ -27,7 +27,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Liste_Title">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="profilInfo">
         <item name="android:textSize">20dp</item>
     </style>
+
 </resources>
