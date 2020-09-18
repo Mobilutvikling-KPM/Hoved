@@ -20,5 +20,40 @@
         It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
         It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="rediger_informasjon">Rediger informasjon</string>
+    <string name="instillinger">Instillinger</string>
+    <string name="slett_bruker">Slett bruker</string>
+    <string name="bio">Bio</string>
+    <string name="panel_background">Panel Background</string>
+    <string name="velg_kategori">Velg kategori</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="pick_color">pick color</string>
+    <string name="title">tittel</string>
+    <string name="supporting_text">sei</string>
+    <string name="decline">decline</string>
+    <string name="accept">accept</string>
+    <string name="pick_toppings">toppings</string>
+    <string name="dialog_fire_missiles">hoho</string>
+    <string name="fire">haha</string>
+
+    <string-array
+        name="Kategorier">
+        <item
+            >Underholdning</item>
+        <item
+            >Sport</item>
+        <item
+            >Musikk</item>
+        <item
+            >Kultur</item>
+        <item
+            >Handel</item>
+        <item
+            >Miljø</item>
+        <item
+            >Dugnad</item>
+    </string-array>
 
 </resources>
