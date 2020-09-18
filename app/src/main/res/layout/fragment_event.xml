@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+      <variable
+          name="modelEvent"
+          type="com.example.myapplication.fragments.mineevents.ModelEvent" />
+  </data>  
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,10 +17,15 @@
     <ImageView
         android:id="@+id/frontBilde"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_launcher_background"
         android:contentDescription="Bilde som viser arrangementet" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/dato_og_tid"
@@ -26,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Title"
-        android:text="Grilling i hagen!"
+        android:text="En Tittel"
         />
 
 
@@ -36,29 +48,45 @@
         android:layout_height="wrap_content"
         android:text="Nedre Bakkeveg 6"/>
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:gravity="center"
         >
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/button_bliMed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bli med"
-        style="?android:attr/buttonBarButtonStyle"
-        />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_gravity="left|center"
+                android:src="@drawable/ic_baseline_group_24" />
 
         <Button
             android:id="@+id/button_se_andre_påmeldte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Påmeldte"
+            android:layout_gravity="right"
+            android:layout_marginLeft="15dp"
+            android:text="@string/knapp_event_sePåmeldte"
             style="?android:attr/buttonBarButtonStyle"
            />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/button_bliMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/knapp_event_bliMed"
+            style="?android:attr/buttonBarButtonStyle"
+            />
+
 
     </LinearLayout>
     <TextView
@@ -66,14 +94,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="Beskrivelse"/>
+        android:text="@string/Beskrivelse_Event"/>
 
     <TextView
         android:id="@+id/beskrivelse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bli med å grille! Kjøp den maten du selv vil ha. Vi sørger for tilbehør! Dette blir gøy daa!
+        android:text="Dette er en test teskst med sdasdasfhaf bkajh djakshd kjasd klasjd kasgdhaj khagsdh jkasdga hsdjkash dkjasdh ashdljks "
+        />
 
-Ps: husk godt humør"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </LinearLayout>
+</layout>
