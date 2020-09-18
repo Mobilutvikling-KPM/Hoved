@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/kategorifragmentcontainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.kategori.KategoriFragment">
+
+    <RelativeLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+    <ImageView
+        android:id="@+id/frontBilde"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="background" />
+    <TextView
+        android:id="@+id/kategori_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Title"
+        android:text="Velg Kategorier"
+        android:textColor="#000"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/kategori1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topPanel"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori1"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori2"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori3"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori4"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori5"
+        android:text="Navn" />
+    <TextView
+        android:id="@+id/kategori7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori6"
+        android:text="Navn" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kategori7"
+        android:layout_centerHorizontal="true"
+        android:text="Submit"/>
+    </RelativeLayout>

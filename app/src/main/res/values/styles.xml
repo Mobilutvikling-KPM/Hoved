@@ -11,14 +11,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColorHint">@color/white</item>
-
         <item name="android:editTextColor">@color/white</item>
-
-
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -34,6 +30,10 @@
     <style name="Liste_Title">
         <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="profilInfo">
+        <item name="android:textSize">20dp</item>
     </style>
 
 </resources>
