@@ -127,4 +127,3 @@
         android:layout_below="@+id/kategori7"
         android:layout_centerHorizontal="true"
         android:text="Submit"/-->
-    </RelativeLayout>
