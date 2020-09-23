@@ -2,6 +2,7 @@ package com.example.myapplication
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -27,6 +28,7 @@ import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_traverse_app.*
 import kotlinx.android.synthetic.main.event_liste.*
+import java.util.prefs.AbstractPreferences
 
 class MainActivity : AppCompatActivity(), Communicator {
 
