@@ -1,5 +1,7 @@
 package RecyclerView.RecyclerView.Moduls
 
+import RecyclerView.RecyclerView.EventRecyclerAdapter
+
 class DataSource {
 
     companion object{
@@ -15,7 +17,8 @@ class DataSource {
                     "18-10-20",
                     "Porsgrunn",
                     "10",
-                    "3"
+                    "3",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -26,7 +29,8 @@ class DataSource {
                     "21-09-19",
                     "Bø",
                     "15",
-                    "7"
+                    "7",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
 
@@ -38,7 +42,8 @@ class DataSource {
                     "07-08-20",
                     "Skien",
                     "24",
-                    "39"
+                    "39",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -49,7 +54,8 @@ class DataSource {
                     "11-15-20",
                 "Bø",
                     "26",
-                    "4"
+                    "4",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -60,7 +66,8 @@ class DataSource {
                     "21-09-19",
                     "Skjelsvik",
                 "1",
-                    "97"
+                    "97",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -71,7 +78,8 @@ class DataSource {
                     "03-02-21",
                     "Haugesund",
                     "57",
-                    "16"
+                    "16",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -82,7 +90,8 @@ class DataSource {
                     "02-03-21",
                     "Oslo, Gågata 19",
                 "99",
-                    "40"
+                    "40",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -93,7 +102,8 @@ class DataSource {
                     "08-06-20",
                     "Tønsberg",
                 "7",
-                    "2"
+                    "2",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
             list.add(
@@ -104,7 +114,8 @@ class DataSource {
                     "05-18-21",
                     "Sandefjord",
                     "8",
-                    "1"
+                    "1",
+                    EventRecyclerAdapter.VIEW_TYPE_HOVEDLISTE
                 )
             )
 

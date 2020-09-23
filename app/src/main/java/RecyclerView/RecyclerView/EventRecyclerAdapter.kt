@@ -8,17 +8,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
+import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 
 class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+    companion object{
+        const val VIEW_TYPE_HOVEDLISTE = 1
+        const val VIEW_TYPE_ADMINLISTE = 2
+    }
 
     private var items: List<Event> = ArrayList()
 
     //Sender ut hver individuelle viewholder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return EventViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_event_list_item, parent, false)
-        )
+        if(viewType == VIEW_TYPE_HOVEDLISTE) {
+            return EventViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.layout_event_list_item, parent, false)
+            )
+        } else {
+            return EventAdminViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.administrer_event_liste_item, parent, false))
+        }
     }
 
     //binder hver enkelt view til dataen
@@ -29,6 +42,10 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener)
             }
+            is EventAdminViewHolder ->{
+                holder.bind(items.get(position))
+                holder.initialize(items.get(position),clickListener)
+        }
 
 
         }
@@ -50,7 +67,11 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
         return items.size
     }
 
-    //Bygger viewholder som holder på all infoen som hver enkel item skal ha.
+    override fun getItemViewType(position: Int): Int {
+        return items[position].viewType
+    }
+
+    //Bygger viewholder til hovedlisten som holder på all infoen som hver enkel item skal ha.
     class EventViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
@@ -92,6 +113,52 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
                // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
+            }
+        }
+    }
+
+    //En view holder som skriver ut info på påmeldt listen og mine eventer listen
+    class EventAdminViewHolder constructor(
+        itemView: View
+    ): RecyclerView.ViewHolder(itemView){
+        val event_image = itemView.bilde_admin_liste
+        val event_title = itemView.tittel_admin_liste
+        val event_tid = itemView.dato_admin_liste
+
+        val event_antPåmeldt = itemView.ant_påmeldte_tall_admin_liste
+        val event_anKommentar = itemView.antall_kommentar_tall_admin_liste
+
+        fun bind(event: Event){
+            event_title.setText(event.title)
+            event_tid.setText(event.dato)
+
+            event_antPåmeldt.setText(event.antPåmeldte)
+            event_anKommentar.setText(event.antKommentar)
+
+
+            //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+
+            Glide.with(itemView.context)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(event.image) //hvilket bilde som skal loades
+                .into(event_image) //Hvor vi ønsker å loade bildet inn i
+        }
+
+        //click listener initiliasiering
+        fun initialize(item: Event, action:OnEventItemClickListener){
+            event_title.text = item.title
+
+            event_tid.text = item.dato
+            event_antPåmeldt.text = item.antPåmeldte
+            event_anKommentar.text = item.antKommentar
+            //Og bilde?
+
+            itemView.setOnClickListener{
+                action.onItemClick(item, adapterPosition)
+                // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
             }
         }
     }

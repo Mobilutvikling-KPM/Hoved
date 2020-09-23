@@ -7,7 +7,8 @@ data class Event(
     var dato: String,
     var sted: String,
     var antPåmeldte: String,
-    var antKommentar: String
+    var antKommentar: String,
+    var viewType: Int
 ) {
 
 }

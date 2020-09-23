@@ -1,114 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
-      <variable
-          name="modelEvent"
-          type="com.example.myapplication.fragments.mineevents.ModelEvent" />
-  </data>  
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".event.EventFragment">
+    <data>
+        <variable
+            name="modelEvent"
+            type="com.example.myapplication.fragments.mineevents.ModelEvent" />
+    </data>
 
-    <ImageView
-        android:id="@+id/frontBilde"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="fitXY"
-        android:contentDescription="Bilde som viser arrangementet" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/dato_og_tid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="21.08.21 klokken 15"/>
-
-    <TextView
-        android:id="@+id/tittel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Title"
-        android:text="En Tittel"
-        />
-
-
-    <TextView
-        android:id="@+id/by"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nedre Bakkeveg 6"/>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        >
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".event.EventFragment">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:layout_gravity="left|center"
-                android:src="@drawable/ic_baseline_group_24" />
+                android:id="@+id/frontBilde"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:contentDescription="Bilde som viser arrangementet"
+                android:scaleType="fitXY" />
 
-        <Button
-            android:id="@+id/button_se_andre_påmeldte"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="15dp"
-            android:text="@string/knapp_event_sePåmeldte"
-            style="?android:attr/buttonBarButtonStyle"
-           />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
 
-        </FrameLayout>
+                <TextView
+                    android:id="@+id/dato_og_tid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21.08.21 klokken 15" />
 
-        <Button
-            android:id="@+id/button_bliMed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/knapp_event_bliMed"
-            style="?android:attr/buttonBarButtonStyle"
-            />
-
-
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tittelBeskrivelse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="@string/Beskrivelse_Event"/>
-
-    <TextView
-        android:id="@+id/beskrivelse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Dette er en test teskst med sdasdasfhaf bkajh djakshd kjasd klasjd kasgdhaj khagsdh jkasdga hsdjkash dkjasdh ashdljks "
-        />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tittel"
+                    style="@style/Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="En Tittel" />
 
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nedre Bakkeveg 6" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/page_margin"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_baseline_group_24" />
+
+                        <Button
+                            android:id="@+id/button_se_andre_påmeldte"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/knapp_event_sePåmeldte" />
+
+                    </FrameLayout>
+
+                    <Button
+                        android:id="@+id/button_bliMed"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/knapp_event_bliMed" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tittelBeskrivelse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Beskrivelse_Event"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/beskrivelse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/page_margin"
+                    android:text="Dette er en test teskst med sdasdasfhaf bkajh djakshd kjasd klasjd kasgdhaj khagsdh jkasdga hsdjkash dkjasdh ashdljks " />
+
+                <ImageView
+                    android:id="@+id/google_placeholder_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="@dimen/page_margin"
+                    android:background="@android:color/darker_gray"/>
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/page_margin">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/bilde_frame"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardElevation="5dp"
+                        android:layout_marginTop="10dp"
+                        >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_launcher_background"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <EditText
+                        android:background="#ededed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/black"
+                        android:textColor="@color/black"
+                        android:layout_margin="@dimen/page_margin"
+                        android:hint="@string/hint_kommentarFelt"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/post"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_kommentar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 </layout>

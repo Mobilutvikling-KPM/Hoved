@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.myapplication.R
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.util.Log
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.myapplication.fragments.Communicator
 import kotlinx.android.synthetic.main.event_liste.*
