@@ -1,10 +1,19 @@
 package com.example.myapplication
 
+
+import android.content.Context
+import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.event.EventFragment
 import com.example.myapplication.event.Event_liste_fragment
@@ -40,13 +49,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
         makeCurrentFragment(eventListeFragment)
 
-        /*my_toolbar.setOnMenuItemClickListener() {
-            when(it.itemId) {
-                R.id.kategori -> makeCurrentFragment(kategoriFragment)
-            }
-            true
-        }*/
-
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.home -> makeCurrentFragment(eventListeFragment)
@@ -63,6 +65,8 @@ class MainActivity : AppCompatActivity(), Communicator {
      fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.container, fragment)
+//            if(fragment is Event_liste_fragment)
+//                addToBackStack(null)
             commit()
         }
 

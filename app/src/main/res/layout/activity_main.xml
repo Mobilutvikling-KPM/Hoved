@@ -7,17 +7,6 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-
-            <!-- ImageButton
-                android:id="@+id/kategoriKnapp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_outline_kat"
-                android:background="?attr/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/searchview"
-                app:layout_constraintTop_toTopOf="parent" />-->
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

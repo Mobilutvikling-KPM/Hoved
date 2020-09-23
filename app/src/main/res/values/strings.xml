@@ -15,13 +15,13 @@
     <string name="mine_venner">Mine Venner</string>
     <string name="title_activity_traverse_app">TraverseAppActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="previous">Previous</string>
     <string name="Beskrivelse_Event">Beskrivelse</string>
     <string name="knapp_event_bliMed">Bli med</string>
     <string name="knapp_event_sePåmeldte">10 Påmeldte</string>
     <string name="lag_nytt_event">Lag nytt event +</string>
+    <string name="hint_kommentarFelt">Skriv en kommentar ...</string>
+    <string name="post">Post</string>
 
     <string name="input">What is Lorem Ipsum?
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.

@@ -10,7 +10,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+
+import com.example.myapplication.R
+import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.util.Log
+
 import androidx.fragment.app.Fragment
+
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
