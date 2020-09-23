@@ -29,8 +29,6 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener)
             }
-
-
         }
 
         //Hva skal skje når en item har blitt klikket på

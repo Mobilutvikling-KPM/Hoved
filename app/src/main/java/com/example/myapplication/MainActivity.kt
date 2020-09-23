@@ -1,7 +1,9 @@
 package com.example.myapplication
 
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.WindowManager
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.myapplication.event.EventFragment
@@ -14,14 +16,17 @@ import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_profil.*
+import kotlinx.android.synthetic.main.activity_traverse_app.*
+import kotlinx.android.synthetic.main.event_liste.*
 
 class MainActivity : AppCompatActivity(), Communicator {
+
+    //val botnav = findViewById<View>(R.id.bottomNav)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING) // Fikser at keyboard vindu går over content isteden for å pushe det opp.
 
         //redigerKnapp.setOnClickListener {view?.findNavController()?.navigate(R.id.action_event_liste_fragment_to_eventFragment)  }
 
@@ -35,12 +40,12 @@ class MainActivity : AppCompatActivity(), Communicator {
 
         makeCurrentFragment(eventListeFragment)
 
-        toolbar.setOnMenuItemClickListener() {
+        /*my_toolbar.setOnMenuItemClickListener() {
             when(it.itemId) {
-               // R.id.kategori -> makeCurrentFragment(kategoriFragment)
+                R.id.kategori -> makeCurrentFragment(kategoriFragment)
             }
             true
-        }
+        }*/
 
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
