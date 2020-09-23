@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="22sp"
+        android:textColor="#000"
+        android:text="@string/text_filter_options" />
+
+        <TextView
+            android:text="Velg kategori"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/dialogspinner"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/Kategorier"/>
+        <TextView
+            android:text="Velg By"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv inn bynavn"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+        <TextView
+            android:text="Velg dato"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" >
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:datePickerMode="spinner"
+        android:calendarTextColor="@color/black"
+        android:calendarViewShown="false"
+        android:background="@color/black"
+        android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="30dp"
+        >
+
+        <TextView
+            android:id="@+id/negative_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textSize="16sp"
+            android:textColor="#0094DE"
+            android:layout_marginEnd="30dp" />
+
+        <TextView
+            android:id="@+id/positive_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            android:textSize="16sp"
+            android:textColor="#0094DE"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
