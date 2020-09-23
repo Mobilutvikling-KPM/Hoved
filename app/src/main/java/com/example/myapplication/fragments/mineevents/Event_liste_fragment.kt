@@ -12,15 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.myapplication.R
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
+
 import android.util.Log
 
 import androidx.fragment.app.Fragment
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.myapplication.R
+
 import com.example.myapplication.fragments.Communicator
 import kotlinx.android.synthetic.main.event_liste.*
+import kotlinx.android.synthetic.main.event_liste.view.*
 
 /**
  * Event fragment som viser ett enkelt event og dens
@@ -37,8 +38,18 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.event_liste, container, false)
+        val view = inflater.inflate(R.layout.event_liste, container, false)
+
+//        view.my_toolbar.setOnMenuItemClickListener {
+//            Log.i("TEST", "Test---------")
+//        }
+        view.knapp_åpne_kategori.setOnClickListener{
+
+        }
+
+        return view
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
