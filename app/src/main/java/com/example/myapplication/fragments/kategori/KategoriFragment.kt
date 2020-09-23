@@ -1,45 +1,47 @@
 package com.example.myapplication.fragments.kategori
 
-import android.app.Dialog
-import android.content.DialogInterface
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_kategori.*
+
 
 /**
  * A simple [Fragment] subclass.
  */
-class KategoriFragment(private val callbackListener: CallbackListener) : DialogFragment() {
+class KategoriFragment : Fragment() {
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        isCancelable = false
+        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_kategori, container, false)
     }
-    override fun getTheme(): Int {
-        return R.style.DialogTheme
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        button.setOnClickListener {
-            //send back data to PARENT fragment using callback
-            callbackListener.onDataReceived(editText.text.toString())
-            // Now dismiss the fragment
-            dismiss()
-        }
 
-    }
-    interface CallbackListener {
-        fun onDataReceived(data: String)
-    }
-
+        MaterialAlertDialogBuilder()
+            .setTitle(resources.getString(R.string.title))
+            .setMessage(resources.getString(R.string.supporting_text))
+            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+                // Respond to neutral button press
+            }
+            .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+                // Respond to negative button press
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                // Respond to positive button press
+            }
+            .show()
+    }*/
 }
