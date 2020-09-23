@@ -42,6 +42,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener)
             }
+
             is EventAdminViewHolder ->{
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener)

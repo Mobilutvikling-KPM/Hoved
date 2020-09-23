@@ -4,26 +4,33 @@ import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
+import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+
 import com.example.myapplication.R
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.util.Log
+
+import androidx.fragment.app.Fragment
+
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
 import kotlinx.android.synthetic.main.event_liste.*
 
 /**
  * Event fragment som viser ett enkelt event og dens
  */
+
 class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var communicator: Communicator
-
+    private lateinit var katKnapp: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +45,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         initRecyclerView()
         addDataSet()
-
-      //  navController = Navigation.findNavController(view)
-
     }
+      //  navController = Navigation.findNavController(view)
 
     //hent dataen fra Datasource klassen og putt den inn i adapteren
     private fun addDataSet(){
@@ -59,7 +64,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             eventAdapter = EventRecyclerAdapter(this@Event_liste_fragment)
             adapter = eventAdapter
         }
-
     }
 
     override fun onItemClick(item: Event, position: Int) {
@@ -72,4 +76,5 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
 
     }
+
 }
