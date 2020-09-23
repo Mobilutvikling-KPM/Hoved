@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+            <!--
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/my_toolbar"
                 android:layout_width="match_parent"
@@ -51,6 +52,10 @@
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:menu="@menu/kategori">
+                -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchview"
@@ -59,10 +64,24 @@
                 app:searchHintIcon="@color/white"
                 app:defaultQueryHint="Søk på eventer"
                 app:iconifiedByDefault="false"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                />
 
-            </androidx.appcompat.widget.Toolbar>
+            <ImageButton
+                android:id="@+id/knapp_åpne_kategori"
+                android:layout_width="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_outline_kat"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/page_margin"
+               />
+
+            </RelativeLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
