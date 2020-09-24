@@ -5,13 +5,14 @@ import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.app.Dialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-
-
 import com.example.myapplication.R
 
 import android.util.Log
@@ -20,18 +21,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialDialogs
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
+import java.util.prefs.AbstractPreferences
 
 /**
  * Event fragment som viser ett enkelt event og dens
  */
 
 class Event_liste_fragment : Fragment(), OnEventItemClickListener {
+
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var communicator: Communicator
@@ -44,10 +49,18 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
         view.knapp_åpne_kategori.setOnClickListener{
-
+        showFilterDialog()
         }
 
         return view
+    }
+
+    private fun showFilterDialog() {
+        val context: Context = requireContext()
+        val dialog = MaterialDialog(context)
+            .noAutoDismiss()
+            .customView(R.layout.layout_filter)
+        dialog.show()
     }
 
 

@@ -2,6 +2,7 @@ package com.example.myapplication
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -24,10 +25,12 @@ import com.example.myapplication.fragments.mineevents.MineEventFragment
 import com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema
 import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
+import com.example.myapplication.fragments.profil.RedigerProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_traverse_app.*
 import kotlinx.android.synthetic.main.event_liste.*
+import java.util.prefs.AbstractPreferences
 
 class MainActivity : AppCompatActivity(), Communicator, midlertidig {
 
@@ -47,6 +50,7 @@ class MainActivity : AppCompatActivity(), Communicator, midlertidig {
         val nyttEventFragment = NyttEventFragment()
         val profilFragment = ProfilFragment()
         val vennerFragment = VennerFragment()
+        val redigerProfilFragment = RedigerProfilFragment()
 
         makeCurrentFragment(eventListeFragment)
 
