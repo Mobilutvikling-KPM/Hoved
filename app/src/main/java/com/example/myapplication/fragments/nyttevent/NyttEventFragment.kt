@@ -5,14 +5,19 @@ import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.fragments.Communicator
+import com.example.myapplication.midlertidig
 import kotlinx.android.synthetic.main.fragment_mine_event.*
 import kotlinx.android.synthetic.main.fragment_nytt_event.*
+import kotlinx.android.synthetic.main.fragment_nytt_event.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -20,13 +25,22 @@ import kotlinx.android.synthetic.main.fragment_nytt_event.*
 class NyttEventFragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
+    private lateinit var skjemamidlertidig: midlertidig
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nytt_event, container, false)
+        val view = inflater.inflate(R.layout.fragment_nytt_event, container, false)
+
+        view.floating_action_button.setOnClickListener {
+
+            skjemamidlertidig = activity as midlertidig
+            skjemamidlertidig.midlertidigSkjema()
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

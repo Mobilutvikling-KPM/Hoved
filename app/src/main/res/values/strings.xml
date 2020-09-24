@@ -36,8 +36,16 @@
     <string name="panel_background">Panel Background</string>
     <string name="velg_kategori">Velg kategori</string>
 
+    <string name="utfylling_tittel">Tittel</string>
+    <string name="utfylling_beskrivelse">Beskrivelse</string>
+    <string name="utfylling_dato">Dato</string>
+    <string name="utfylling_klokke">Klokke</string>
+    <string name="utfylling_sted">Sted</string>
+    <string name="Kategori">Kategori</string>
+
     <string name="ok">Ok</string>
-    <string name="cancel">Cancel</string>
+    <string name="lag_Event">Publiser</string>
+    <string name="cancel">Avbryt</string>
     <string name="pick_color">pick color</string>
     <string name="title">tittel</string>
     <string name="supporting_text">sei</string>
@@ -47,22 +55,14 @@
     <string name="dialog_fire_missiles">hoho</string>
     <string name="fire">haha</string>
 
-    <string-array
-        name="Kategorier">
-        <item
-            >Underholdning</item>
-        <item
-            >Sport</item>
-        <item
-            >Musikk</item>
-        <item
-            >Kultur</item>
-        <item
-            >Handel</item>
-        <item
-            >Miljø</item>
-        <item
-            >Dugnad</item>
+    <string-array name="Kategorier">
+        <item>Underholdning</item>
+        <item>Sport</item>
+        <item>Musikk</item>
+        <item>Kultur</item>
+        <item>Handel</item>
+        <item>Miljø</item>
+        <item>Dugnad</item>
     </string-array>
 
 </resources>

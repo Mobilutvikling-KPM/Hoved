@@ -11,15 +11,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 
+
 import com.example.myapplication.R
 
 import android.util.Log
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.example.myapplication.fragments.Communicator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
 
@@ -31,7 +35,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var communicator: Communicator
-    private lateinit var katKnapp: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +43,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
-//        view.my_toolbar.setOnMenuItemClickListener {
-//            Log.i("TEST", "Test---------")
-//        }
         view.knapp_åpne_kategori.setOnClickListener{
 
         }
@@ -64,6 +64,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         val data = DataSource.createDataset()
         eventAdapter.submitList(data);
     }
+
 
     //Initierer og kobler recycleView til activityMain
     private fun initRecyclerView(){

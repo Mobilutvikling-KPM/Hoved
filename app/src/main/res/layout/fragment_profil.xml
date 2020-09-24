@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/page_margin">
 
-            <RelativeLayout
-                android:id="@+id/topPanel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <androidx.cardview.widget.CardView
+                android:id="@+id/bilde_frame"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:cardCornerRadius="40dp"
+                app:cardElevation="10dp"
+
+              >
+
                 <ImageView
-                    style="@style/TopPanel" />
-                <TextView
-                    style="@style/panelText"
-                    android:text="Min Profil" />
-            </RelativeLayout>
+                    android:id="@+id/bilde_profil_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_account_circle_24" />
 
-        <LinearLayout
-            android:id="@+id/nameAgeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/topPanel">
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 style="@style/profilInfo"
                 android:id="@+id/pnavn"
-                android:layout_below="@+id/nameAgeLayout"
+                android:layout_toEndOf="@id/bilde_frame"
+                android:layout_marginTop="40dp"
+
                 android:text="Bente" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/page_margin"
+            android:layout_below="@id/pnavn"
+            android:background="@android:color/darker_gray"/>
+
             <TextView
                 style="@style/profilInfo"
                 android:id="@+id/palder"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:textSize="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="44" />
-        </LinearLayout>
+                android:layout_below="@id/pnavn"
+                android:text="Alder: 44" />
+
+        <TextView
+            style="@style/profilInfo"
+            android:id="@+id/pBosted"
+            android:textSize="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/palder"
+            android:text="Hjemsted: Bø" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/page_margin"
+            android:layout_below="@id/pBosted"
+            android:background="@android:color/darker_gray"/>
 
         <TextView
             style="@style/profilInfo"
@@ -46,7 +76,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameAgeLayout"
+            android:layout_below="@+id/pBosted"
             android:text="@string/bio" />
         <TextView
             android:id="@+id/biotext"

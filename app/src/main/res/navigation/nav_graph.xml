@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/nyttEventFragment">
+
+    <fragment
+        android:id="@+id/event_utfyllingsskjema"
+        android:name="com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema"
+        android:label="Event_utfyllingsskjema" />
+    <fragment
+        android:id="@+id/nyttEventFragment"
+        android:name="com.example.myapplication.fragments.nyttevent.NyttEventFragment"
+        android:label="NyttEventFragment" />
+</navigation>
