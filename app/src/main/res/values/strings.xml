@@ -47,22 +47,14 @@
     <string name="dialog_fire_missiles">hoho</string>
     <string name="fire">haha</string>
 
-    <string-array
-        name="Kategorier">
-        <item
-            >Underholdning</item>
-        <item
-            >Sport</item>
-        <item
-            >Musikk</item>
-        <item
-            >Kultur</item>
-        <item
-            >Handel</item>
-        <item
-            >Miljø</item>
-        <item
-            >Dugnad</item>
+    <string-array name="Kategorier">
+        <item>Underholdning</item>
+        <item>Sport</item>
+        <item>Musikk</item>
+        <item>Kultur</item>
+        <item>Handel</item>
+        <item>Miljø</item>
+        <item>Dugnad</item>
     </string-array>
 
     <string name="text_error">Error</string>

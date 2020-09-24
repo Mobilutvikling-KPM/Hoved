@@ -24,6 +24,7 @@ import com.example.myapplication.fragments.kategori.KategoriFragment
 import com.example.myapplication.fragments.mineevents.MineEventFragment
 import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
+import com.example.myapplication.fragments.profil.RedigerProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_traverse_app.*
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         val nyttEventFragment = NyttEventFragment()
         val profilFragment = ProfilFragment()
         val vennerFragment = VennerFragment()
+        val redigerProfilFragment = RedigerProfilFragment()
 
         makeCurrentFragment(eventListeFragment)
 
