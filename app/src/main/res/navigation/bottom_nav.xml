@@ -29,7 +29,11 @@
     <fragment
         android:id="@+id/profilFragment2"
         android:name="com.example.myapplication.fragments.profil.ProfilFragment"
-        android:label="ProfilFragment" />
+        android:label="ProfilFragment" >
+        <action
+            android:id="@+id/action_profilFragment2_to_redigerProfilFragment"
+            app:destination="@id/redigerProfilFragment" />
+    </fragment>
     <fragment
         android:id="@+id/vennerFragment2"
         android:name="com.example.myapplication.fragments.venner.VennerFragment"
@@ -77,4 +81,8 @@
         android:id="@+id/event_utfyllingsskjema"
         android:name="com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema"
         android:label="Event_utfyllingsskjema" />
+    <fragment
+        android:id="@+id/redigerProfilFragment"
+        android:name="com.example.myapplication.fragments.profil.RedigerProfilFragment"
+        android:label="RedigerProfilFragment" />
 </navigation>
