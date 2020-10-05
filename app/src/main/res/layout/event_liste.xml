@@ -42,10 +42,12 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+
             <RelativeLayout
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                 >
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchview"

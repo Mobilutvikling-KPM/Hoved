@@ -2,6 +2,7 @@ package com.example.myapplication
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -27,54 +28,26 @@ import com.example.myapplication.fragments.mineevents.MineEventFragment
 import com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema
 import com.example.myapplication.fragments.nyttevent.NyttEventFragment
 import com.example.myapplication.fragments.profil.ProfilFragment
+import com.example.myapplication.fragments.profil.RedigerProfilFragment
 import com.example.myapplication.fragments.venner.VennerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_traverse_app.*
 import kotlinx.android.synthetic.main.event_liste.*
+import java.util.prefs.AbstractPreferences
 
 class MainActivity : AppCompatActivity(), Communicator {
 
-    //val botnav = findViewById<View>(R.id.bottomNav)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING) // Fikser at keyboard vindu går over content isteden for å pushe det opp.
 
-        //redigerKnapp.setOnClickListener {view?.findNavController()?.navigate(R.id.action_event_liste_fragment_to_eventFragment)  }
 
-        //val kategoriFragment = KategoriFragment()
-//        val eventListeFragment = Event_liste_fragment()
-//        val hjemFragment = HjemFragment()
-//        val mineEventFragment = MineEventFragment()
-//        val nyttEventFragment = NyttEventFragment()
-//        val profilFragment = ProfilFragment()
-//        val vennerFragment = VennerFragment()
 
         val navController: NavController = findNavController(R.id.nav_host_fragment)
         bottomNav.setupWithNavController(navController)
-
-//        makeCurrentFragment(hjemFragment)
-//
-//        bottomNav.setOnNavigationItemSelectedListener {
-//            when(it.itemId) {
-//                R.id.home -> makeCurrentFragment(hjemFragment)
-//                R.id.myevents -> makeCurrentFragment(mineEventFragment)
-//                R.id.newevent -> makeCurrentFragment(nyttEventFragment)
-//                R.id.friends -> makeCurrentFragment(vennerFragment)
-//                R.id.profile -> makeCurrentFragment(profilFragment)
-//            }
-//            true
-//        }
-//    }
-//
-//
-//     fun makeCurrentFragment(fragment: Fragment) =
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.container, fragment)
-////            if(fragment is Event_liste_fragment)
-////                addToBackStack(null)
-//            commit()
      }
 
     override fun sendDataKomm(tittel: String, beskrivelse: String, image: String, dato: String, sted: String, antPåmeldte: String, antKommentar: String) {

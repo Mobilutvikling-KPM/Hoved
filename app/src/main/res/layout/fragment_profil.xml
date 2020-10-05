@@ -17,6 +17,7 @@
                 app:cardElevation="10dp"
               >
 
+
                 <ImageView
                     android:id="@+id/bilde_profil_item"
                     android:layout_width="match_parent"
@@ -25,8 +26,7 @@
                     android:src="@drawable/ic_baseline_account_circle_24" />
 
             </androidx.cardview.widget.CardView>
-
-
+        
             <TextView
                 style="@style/profilInfo"
                 android:id="@+id/pnavn"
@@ -94,19 +94,13 @@
             android:layout_centerHorizontal="true"
             android:text="@string/rediger_informasjon" />
         <Button
-            android:id="@+id/instillingerKnapp"
+            android:id="@+id/slettKnapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/redigerKnapp"
             android:layout_centerHorizontal="true"
-            android:text="@string/instillinger" />
-        <Button
-            android:id="@+id/slettKnapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/instillingerKnapp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/slett_bruker" />
+            android:text="@string/slett_bruker"
+            android:background="@color/red"/>
 
     </RelativeLayout>
 
