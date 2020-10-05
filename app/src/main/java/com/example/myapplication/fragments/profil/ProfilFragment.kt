@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.fragment_profil.view.*
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
  */
 class ProfilFragment : Fragment() {
 
+    var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,8 @@ class ProfilFragment : Fragment() {
 
 
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
-        view.redigerKnapp.setOnClickListener(){
+        view.redigerKnapp.setOnClickListener() {
+            navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment)
 
         }
         return view
@@ -43,6 +47,7 @@ class ProfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view) //referanse til navGraph
 
     }
     /*
