@@ -7,20 +7,21 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/bottom_nav"
-       />
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomNav" />
+        android:layout_above="@id/bottomNav" >
+
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/bottom_nav" />
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -33,50 +34,3 @@
 
 
 </RelativeLayout>
-
-
-<!--com.google.android.material.appbar.AppBarLayout
-
-android:id="@+id/bar"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:theme="@style/AppTheme.AppBarOverlay">
-
-</com.google.android.material.appbar.AppBarLayout>
-
-<androidx.appcompat.widget.Toolbar
-android:id="@+id/toolbar"
-android:layout_width="match_parent"
-android:layout_height="?attr/actionBarSize"
-android:background="?attr/colorPrimary"
-app:contentInsetStart="0dp"
-app:layout_anchorGravity="center"
-app:popupTheme="@style/AppTheme.PopupOverlay"
-app:menu="@menu/kategori"
-    >
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:searchHintIcon="@color/white"
-            app:defaultQueryHint="Søk på eventer"
-            app:iconifiedByDefault="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.appcompat.widget.Toolbar -->
