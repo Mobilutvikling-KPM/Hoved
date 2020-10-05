@@ -2,8 +2,10 @@ package com.example.myapplication.event
 
 import RecyclerView.RecyclerView.KommentarRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.DataSourcePerson
+import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Kommentar
 import RecyclerView.RecyclerView.Moduls.Person
+import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.PersonRecyclerAdapter
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
@@ -13,8 +15,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -30,22 +36,26 @@ import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 /**
  * Event fragment som viser ett enkelt event og dens
  */
-class EventFragment : Fragment() {
+class EventFragment : Fragment(), OnKommentarItemClickListener {
 
     //    private lateinit var binding: FragmentEventBinding
     private lateinit var model: ModelEvent
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
-    var testBeskjed: String? = ""
+    lateinit var sendtBundle: Event
+    var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+  sendtBundle = arguments?.getParcelable<Event>("Event")!!
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
 
 //        //DataBinding i ett fragment -- SKIFT TIL DATABINDING SENERE
 //        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_event, container, false)
@@ -59,14 +69,16 @@ class EventFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
+
+
         //løsning uten databinding og modelview
-        view.tittel.text = arguments?.getString("tittel")
-        view.dato_og_tid.text = arguments?.getString("dato")
-        view.by.text = arguments?.getString("sted")
-        view.beskrivelse.text = arguments?.getString("beskrivelse")
-        view.dato_og_tid.text = arguments?.getString("dato")
-        view.button_se_andre_påmeldte.text = arguments?.getString("antPåmeldte") + " påmeldte"
-        var bildeAdresse = arguments?.getString("image")
+        view.tittel.text = sendtBundle.title
+        view.dato_og_tid.text = sendtBundle.dato
+        view.by.text = sendtBundle.sted
+        view.beskrivelse.text = sendtBundle.body
+
+        view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
+        var bildeAdresse = sendtBundle.image
 
 
         //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
@@ -86,6 +98,7 @@ class EventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view) //referanse til navGraph
         initRecyclerView()
         addDataSet()
     }
@@ -122,7 +135,7 @@ class EventFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            kommentarAdapter = KommentarRecyclerAdapter()
+            kommentarAdapter = KommentarRecyclerAdapter(this@EventFragment)
             adapter = kommentarAdapter
         }
     }
@@ -140,6 +153,12 @@ class EventFragment : Fragment() {
                 .into(view.google_placeholder_image) //Hvor vi ønsker å loade bildet inn i
         }
 
+    override fun onItemClick(item: Kommentar, position: Int) {
+      Toast.makeText(activity,item.person.brukernavn,Toast.LENGTH_SHORT).show()
+
+        navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment)
+
+    }
 
 
 }

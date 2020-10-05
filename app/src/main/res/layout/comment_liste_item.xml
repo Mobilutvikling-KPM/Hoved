@@ -32,13 +32,12 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
+        <Button
             android:id="@+id/brukernavn_kommentar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/page_margin"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:text="Henriette Bergensen"
-            android:textSize="@dimen/comment_name"
             android:layout_toEndOf="@id/bilde_frame"
              />
 

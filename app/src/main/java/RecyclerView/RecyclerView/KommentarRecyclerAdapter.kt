@@ -1,10 +1,13 @@
 package RecyclerView.RecyclerView
 
 
+import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Kommentar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,8 +17,7 @@ import kotlinx.android.synthetic.main.comment_liste_item.view.*
 
 
 
-class KommentarRecyclerAdapter() :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class KommentarRecyclerAdapter(var clickListener: OnKommentarItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Kommentar> = ArrayList()
 
@@ -35,9 +37,9 @@ class KommentarRecyclerAdapter() :
             //bind dataen til viewholderen som er i synet
             is KommentarViewHolder -> {
                 holder.bind(items.get(position))
-                holder.initialize(items.get(position))
-            }
+                holder.initialize(items.get(position),clickListener)
 
+            }
 
         }
 
@@ -72,7 +74,7 @@ class KommentarRecyclerAdapter() :
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_baseline_account_circle_24)
                 .error(R.drawable.ic_launcher_background)
 
             Glide.with(itemView.context)
@@ -82,12 +84,23 @@ class KommentarRecyclerAdapter() :
         }
 
         //click listener initiliasiering
-        fun initialize(item: Kommentar) {
+        fun initialize(item: Kommentar, action: OnKommentarItemClickListener) {
             person_navn.text = item.person.brukernavn
+
+            itemView.brukernavn_kommentar.setOnClickListener{
+                action.onItemClick(item, adapterPosition)
+            }
+
 
         }
     }
 
 
 }
+
+//Click listener på alle items
+interface OnKommentarItemClickListener{
+    fun onItemClick(item: Kommentar, position: Int)
+}
+
 

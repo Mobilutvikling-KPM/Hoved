@@ -4,6 +4,7 @@ import RecyclerView.RecyclerView.Moduls.Event
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -63,6 +64,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
             items = eventListe
     }
 
+
     //forteller hvor mange items er i lista
     override fun getItemCount(): Int {
         return items.size
@@ -93,7 +95,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_baseline_image_24)
                 .error(R.drawable.ic_launcher_background)
 
             Glide.with(itemView.context)
@@ -159,7 +161,6 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
-                // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
             }
         }
     }

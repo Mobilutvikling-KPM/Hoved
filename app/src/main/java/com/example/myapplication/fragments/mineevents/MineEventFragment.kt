@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
@@ -18,9 +21,11 @@ import kotlinx.android.synthetic.main.fragment_mine_event.*
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+
 class MineEventFragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
+    var navController: NavController? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +39,7 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        navController = Navigation.findNavController(view) //referanse til navGraph
         initRecyclerView()
         addDataSet()
     }
@@ -90,13 +95,9 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
     }
 
     override fun onItemClick(item: Event, position: Int) {
-        //communicator = activity as Communicator
-       // communicator.sendDataKomm(item.title, item.body,item.image,item.dato, item.sted, item.antPåmeldte, item.antKommentar)
-        //En intent som åpner en ny aktivitet og sender med data fra gjenstanden som er valgt
-//        val intent = Intent(activity, TraverseAppActivity::class.java)
-//        intent.putExtra("TITTEL", item.title)
-//        startActivity(intent)
 
+        val bundle = bundleOf("Event" to item)
+        navController!!.navigate(R.id.action_mineEventFragment_to_eventFragment22, bundle)
 
     }
 

@@ -15,6 +15,9 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.event.EventFragment
 import com.example.myapplication.event.Event_liste_fragment
 import com.example.myapplication.fragments.Communicator
@@ -29,7 +32,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_traverse_app.*
 import kotlinx.android.synthetic.main.event_liste.*
 
-class MainActivity : AppCompatActivity(), Communicator, midlertidig {
+class MainActivity : AppCompatActivity(), Communicator {
 
     //val botnav = findViewById<View>(R.id.bottomNav)
 
@@ -41,59 +44,55 @@ class MainActivity : AppCompatActivity(), Communicator, midlertidig {
         //redigerKnapp.setOnClickListener {view?.findNavController()?.navigate(R.id.action_event_liste_fragment_to_eventFragment)  }
 
         //val kategoriFragment = KategoriFragment()
-        val eventListeFragment = Event_liste_fragment()
-        val hjemFragment = HjemFragment()
-        val mineEventFragment = MineEventFragment()
-        val nyttEventFragment = NyttEventFragment()
-        val profilFragment = ProfilFragment()
-        val vennerFragment = VennerFragment()
+//        val eventListeFragment = Event_liste_fragment()
+//        val hjemFragment = HjemFragment()
+//        val mineEventFragment = MineEventFragment()
+//        val nyttEventFragment = NyttEventFragment()
+//        val profilFragment = ProfilFragment()
+//        val vennerFragment = VennerFragment()
 
-        makeCurrentFragment(eventListeFragment)
+        val navController: NavController = findNavController(R.id.nav_host_fragment)
+        bottomNav.setupWithNavController(navController)
 
-        bottomNav.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.home -> makeCurrentFragment(eventListeFragment)
-                R.id.myevents -> makeCurrentFragment(mineEventFragment)
-                R.id.newevent -> makeCurrentFragment(nyttEventFragment)
-                R.id.friends -> makeCurrentFragment(vennerFragment)
-                R.id.profile -> makeCurrentFragment(profilFragment)
-            }
-            true
-        }
-    }
-
-
-     fun makeCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.container, fragment)
-//            if(fragment is Event_liste_fragment)
-//                addToBackStack(null)
-            commit()
-        }
+//        makeCurrentFragment(hjemFragment)
+//
+//        bottomNav.setOnNavigationItemSelectedListener {
+//            when(it.itemId) {
+//                R.id.home -> makeCurrentFragment(hjemFragment)
+//                R.id.myevents -> makeCurrentFragment(mineEventFragment)
+//                R.id.newevent -> makeCurrentFragment(nyttEventFragment)
+//                R.id.friends -> makeCurrentFragment(vennerFragment)
+//                R.id.profile -> makeCurrentFragment(profilFragment)
+//            }
+//            true
+//        }
+//    }
+//
+//
+//     fun makeCurrentFragment(fragment: Fragment) =
+//        supportFragmentManager.beginTransaction().apply {
+//            replace(R.id.container, fragment)
+////            if(fragment is Event_liste_fragment)
+////                addToBackStack(null)
+//            commit()
+     }
 
     override fun sendDataKomm(tittel: String, beskrivelse: String, image: String, dato: String, sted: String, antPåmeldte: String, antKommentar: String) {
-        val bundle = Bundle()
-        bundle.putString("tittel",tittel)
-        bundle.putString("beskrivelse",beskrivelse)
-        bundle.putString("image",image)
-        bundle.putString("dato",dato)
-        bundle.putString("sted",sted)
-        bundle.putString("antPåmeldte",antPåmeldte)
-        bundle.putString("antKommentar",antKommentar)
-
-        val transaction = this.supportFragmentManager.beginTransaction()
-        val eventFragment = EventFragment()
-        eventFragment.arguments = bundle
-        transaction.replace(R.id.container,eventFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+//        val bundle = Bundle()
+//        bundle.putString("tittel",tittel)
+//        bundle.putString("beskrivelse",beskrivelse)
+//        bundle.putString("image",image)
+//        bundle.putString("dato",dato)
+//        bundle.putString("sted",sted)
+//        bundle.putString("antPåmeldte",antPåmeldte)
+//        bundle.putString("antKommentar",antKommentar)
+//
+//        val transaction = this.supportFragmentManager.beginTransaction()
+//        val eventFragment = EventFragment()
+//        eventFragment.arguments = bundle
+//        transaction.replace(R.id.container,eventFragment)
+//        transaction.addToBackStack(null)
+//        transaction.commit()
     }
 
-    override fun midlertidigSkjema() {
-        val transaction = this.supportFragmentManager.beginTransaction()
-        val skjemaFragment = Event_utfyllingsskjema()
-        transaction.replace(R.id.container,skjemaFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
 }

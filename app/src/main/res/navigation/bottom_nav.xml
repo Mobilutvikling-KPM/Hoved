@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@id/event_liste_fragment2">
+
+    <fragment
+        android:id="@+id/mineEventFragment"
+        android:name="com.example.myapplication.fragments.mineevents.MineEventFragment"
+        android:label="fragment_venner"
+        tools:layout="@layout/fragment_venner" >
+        <action
+            android:id="@+id/action_mineEventFragment_to_eventFragment22"
+            app:destination="@id/eventFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nyttEventFragment"
+        android:name="com.example.myapplication.fragments.nyttevent.NyttEventFragment"
+        android:label="NyttEventFragment" >
+        <action
+            android:id="@+id/action_nyttEventFragment_to_eventFragment22"
+            app:destination="@id/eventFragment2" />
+        <action
+            android:id="@+id/action_nyttEventFragment_to_event_utfyllingsskjema"
+            app:destination="@id/event_utfyllingsskjema" />
+    </fragment>
+    <fragment
+        android:id="@+id/profilFragment2"
+        android:name="com.example.myapplication.fragments.profil.ProfilFragment"
+        android:label="ProfilFragment" />
+    <fragment
+        android:id="@+id/vennerFragment2"
+        android:name="com.example.myapplication.fragments.venner.VennerFragment"
+        android:label="VennerFragment" >
+        <action
+            android:id="@+id/action_vennerFragment2_to_besoekProfilFragment"
+            app:destination="@id/besoekProfilFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventFragment2"
+        android:name="com.example.myapplication.event.EventFragment"
+        android:label="EventFragment" >
+        <action
+            android:id="@+id/action_eventFragment2_to_besoekProfilFragment"
+            app:destination="@id/besoekProfilFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/event_liste_fragment2"
+        android:name="com.example.myapplication.event.Event_liste_fragment"
+        android:label="Event_liste_fragment" >
+        <action
+            android:id="@+id/action_event_liste_fragment2_to_eventFragment2"
+            app:destination="@id/eventFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/besoekProfilFragment"
+        android:name="com.example.myapplication.fragments.profil.BesoekProfilFragment"
+        android:label="fragment_besoek_profil"
+        tools:layout="@layout/fragment_besoek_profil" >
+        <action
+            android:id="@+id/action_besoekProfilFragment_to_event_Besoek_Rendrer"
+            app:destination="@id/event_Besoek_Rendrer" />
+    </fragment>
+    <fragment
+        android:id="@+id/event_Besoek_Rendrer"
+        android:name="com.example.myapplication.fragments.mineevents.Event_Besoek_Rendrer"
+        android:label="fragment_event__besoek__rendrer"
+        tools:layout="@layout/fragment_event__besoek__rendrer" >
+        <action
+            android:id="@+id/action_event_Besoek_Rendrer_to_eventFragment2"
+            app:destination="@id/eventFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/event_utfyllingsskjema"
+        android:name="com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema"
+        android:label="Event_utfyllingsskjema" />
+</navigation>
