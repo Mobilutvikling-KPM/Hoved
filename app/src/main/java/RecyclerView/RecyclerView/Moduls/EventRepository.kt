@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 /*
 * Singleton Pattern
  */
-class EventRepository {
+class EventRepository() {
 
 
          lateinit var instance: EventRepository
@@ -20,15 +20,14 @@ class EventRepository {
     }
 
     //Later som om vi får data fra database
-     fun getEvents(): MutableLiveData<List<Event>>{
-        createDataset()
+     fun getEvents(type: Int): MutableLiveData<List<Event>>{
+        createDataset(type)
 
         var data: MutableLiveData<List<Event>> = MutableLiveData()
         data.setValue(dataset)
 
         return data
     }
-
     fun createDataset(){
         dataset.add(
             Event(
@@ -62,8 +61,10 @@ class EventRepository {
                 "7",
                 "2",
                 EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
+
             )
-        )
+        }
+        else dataset.addAll(DataSource.createDataset())
 
     }
 

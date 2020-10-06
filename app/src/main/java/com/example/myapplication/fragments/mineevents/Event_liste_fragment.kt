@@ -20,6 +20,8 @@ import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -29,6 +31,8 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
+import com.example.myapplication.viewmodels.EventViewModel
+import com.example.myapplication.viewmodels.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialDialogs
 import kotlinx.android.synthetic.main.event_liste.*
@@ -44,6 +48,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
+    private lateinit var eventViewModel: EventViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +56,13 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     ): View? {
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
+
+        val viewModelFactory = ViewModelFactory(0)
+
+        eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
+        eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
+            eventAdapter.notifyDataSetChanged()
+        })
 
         view.knapp_åpne_kategori.setOnClickListener{
         showFilterDialog()
@@ -79,8 +91,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
     //hent dataen fra Datasource klassen og putt den inn i adapteren
     private fun addDataSet(){
-        val data = DataSource.createDataset()
-        eventAdapter.submitList(data);
+       // val data = DataSource.createDataset()
+        eventAdapter.submitList(eventViewModel.getEvents().value!!);
     }
 
 
