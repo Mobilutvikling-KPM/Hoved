@@ -3,6 +3,7 @@ package com.example.myapplication.fragments.mineevents
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.Moduls.Event
+import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.fragments.Communicator
+import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.fragment_mine_event.*
 
 /**
@@ -33,13 +35,16 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
     ): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mine_event, container, false)
+        val view = inflater.inflate(R.layout.fragment_mine_event, container, false)
+        return view
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view) //referanse til navGraph
+
         initRecyclerView()
         addDataSet()
     }
@@ -54,6 +59,11 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
                 "https://image.forskning.no/1209602.jpg?imageId=1209602&x=0&y=0&cropw=100&croph=85.903083700441&width=342&height=196",
                 "18-10-20",
                 "Porsgrunn",
+                Person("Maria S. Akselsen",
+                    "45",
+                    "@String/input",
+                    "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
+                ),
                 "10",
                 "3",
             EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE)
@@ -64,6 +74,11 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
             "https://c2.thejournal.ie/media/2015/08/computer-nerd-2-390x285.jpg",
             "21-09-19",
             "Bø",
+            Person("Maria S. Akselsen",
+                "45",
+                "@String/input",
+                "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
+            ),
             "15",
             "7",
             EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
@@ -74,6 +89,11 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
             "https://forebyggendetjenester.com/_files/200000178-a46d2a5669/700/Lambertseter%20Gaming%20Center2.png",
             "11-15-20",
             "Bø",
+            Person("Maria S. Akselsen",
+                "45",
+                "@String/input",
+                "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
+            ),
             "26",
             "4",
             EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
