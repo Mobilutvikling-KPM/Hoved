@@ -75,16 +75,22 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.tittel.text = sendtBundle.title
         view.dato_og_tid.text = sendtBundle.dato
         view.by.text = sendtBundle.sted
+        view.brukernavn_event.text = sendtBundle.forfatter.brukernavn
         view.beskrivelse.text = sendtBundle.body
-
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
+        var personBildeAdresse = sendtBundle.forfatter.profilBilde
 
 
         //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.ic_launcher_background)
             .error(R.drawable.ic_baseline_comment_24)
+
+        Glide.with(this@EventFragment)
+            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+            .load(personBildeAdresse) //hvilket bilde som skal loades
+            .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
 
         Glide.with(this@EventFragment)
             .applyDefaultRequestOptions(requestOptions) // putt inn requestOption

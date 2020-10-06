@@ -101,6 +101,15 @@
             android:layout_centerHorizontal="true"
             android:text="@string/slett_bruker"
             android:background="@color/red"/>
+        <Button
+            android:layout_marginTop="15dp"
+            android:id="@+id/LOLKNAPP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slettKnapp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/slett_bruker"
+            android:background="@color/red"/>
 
     </RelativeLayout>
 

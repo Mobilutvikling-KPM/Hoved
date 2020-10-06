@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_profilFragment2_to_redigerProfilFragment"
             app:destination="@id/redigerProfilFragment" />
+        <action
+            android:id="@+id/action_profilFragment2_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
     </fragment>
     <fragment
         android:id="@+id/vennerFragment2"
@@ -85,4 +88,8 @@
         android:id="@+id/redigerProfilFragment"
         android:name="com.example.myapplication.fragments.profil.RedigerProfilFragment"
         android:label="RedigerProfilFragment" />
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.example.myapplication.fragments.login.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

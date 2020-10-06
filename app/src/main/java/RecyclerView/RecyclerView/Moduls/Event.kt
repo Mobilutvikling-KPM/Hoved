@@ -10,6 +10,7 @@ data class Event(
     var image: String,
     var dato: String,
     var sted: String,
+    var forfatter: Person,
     var antPåmeldte: String,
     var antKommentar: String,
     var viewType: Int
