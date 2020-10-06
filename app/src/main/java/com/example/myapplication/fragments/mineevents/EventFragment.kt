@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 class EventFragment : Fragment(), OnKommentarItemClickListener {
 
     //    private lateinit var binding: FragmentEventBinding
-    private lateinit var model: ModelEvent
+
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     lateinit var sendtBundle: Event
     var navController: NavController? = null

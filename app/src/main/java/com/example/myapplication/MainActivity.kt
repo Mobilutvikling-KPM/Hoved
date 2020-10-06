@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN) // Fikser at keyboard vindu går over content isteden for å pushe det opp.
 
 
-
         val navController: NavController = findNavController(R.id.nav_host_fragment)
         bottomNav.setupWithNavController(navController)
      }

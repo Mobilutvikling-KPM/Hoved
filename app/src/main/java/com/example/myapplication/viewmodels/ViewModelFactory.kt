@@ -12,6 +12,9 @@ class ViewModelFactory(private var type: Int): ViewModelProvider.Factory {
         if(modelClass.isAssignableFrom(EventViewModel::class.java)){
             return EventViewModel(type) as T
         }
+        else if(modelClass.isAssignableFrom(PersonViewModel::class.java)){
+            return PersonViewModel(type) as T
+        }
         throw IllegalArgumentException("ViewModel not found")
     }
 }
