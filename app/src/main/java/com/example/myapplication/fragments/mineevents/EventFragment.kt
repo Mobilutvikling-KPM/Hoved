@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,9 +28,13 @@ import com.bumptech.glide.request.RequestOptions
 
 import com.example.myapplication.R
 import com.example.myapplication.fragments.mineevents.ModelEvent
+import com.example.myapplication.viewmodels.KommentarViewModel
+import com.example.myapplication.viewmodels.PersonViewModel
+import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*
+import kotlinx.android.synthetic.main.fragment_venner.view.*
 import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 
 
@@ -41,6 +46,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     //    private lateinit var binding: FragmentEventBinding
 
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
+    private lateinit var kommentarViewModel: KommentarViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
 
@@ -69,7 +75,23 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
+        //Lager en viewModel med argumenter
+        val viewModelFactory = ViewModelFactory(1)
 
+        //Sender inn viewModel
+        kommentarViewModel = ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
+
+        //Observerer endringer i event listen
+        kommentarViewModel.getKommentarer().observe(viewLifecycleOwner, Observer {
+            kommentarAdapter.notifyDataSetChanged()
+        })
+
+        //observerer endring i data, og blir trigget dersom det skjer noe
+        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+            //Show og hide progress bar if isUpdating false osv.
+            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
+                ?: 0) -1)
+        })
 
         //løsning uten databinding og modelview
         view.tittel.text = sendtBundle.title
@@ -104,6 +126,19 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //placeholder logget inn person
+        view.button_post_comment.setOnClickListener{
+            kommentarViewModel.leggTilKommentar(
+                Kommentar(
+                    Person("PlaceHolderMEG",
+                        "24",
+                        "@String/input",
+                        "")
+                    ,
+                    view.kommentar_edit_tekst.text.toString())
+            )
+        }
+
         navController = Navigation.findNavController(view) //referanse til navGraph
         initRecyclerView()
         addDataSet()
@@ -111,27 +146,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
     //DUMMY DATA
     private fun addDataSet() {
-        val data = DataSourcePerson.createDataset()
-        var kommListe: ArrayList<Kommentar> = ArrayList()
-        kommListe.add(
-            Kommentar(
-                data.get(0),
-                "Dette er en dummy kommentar med random tekst, Yo let's go!")
-        )
-        kommListe.add(
-            Kommentar(
-                data.get(3),
-                "Hey, ho, hey, ho, lets'a go for merry so"
-            )
-        )
-        kommListe.add(
-            Kommentar(
-                data.get(2),
-                "Lorem ipsum, Dummy tekst, dummy tekst" +
-                        "Test. TEST!"
-            )
-        )
-        kommentarAdapter.submitList(kommListe);
+        kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
     //Initierer og kobler recycleView til activityMain

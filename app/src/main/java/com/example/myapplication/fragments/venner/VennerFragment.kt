@@ -72,8 +72,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
     //DUMMY DATA
     private fun addDataSet() {
-         val data = DataSourcePerson.createDataset()
-        personAdapter.submitList(data);
+        personAdapter.submitList(personViewModel.getPersoner().value!!);
     }
 
     //Initierer og kobler recycleView til activityMain

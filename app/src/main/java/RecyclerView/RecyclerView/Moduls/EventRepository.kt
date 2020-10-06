@@ -28,7 +28,8 @@ class EventRepository() {
 
         return data
     }
-    fun createDataset(){
+    fun createDataset(type: Int){
+        if(type == 1){
         dataset.add(
             Event(
                 "Konsert med Rockeband",
@@ -62,7 +63,7 @@ class EventRepository() {
                 "2",
                 EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
 
-            )
+            ))
         }
         else dataset.addAll(DataSource.createDataset())
 
