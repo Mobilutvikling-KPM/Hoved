@@ -37,6 +37,7 @@ class EventRepository() {
 
     }
 
+    //GITHUB TESTKOMMENTAR LALALALA
     //Later som om vi får data fra database
      fun getEvents(type: Int): MutableLiveData<List<Event>>{
         createDataset(type)
