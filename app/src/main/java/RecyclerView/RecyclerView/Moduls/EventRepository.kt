@@ -2,7 +2,10 @@ package RecyclerView.RecyclerView.Moduls
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 /*
 * Singleton Pattern
@@ -48,6 +51,18 @@ class EventRepository() {
         return data
     }
 
+//   fun createDataSet2(type: Int){
+//       val postLiner: = object : ValueEventListener {
+//           override fun onDataChange(p0: DataSnapshot) {
+//               TODO("Not yet implemented")
+//           }
+//
+//           override fun onCancelled(p0: DatabaseError) {
+//               TODO("Not yet implemented")
+//           }
+//
+//       }
+//   }
 
     fun createDataset(type: Int){
         if(type == 1){
