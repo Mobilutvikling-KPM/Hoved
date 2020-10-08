@@ -24,6 +24,8 @@ class EventViewModel(type: Int): ViewModel() {
     fun leggTilEvent(event: Event){
         mIsUpdating.value = true;
 
+        eventRepo.leggTilEvent(event)
+
        var liste: ArrayList<Event> = mEvents.value as ArrayList<Event>
         if (liste != null) {
             liste.add(event)

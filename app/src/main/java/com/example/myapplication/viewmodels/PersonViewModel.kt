@@ -1,14 +1,12 @@
 package com.example.myapplication.viewmodels
 
-import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.Moduls.EventRepository
-import RecyclerView.RecyclerView.Moduls.Person
-import RecyclerView.RecyclerView.Moduls.PersonRepository
+import RecyclerView.RecyclerView.Moduls.*
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.loader.content.AsyncTaskLoader
+import com.google.firebase.database.FirebaseDatabase
 
 class PersonViewModel(type: Int): ViewModel() {
 
@@ -21,6 +19,19 @@ class PersonViewModel(type: Int): ViewModel() {
         mPersoner = personRepo.getPersoner(type)  //Henter data fra databasen. EVent Repository
     }
 
+    fun leggTilPerson(person: Person){
+        mIsUpdating.value = true;
+
+        personRepo.leggTilPerson(person)
+
+        var liste: ArrayList<Person> = mPersoner.value as ArrayList<Person>
+        if (liste != null) {
+            liste.add(person)
+            mPersoner.postValue(liste)
+            mIsUpdating.postValue(false)
+        }
+
+    }
     //Skal repsentere om data er hentet eller ikke
 
     fun getPersoner(): LiveData<List<Person>>{

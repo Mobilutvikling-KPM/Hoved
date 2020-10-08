@@ -58,6 +58,7 @@
 
 
         <EditText
+            android:id="@+id/event_utfyll_tittel"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_tittel" />
 
@@ -70,18 +71,22 @@
             android:entries="@array/Kategorier"/>
 
         <EditText
+            android:id="@+id/event_utfyll_Beskrivelse"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_beskrivelse" />
 
         <EditText
+            android:id="@+id/event_utfyll_dato"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_dato" />
 
         <EditText
+            android:id="@+id/event_utfyll_klokke"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_klokke" />
 
         <EditText
+            android:id="@+id/event_utfyll_sted"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_sted" />
 
@@ -91,6 +96,7 @@
             >
 
             <Button
+                android:id="@+id/lag_event_button"
                 android:layout_marginTop="@dimen/page_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

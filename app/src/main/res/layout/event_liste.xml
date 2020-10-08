@@ -37,17 +37,17 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <RelativeLayout
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-
-            <RelativeLayout
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 >
+            >
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchview"
@@ -70,11 +70,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/page_margin"
-               />
+                />
 
-            </RelativeLayout>
+        </RelativeLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -18,6 +18,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.event.EventFragment
 import com.example.myapplication.event.Event_liste_fragment
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity(), Communicator {
 
 
         val navController: NavController = findNavController(R.id.nav_host_fragment)
+        //NavigationUI.setupActionBarWithNavController(this, navController)
         bottomNav.setupWithNavController(navController)
      }
 

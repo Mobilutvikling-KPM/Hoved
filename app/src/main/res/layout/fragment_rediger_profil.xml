@@ -44,12 +44,15 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/utfyll_navn"
                 style="@style/utfylling_tekstboks"
                 android:hint="Navn" />
             <EditText
+                android:id="@+id/utfyll_alder"
                 style="@style/utfylling_tekstboks"
                 android:hint="Alder" />
             <EditText
+                android:id="@+id/utfyll_bio"
                 style="@style/utfylling_tekstboks"
                 android:inputType="text|textMultiLine"
                 android:hint="Biografi" />
@@ -58,6 +61,7 @@
                 android:layout_height="wrap_content"
                 >
                 <Button
+                    android:id="@+id/button_registrer"
                     android:layout_marginTop="@dimen/page_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

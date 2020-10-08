@@ -54,51 +54,49 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
        // val data = DataSource.createDataset()
         var liste:ArrayList<Event> = ArrayList()
         liste.add(
-            Event("SøppelPlukking på stranda!",
-                "Bli med da vel!!",
-                "https://image.forskning.no/1209602.jpg?imageId=1209602&x=0&y=0&cropw=100&croph=85.903083700441&width=342&height=196",
-                "18-10-20",
-                "Porsgrunn",
-                Person("Maria S. Akselsen",
+            Event(
+                "C",
+                "Grilling i hagen",
+                "Ta med deg masse mat selv",
+                "https://cnet1.cbsistatic.com/img/7KqpBDebOSEhF9ajWbSGwL8Zv-E=/420x236/2019/12/14/37b968ef-c55f-4a8b-a84d-4049cb94846d/smart-fire-5.jpg",
+                "07-08-20",
+                "17:00",
+                "Skien",
+                Person(
+                    "PD",
+                    "Roger Floger",
+                    "27",
+                    "@String/input",
+                    "https://media.gettyimages.com/photos/closeup-of-a-mans-head-profile-picture-id157192886")
+                ,
+                "Kos",
+                "24",
+                "39",
+                EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
+            )
+        )
+        liste.add(
+            Event(
+                "D",
+                "Lan på Kroa",
+                "It's dangerous to go alone. Grab a game!",
+                "https://forebyggendetjenester.com/_files/200000178-a46d2a5669/700/Lambertseter%20Gaming%20Center2.png",
+                "11-15-20",
+                "18:00",
+                "Bø",
+                Person(
+                    "PA",
+                    "Maria S. Akselsen",
                     "45",
                     "@String/input",
                     "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
                 ),
-                "10",
-                "3",
-            EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE)
-        )
-        liste.add(Event(
-            "It treff!",
-            "Vi skal snakke om java og php",
-            "https://c2.thejournal.ie/media/2015/08/computer-nerd-2-390x285.jpg",
-            "21-09-19",
-            "Bø",
-            Person("Maria S. Akselsen",
-                "45",
-                "@String/input",
-                "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
-            ),
-            "15",
-            "7",
-            EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
-        ))
-        liste.add(Event(
-            "Lan på Kroa",
-            "It's dangerous to go alone. Grab a game!",
-            "https://forebyggendetjenester.com/_files/200000178-a46d2a5669/700/Lambertseter%20Gaming%20Center2.png",
-            "11-15-20",
-            "Bø",
-            Person("Maria S. Akselsen",
-                "45",
-                "@String/input",
-                "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
-            ),
-            "26",
-            "4",
-            EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
-        ))
-        eventAdapter.submitList(liste);
+                "Spill",
+                "26",
+                "4",
+                EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
+            ))
+        eventAdapter.submitList(liste)
     }
 
     //Initierer og kobler recycleView til activityMain

@@ -16,12 +16,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -96,12 +98,15 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         //løsning uten databinding og modelview
         view.tittel.text = sendtBundle.title
         view.dato_og_tid.text = sendtBundle.dato
+        view.klokkeSlett.text = " klokken " + sendtBundle.klokke
         view.by.text = sendtBundle.sted
         view.brukernavn_event.text = sendtBundle.forfatter.brukernavn
         view.beskrivelse.text = sendtBundle.body
+        view.event_kategori.text = sendtBundle.kategori
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
         var personBildeAdresse = sendtBundle.forfatter.profilBilde
+
 
 
         //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
@@ -130,7 +135,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.button_post_comment.setOnClickListener{
             kommentarViewModel.leggTilKommentar(
                 Kommentar(
-                    Person("PlaceHolderMEG",
+                    "KV",
+                    Person(
+                        "PV",
+                        "PlaceHolderMEG",
                         "24",
                         "@String/input",
                         "")
@@ -140,6 +148,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         }
 
         navController = Navigation.findNavController(view) //referanse til navGraph
+
         initRecyclerView()
         addDataSet()
     }

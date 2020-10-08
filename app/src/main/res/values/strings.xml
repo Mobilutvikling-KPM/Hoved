@@ -60,8 +60,10 @@
         <item>Sport</item>
         <item>Musikk</item>
         <item>Kultur</item>
+        <item>Spill</item>
+        <item>Kos</item>
         <item>Handel</item>
-        <item>Miljø</item>
+        <item>Samfunn</item>
         <item>Dugnad</item>
     </string-array>
 
