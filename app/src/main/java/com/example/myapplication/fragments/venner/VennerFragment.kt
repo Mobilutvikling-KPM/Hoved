@@ -20,9 +20,9 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_nytt_event.*
-import kotlinx.android.synthetic.main.fragment_nytt_event.view.*
-import kotlinx.android.synthetic.main.fragment_nytt_event.view.recycler_view_nyttEvent
+import kotlinx.android.synthetic.main.fragment_mine_eventer.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.view.recycler_view_nyttEvent
 import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
 

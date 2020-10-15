@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_nytt_event.*
-import kotlinx.android.synthetic.main.fragment_nytt_event.view.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 
 
 /**
@@ -37,7 +37,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_nytt_event, container, false)
+        val view = inflater.inflate(R.layout.fragment_mine_eventer, container, false)
 
         //Lager en viewModel med argumenter
         val viewModelFactory = ViewModelFactory(2)

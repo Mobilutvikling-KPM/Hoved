@@ -15,60 +15,24 @@
         android:layout_height="wrap_content" >
 
         <TextView
+            android:gravity="center"
             android:id="@+id/heading_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logg inn"
-            android:textSize="40dp"
+            android:text="Du må være logget inn for å se denne siden!"
+            android:textSize="30dp"
             android:layout_centerHorizontal="true"/>
-        <EditText
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"
-            android:id="@+id/brukernavn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:hint="Brukernavn"
-            android:textColorHint="@color/grey"
-            android:layout_below="@+id/heading_login"
-            android:background="@drawable/custom_login_fields"/>
-        <EditText
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"
-            android:id="@+id/passord_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:hint="Passord"
-            android:textColorHint="@color/grey"
-            android:layout_below="@+id/brukernavn_login"
-            android:background="@drawable/custom_login_fields"/>
-        <LinearLayout
-            android:id="@+id/toppen"
-            android:layout_below="@id/passord_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <CheckBox
-                android:layout_marginTop="15dp"
-                android:id="@+id/cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="15dp"
-                android:id="@+id/text_forbli_pålogget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Forbli pålogget" />
-        </LinearLayout>
+
             <Button
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="50dp"
                 android:id="@+id/login_knapp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log inn"
-                android:layout_below="@+id/toppen"
+                android:layout_below="@+id/heading_login"
                 android:layout_centerHorizontal="true"/>
             <Button
+                android:id="@+id/registrerBrukerKnapp"
                 android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

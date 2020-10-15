@@ -88,4 +88,7 @@
     <string name="order_desc">DESC</string>
     <string name="spinner_title">Velg kategori</string>
 
+    <string name="loginn">Log inn</string>
+    <string name="logout">Logg ut</string>
+
 </resources>
