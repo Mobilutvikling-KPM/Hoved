@@ -2,7 +2,6 @@ package com.example.myapplication.fragments.nyttevent
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_nytt_event.view.*
 /**
  * A simple [Fragment] subclass.
  */
-class NyttEventFragment : Fragment(), OnEventItemClickListener {
+class MineEventerFragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var eventViewModel: EventViewModel
@@ -87,7 +86,7 @@ class NyttEventFragment : Fragment(), OnEventItemClickListener {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@NyttEventFragment)
+            eventAdapter = EventRecyclerAdapter(this@MineEventerFragment)
             adapter = eventAdapter
         }
 

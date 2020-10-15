@@ -1,7 +1,6 @@
 package com.example.myapplication.fragments.mineevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
@@ -16,15 +15,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.fragments.Communicator
-import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.fragment_mine_event.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 
-class MineEventFragment : Fragment(), OnEventItemClickListener {
+class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
@@ -108,7 +105,7 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@MineEventFragment)
+            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment)
             adapter = eventAdapter
         }
 

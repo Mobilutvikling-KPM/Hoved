@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mineEventFragment"
-        android:name="com.example.myapplication.fragments.mineevents.MineEventFragment"
+        android:name="com.example.myapplication.fragments.mineevents.PaameldteEventFragment"
         android:label="fragment_venner"
         tools:layout="@layout/fragment_venner" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/nyttEventFragment"
-        android:name="com.example.myapplication.fragments.nyttevent.NyttEventFragment"
+        android:name="com.example.myapplication.fragments.nyttevent.MineEventerFragment"
         android:label="NyttEventFragment" >
         <action
             android:id="@+id/action_nyttEventFragment_to_eventFragment22"
