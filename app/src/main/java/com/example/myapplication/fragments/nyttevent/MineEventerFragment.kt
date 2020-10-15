@@ -17,6 +17,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
+import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
@@ -25,7 +26,9 @@ import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 /**
  * A simple [Fragment] subclass.
  */
-class NyttEventFragment : Fragment(), OnEventItemClickListener {
+class MineEventerFragment : Fragment(), OnEventItemClickListener {
+
+    val loginViewModel = LoginViewModel()
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var eventViewModel: EventViewModel
@@ -64,14 +67,32 @@ class NyttEventFragment : Fragment(), OnEventItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view) //referanse til navGraph
-
+        observeAuthenticationState()
         view.floating_action_button.setOnClickListener {
-
             navController!!.navigate(R.id.action_nyttEventFragment_to_event_utfyllingsskjema)
         }
 
         initRecyclerView()
        addDataSet()
+    }
+    private fun observeAuthenticationState() {
+
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            // TODO 1. Use the authenticationState variable you just added
+            // in LoginViewModel and change the UI accordingly.
+            when (authenticationState) {
+                // TODO 2.  If the user is logged in,
+                // you can customize the welcome message they see by
+                // utilizing the getFactWithPersonalization() function provided
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
+                }
+
+                else -> {
+                    navController!!.navigate(R.id.loginFragment2)
+                }
+            }
+        })
     }
 
     //hent data fra viewModel og skriv dem inn i recyclerview
@@ -86,7 +107,7 @@ class NyttEventFragment : Fragment(), OnEventItemClickListener {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@NyttEventFragment)
+            eventAdapter = EventRecyclerAdapter(this@MineEventerFragment)
             adapter = eventAdapter
         }
 

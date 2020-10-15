@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/nyttEventFragment"
-        android:name="com.example.myapplication.fragments.nyttevent.NyttEventFragment"
+        android:name="com.example.myapplication.fragments.nyttevent.MineEventerFragment"
         android:label="NyttEventFragment" >
         <action
             android:id="@+id/action_nyttEventFragment_to_eventFragment22"

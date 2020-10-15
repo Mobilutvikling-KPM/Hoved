@@ -69,8 +69,6 @@ class ProfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view) //referanse til navGraph
-        observeAuthenticationState()
-        LOLKNAPP.setOnClickListener { launchSignInFlow() }
 
     }
     private fun launchSignInFlow() {
@@ -111,35 +109,7 @@ class ProfilFragment : Fragment() {
             }
         }
     }
-    private fun observeAuthenticationState() {
 
-        viewModelLogin.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
-            when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    LOLKNAPP.text = getString(R.string.logout)
-                    LOLKNAPP.setOnClickListener {
-                        AuthUI.getInstance().signOut(requireContext())
-                            navController!!.navigate(R.id.event_liste_fragment2)
-                        }
-                    }
-
-                else -> {
-                    // TODO 3. Lastly, if there is no logged-in user,
-                    // auth_button should display Login and
-                    // launch the sign in screen when clicked.
-                    LOLKNAPP.text = getString(R.string.loginn)
-                    LOLKNAPP.setOnClickListener {
-                        launchSignInFlow()
-                    }
-                }
-            }
-        })
-    }
     companion object {
         val SIGN_IN_REQUEST_CODE = 123
     }
