@@ -32,16 +32,32 @@
                 android:id="@+id/pnavn"
                 android:layout_toEndOf="@id/bilde_frame"
                 android:layout_marginTop="40dp"
+                 />
 
-                android:text="Bente" />
+        <Button
+            android:id="@+id/bli_venn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="@dimen/page_margin"
+            android:layout_marginVertical="@dimen/page_margin"
+            android:text="@string/bli_venn"/>
 
 
         <View
+            android:id="@+id/strek"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="@dimen/page_margin"
             android:layout_below="@id/pnavn"
             android:background="@android:color/darker_gray"/>
+
+        <ProgressBar
+            android:id="@+id/profil_progress"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/strek"
+            android:layout_centerHorizontal="true"/>
 
             <TextView
                 style="@style/profilInfo"
@@ -50,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pnavn"
-                android:text="Alder: 44" />
+                 />
 
         <TextView
             style="@style/profilInfo"
@@ -59,9 +75,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/palder"
-            android:text="Hjemsted: Bø" />
+            />
 
         <View
+            android:id="@+id/strek2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="@dimen/page_margin"
@@ -84,7 +101,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/bio"
-            android:text="@string/input" />
+             />
         <Button
             android:id="@+id/redigerKnapp"
             android:layout_marginTop="20dp"

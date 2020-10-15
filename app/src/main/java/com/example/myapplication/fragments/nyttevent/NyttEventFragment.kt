@@ -41,7 +41,7 @@ class NyttEventFragment : Fragment(), OnEventItemClickListener {
         val view = inflater.inflate(R.layout.fragment_nytt_event, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1)
+        val viewModelFactory = ViewModelFactory(2)
 
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
@@ -52,11 +52,11 @@ class NyttEventFragment : Fragment(), OnEventItemClickListener {
         })
 
         //observerer endring i data, og blir trigget dersom det skjer noe
-        eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            //Show og hide progress bar if isUpdating false osv.
-            view.recycler_view_nyttEvent.smoothScrollToPosition((eventViewModel.getEvents().value?.size
-                ?: 0) -1)
-        })
+//        eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+//            //Show og hide progress bar if isUpdating false osv.
+//            view.recycler_view_nyttEvent.smoothScrollToPosition((eventViewModel.getEvents().value?.size
+//                ?: 0) -1)
+//        })
 
         return view
     }

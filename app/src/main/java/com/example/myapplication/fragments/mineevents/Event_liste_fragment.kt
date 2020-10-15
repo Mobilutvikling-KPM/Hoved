@@ -55,13 +55,21 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
-        val viewModelFactory = ViewModelFactory(0)
+        val viewModelFactory = ViewModelFactory(1)
 
         eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
             eventAdapter.notifyDataSetChanged()
+        })
+
+        eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+            Log.i("lala", "UPDATING!")
+            if(it) {
+                view.event_liste_ProgressBar.visibility = View.VISIBLE
+            } else{  view.event_liste_ProgressBar.visibility = View.GONE}
         })
 
         view.knapp_åpne_kategori.setOnClickListener{
@@ -92,6 +100,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     //hent dataen fra Datasource klassen og putt den inn i adapteren
     private fun addDataSet(){
        // val data = DataSource.createDataset()
+
         eventAdapter.submitList(eventViewModel.getEvents().value!!);
     }
 

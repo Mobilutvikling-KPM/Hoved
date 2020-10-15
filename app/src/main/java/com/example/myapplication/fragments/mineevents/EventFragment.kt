@@ -78,7 +78,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1)
+        val viewModelFactory = ViewModelFactory(0)
 
         //Sender inn viewModel
         kommentarViewModel = ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
@@ -140,6 +140,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                         "PV",
                         "PlaceHolderMEG",
                         "24",
+                        "Oslo",
                         "@String/input",
                         "")
                     ,
@@ -147,7 +148,13 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             )
         }
 
+
         navController = Navigation.findNavController(view) //referanse til navGraph
+
+        view.brukernavn_event.setOnClickListener{
+            val bundle = bundleOf("Person" to sendtBundle.forfatter)
+            navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+        }
 
         initRecyclerView()
         addDataSet()
@@ -184,9 +191,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         }
 
     override fun onItemClick(item: Kommentar, position: Int) {
-      Toast.makeText(activity,item.person.brukernavn,Toast.LENGTH_SHORT).show()
 
-        navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment)
+        //Gjør om til personID
+        val bundle = bundleOf("Person" to item.person)
+        navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
 
     }
 

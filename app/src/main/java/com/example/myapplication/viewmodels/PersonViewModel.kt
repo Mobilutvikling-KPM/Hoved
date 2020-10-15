@@ -1,18 +1,25 @@
 package com.example.myapplication.viewmodels
 
 import RecyclerView.RecyclerView.Moduls.*
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.loader.content.AsyncTaskLoader
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-class PersonViewModel(type: Int): ViewModel() {
+class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
 
     private var mPersoner: MutableLiveData<List<Person>>
+    private var enkeltPerson: MutableLiveData<Person> = MutableLiveData()
     private var personRepo: PersonRepository = PersonRepository().getTheInstance()
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
+    val ref = FirebaseDatabase.getInstance()
+        .getReference("Person")
     var type: Int = type
 
     init {
@@ -20,7 +27,7 @@ class PersonViewModel(type: Int): ViewModel() {
     }
 
     fun leggTilPerson(person: Person){
-        mIsUpdating.value = true;
+        mIsUpdating.setValue(true)
 
         personRepo.leggTilPerson(person)
 
@@ -28,11 +35,36 @@ class PersonViewModel(type: Int): ViewModel() {
         if (liste != null) {
             liste.add(person)
             mPersoner.postValue(liste)
-            mIsUpdating.postValue(false)
+            mIsUpdating.setValue(false)
         }
 
     }
-    //Skal repsentere om data er hentet eller ikke
+
+    fun søkEtterPerson(id: String){
+
+       ref.child(id).addListenerForSingleValueEvent(object: ValueEventListener{
+           override fun onDataChange(p0: DataSnapshot) {
+               if(p0.exists()){
+                   var mellom: MutableLiveData<Person> = MutableLiveData()
+
+                  mellom.setValue( p0.getValue(Person::class.java))
+                   Log.i("lala","funnet internt: " +  mellom.value )
+                 onValueRead(mellom)
+               }
+
+           }
+
+           override fun onCancelled(p0: DatabaseError) {
+               Log.i("lala", "Feil med databasen i personViewModel")
+           }
+
+       })
+
+    }
+
+    fun getEnkeltPerson(): LiveData<Person>{
+        return enkeltPerson
+    }
 
     fun getPersoner(): LiveData<List<Person>>{
         return mPersoner
@@ -41,4 +73,10 @@ class PersonViewModel(type: Int): ViewModel() {
     fun getIsUpdating(): LiveData<Boolean>{
         return mIsUpdating
     }
+
+    override fun onValueRead(verdi: MutableLiveData<Person>) {
+        enkeltPerson.setValue(verdi.value)
+        Log.i("lala","funnet eksternt: " +  verdi.value )
+    }
+
 }

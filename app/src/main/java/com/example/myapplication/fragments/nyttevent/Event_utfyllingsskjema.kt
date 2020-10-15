@@ -25,7 +25,7 @@ class Event_utfyllingsskjema: Fragment() {
         val view = inflater.inflate(R.layout.event_utfyllingskjema, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1)
+        val viewModelFactory = ViewModelFactory(0)
 
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
@@ -50,6 +50,7 @@ class Event_utfyllingsskjema: Fragment() {
                     "PA",
                     "Maria S. Akselsen",
                     "45",
+                    "Langesund",
                     "@String/input",
                     "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
                 ),

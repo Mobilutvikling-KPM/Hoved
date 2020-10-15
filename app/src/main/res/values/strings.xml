@@ -12,7 +12,7 @@
     <string name="mine_eventer">Påmeldte eventer</string>
     <string name="nytt_event">Mine Eventer</string>
     <string name="min_profil">Min Profil</string>
-    <string name="mine_venner">Mine Venner</string>
+    <string name="mine_venner">Følger</string>
     <string name="title_activity_traverse_app">TraverseAppActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="previous">Previous</string>
@@ -67,6 +67,7 @@
         <item>Dugnad</item>
     </string-array>
 
+    <string name="bli_venn">Følg</string>
     <string name="text_error">Error</string>
     <string name="text_success">Success</string>
     <string name="text_ok">OK</string>

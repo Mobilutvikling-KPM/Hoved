@@ -31,6 +31,7 @@ class ProfilFragment : Fragment() {
 
 
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
+        view.bli_venn.visibility = View.GONE
         view.redigerKnapp.setOnClickListener() {
             navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment)
         }

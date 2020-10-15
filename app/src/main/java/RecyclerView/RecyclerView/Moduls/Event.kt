@@ -19,4 +19,8 @@ data class Event(
     var viewType: Int
 ): Parcelable {
 
+    constructor() : this("","", " ", " ", " ", " "," ", Person(),
+    "", "0", "0", 1){
+
+    }
 }

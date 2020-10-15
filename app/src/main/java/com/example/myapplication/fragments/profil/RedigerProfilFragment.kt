@@ -49,6 +49,7 @@ class RedigerProfilFragment : Fragment() {
             val person = Person("",
                                 view.utfyll_navn.text.toString(),
                                 view.utfyll_alder.text.toString(),
+                                view.utfyll_bosted.toString(),
                                 view.utfyll_bio.text.toString(),
                         "")
             personViewModel.leggTilPerson(person)

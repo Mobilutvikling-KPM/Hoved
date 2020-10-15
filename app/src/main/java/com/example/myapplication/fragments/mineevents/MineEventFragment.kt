@@ -66,6 +66,7 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
                     "PD",
                     "Roger Floger",
                     "27",
+                    "Langesund",
                     "@String/input",
                     "https://media.gettyimages.com/photos/closeup-of-a-mans-head-profile-picture-id157192886")
                 ,
@@ -88,6 +89,7 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
                     "PA",
                     "Maria S. Akselsen",
                     "45",
+                    "Oslo",
                     "@String/input",
                     "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
                 ),

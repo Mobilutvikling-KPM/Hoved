@@ -33,9 +33,10 @@ class KommentarRepository() {
             Kommentar(
                 "KA",
             Person(
-                "PA",
+                "-MJfZwZdE3vbcO2qIMvA",
                 "Henriette Pedersen",
                     "24",
+                    "Bø",
                     "@String/input",
                     "https://i.pinimg.com/originals/f7/60/87/f76087d518532f3a0c6b027d18e1212a.jpg")
                     ,
@@ -46,9 +47,10 @@ class KommentarRepository() {
             Kommentar(
                 "KB",
                 Person(
-                    "PC",
+                    "-MJf_NohvXNs5VjToRd_",
                     "Chris Jack",
                     "30",
+                    "Langesund",
                     "@String/input",
                     "https://i.pinimg.com/originals/35/d2/eb/35d2ebe20571c03d8f257ae725a780aa.jpg")
             ,
@@ -59,9 +61,10 @@ class KommentarRepository() {
             Kommentar(
                 "KC",
                 Person(
-                    "PB",
+                    "-MJf_XPDXcKzoTs01wnB",
                     "Roger Floger",
                     "27",
+                    "Oslo",
                     "@String/input",
                     "https://media.gettyimages.com/photos/closeup-of-a-mans-head-profile-picture-id157192886")
             ,

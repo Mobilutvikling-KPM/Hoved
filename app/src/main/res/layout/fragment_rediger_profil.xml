@@ -47,10 +47,16 @@
                 android:id="@+id/utfyll_navn"
                 style="@style/utfylling_tekstboks"
                 android:hint="Navn" />
+
             <EditText
                 android:id="@+id/utfyll_alder"
                 style="@style/utfylling_tekstboks"
                 android:hint="Alder" />
+
+            <EditText
+                android:id="@+id/utfyll_bosted"
+                style="@style/utfylling_tekstboks"
+                android:hint="Navn" />
             <EditText
                 android:id="@+id/utfyll_bio"
                 style="@style/utfylling_tekstboks"
