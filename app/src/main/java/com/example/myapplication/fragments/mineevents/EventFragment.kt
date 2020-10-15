@@ -33,6 +33,7 @@ import com.example.myapplication.fragments.mineevents.ModelEvent
 import com.example.myapplication.viewmodels.KommentarViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*

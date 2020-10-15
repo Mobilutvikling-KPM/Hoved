@@ -1,7 +1,6 @@
 package com.example.myapplication.fragments.mineevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.DataSource
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
@@ -12,30 +11,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.fragments.Communicator
-import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
-import kotlinx.android.synthetic.main.fragment_mine_event.*
+import com.example.myapplication.viewmodels.LoginViewModel
+import com.firebase.ui.auth.AuthUI
+import kotlinx.android.synthetic.main.fragment_paameldte_event.*
+import kotlinx.android.synthetic.main.fragment_profil.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 
-class MineEventFragment : Fragment(), OnEventItemClickListener {
+class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
 
+    val loginViewModel = LoginViewModel()
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
 
+
+    ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_mine_event, container, false)
+        val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
+/*
+        navController = findNavController()
+            val user = FirebaseAuth.getInstance().currentUser
+
+            if (loginViewModel.authenticationState == LoginViewModel.AuthenticationState.AUTHENTICATED) {
+                navController!!.navigate(R.id.mineEventFragment)
+            } else {
+                navController!!.navigate(R.id.loginFragment2)
+            }
+*/
         return view
 
     }
@@ -44,9 +57,29 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view) //referanse til navGraph
-
+        observeAuthenticationState()
         initRecyclerView()
         addDataSet()
+    }
+
+    private fun observeAuthenticationState() {
+
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            // TODO 1. Use the authenticationState variable you just added
+            // in LoginViewModel and change the UI accordingly.
+            when (authenticationState) {
+                // TODO 2.  If the user is logged in,
+                // you can customize the welcome message they see by
+                // utilizing the getFactWithPersonalization() function provided
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
+                    }
+
+                else -> {
+                    navController!!.navigate(R.id.loginFragment2)
+                    }
+                }
+            })
     }
 
     //DUMMY DATA
@@ -106,7 +139,7 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@MineEventFragment)
+            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment)
             adapter = eventAdapter
         }
 
@@ -118,5 +151,6 @@ class MineEventFragment : Fragment(), OnEventItemClickListener {
         navController!!.navigate(R.id.action_mineEventFragment_to_eventFragment22, bundle)
 
     }
+
 
 }
