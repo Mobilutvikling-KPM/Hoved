@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
+import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_venner.view.*
  */
 class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListener {
 
+    val loginViewModel = LoginViewModel()
     private lateinit var personAdapter: PersonRecyclerAdapter
     private lateinit var personViewModel: PersonViewModel
     var navController: NavController? = null
@@ -64,10 +66,30 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        observeAuthenticationState()
         navController = Navigation.findNavController(view) //referanse til navGraph
         initRecyclerView()
         addDataSet()
+    }
+
+    private fun observeAuthenticationState() {
+
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            // TODO 1. Use the authenticationState variable you just added
+            // in LoginViewModel and change the UI accordingly.
+            when (authenticationState) {
+                // TODO 2.  If the user is logged in,
+                // you can customize the welcome message they see by
+                // utilizing the getFactWithPersonalization() function provided
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
+                }
+
+                else -> {
+                    navController!!.navigate(R.id.loginFragment2)
+                }
+            }
+        })
     }
 
     //DUMMY DATA
