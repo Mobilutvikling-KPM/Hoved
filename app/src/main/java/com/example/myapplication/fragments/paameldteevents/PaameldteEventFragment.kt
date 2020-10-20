@@ -1,9 +1,7 @@
-package com.example.myapplication.fragments.mineevents
+package com.example.myapplication.fragments.paameldteevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.Moduls.Kommentar
-import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
@@ -19,9 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 
 import com.example.myapplication.viewmodels.LoginViewModel
-import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
-import kotlinx.android.synthetic.main.fragment_profil.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

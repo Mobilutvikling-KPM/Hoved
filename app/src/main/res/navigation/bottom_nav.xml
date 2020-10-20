@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mineEventFragment"
-        android:name="com.example.myapplication.fragments.mineevents.PaameldteEventFragment"
+        android:name="com.example.myapplication.fragments.paameldteevents.PaameldteEventFragment"
         android:label="fragment_venner"
         tools:layout="@layout/fragment_venner" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/nyttEventFragment"
-        android:name="com.example.myapplication.fragments.nyttevent.MineEventerFragment"
+        android:name="com.example.myapplication.fragments.mineevents.MineEventerFragment"
         android:label="NyttEventFragment" >
         <action
             android:id="@+id/action_nyttEventFragment_to_eventFragment22"
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/event_Besoek_Rendrer"
-        android:name="com.example.myapplication.fragments.mineevents.Event_Besoek_Rendrer"
+        android:name="com.example.myapplication.fragments.paameldteevents.Event_Besoek_Rendrer"
         android:label="fragment_event__besoek__rendrer"
         tools:layout="@layout/fragment_event__besoek__rendrer" >
         <action
@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/event_utfyllingsskjema"
-        android:name="com.example.myapplication.fragments.nyttevent.Event_utfyllingsskjema"
+        android:name="com.example.myapplication.fragments.mineevents.Event_utfyllingsskjema"
         android:label="Event_utfyllingsskjema" />
     <fragment
         android:id="@+id/redigerProfilFragment"
