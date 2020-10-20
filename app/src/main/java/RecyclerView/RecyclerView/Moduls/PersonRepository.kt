@@ -1,6 +1,7 @@
 package RecyclerView.RecyclerView.Moduls
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 
 /*
@@ -28,21 +29,32 @@ class PersonRepository() {
         return data
     }
 
-    fun leggTilPerson(person: Person) {
+    fun leggTilPerson(person: Person, bruker: FirebaseUser) {
 
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
-        val personID = ref.push().key // Lager en unik id som kan brukes i objektet
+        //val personID = ref.push().key // Lager en unik id som kan brukes i objektet
 
-        person.personID = personID!!
-        if (personID != null) {
-            ref.child(personID).setValue(person).addOnCompleteListener {
+        //person.personID = personID!!
+        if (bruker.uid != null) {
+            ref.child(bruker.uid).setValue(person).addOnCompleteListener {
                 //Noe kan skje når databsen er ferdig lastet inn
 
             }
         }
 
+    }
+
+    fun bliVenn(folg: Folg){
+        val ref = FirebaseDatabase.getInstance()
+            .getReference("Folg") //Henter referanse til det du skriver inn
+
+        val vennskapID = ref.push().key!! // Lager en unik id som kan brukes i objektet
+
+        ref.child(vennskapID).setValue(folg).addOnCompleteListener {
+            //Noe kan skje når databsen er ferdig lastet inn
+        }
     }
 
 

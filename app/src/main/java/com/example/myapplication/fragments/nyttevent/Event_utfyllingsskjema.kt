@@ -6,16 +6,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
+import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 
 class Event_utfyllingsskjema: Fragment() {
     private lateinit var eventViewModel: EventViewModel
+    private val loginViewModel: LoginViewModel = LoginViewModel()
+    var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +31,7 @@ class Event_utfyllingsskjema: Fragment() {
         val view = inflater.inflate(R.layout.event_utfyllingskjema, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(0)
+        val viewModelFactory = ViewModelFactory(0,"")
 
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
@@ -35,6 +41,8 @@ class Event_utfyllingsskjema: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view) //referanse til navGraph
 
         view.lag_event_button.setOnClickListener{
 
@@ -46,14 +54,7 @@ class Event_utfyllingsskjema: Fragment() {
                 view.event_utfyll_dato.text.toString(),
                 view.event_utfyll_klokke.text.toString(),
                 view.event_utfyll_sted.text.toString(),
-                Person(
-                    "PA",
-                    "Maria S. Akselsen",
-                    "45",
-                    "Langesund",
-                    "@String/input",
-                    "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
-                ),
+                loginViewModel.getBruker()!!.uid,
                 view.utfylling_spinner.selectedItem.toString(),
                 "0",
                 "0",
@@ -61,6 +62,9 @@ class Event_utfyllingsskjema: Fragment() {
             )
 
             eventViewModel.leggTilEvent(event)
+
+            val bundle = bundleOf("Event" to event)
+            navController!!.navigate(R.id.eventFragment2, bundle)
         }
     }
 }

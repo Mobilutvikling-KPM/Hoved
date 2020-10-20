@@ -1,12 +1,10 @@
 package com.example.myapplication.event
 
 import RecyclerView.RecyclerView.KommentarRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.DataSourcePerson
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Kommentar
 import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnKommentarItemClickListener
-import RecyclerView.RecyclerView.PersonRecyclerAdapter
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
 import android.util.Log
@@ -14,31 +12,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 import com.example.myapplication.R
-import com.example.myapplication.fragments.mineevents.ModelEvent
-import com.example.myapplication.viewmodels.KommentarViewModel
-import com.example.myapplication.viewmodels.PersonViewModel
-import com.example.myapplication.viewmodels.ViewModelFactory
-import com.google.firebase.auth.FirebaseAuth
+import com.example.myapplication.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
-import kotlinx.android.synthetic.main.fragment_venner.*
-import kotlinx.android.synthetic.main.fragment_venner.view.*
-import kotlinx.android.synthetic.main.layout_event_list_item.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -48,22 +36,30 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
     //    private lateinit var binding: FragmentEventBinding
 
+    private val loginViewModel: LoginViewModel = LoginViewModel()
+    private lateinit var personViewModel: PersonViewModel
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
+   // private lateinit var eventViewModel: EventViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
+    var innloggetProfil: Person? = null
+
+    //kalender
+    private var calendar: Calendar = Calendar.getInstance();
+    private lateinit var dateFormat: SimpleDateFormat
+    private lateinit var date: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-  sendtBundle = arguments?.getParcelable<Event>("Event")!!
+        sendtBundle = arguments?.getParcelable<Event>("Event")!!
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
 
 //        //DataBinding i ett fragment -- SKIFT TIL DATABINDING SENERE
@@ -75,25 +71,63 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 //            model?.tittel = "Dette er test nr2"
 //            invalidateAll()
 //        }
+        //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+        val requestOptions = RequestOptions()
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_baseline_comment_24)
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(0)
+        val viewModelFactory = ViewModelFactory(0, sendtBundle.eventID)
 
         //Sender inn viewModel
-        kommentarViewModel = ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
+        kommentarViewModel =
+            ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
+        personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
+       // eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
         //Observerer endringer i event listen
         kommentarViewModel.getKommentarer().observe(viewLifecycleOwner, Observer {
+            Log.i("lala", "endring i kommentar tabell")
             kommentarAdapter.notifyDataSetChanged()
         })
+
+//        eventViewModel.getEnkeltEvent().observe(viewLifecycleOwner, Observer {
+//            kommentarAdapter.notifyDataSetChanged()
+//        })
+
+
+        //Skriv inn info om forfatter av event når det er blitt lastet inn
+        personViewModel.getEnkeltPerson().observe(viewLifecycleOwner, Observer {
+
+            view.brukernavn_event.text = it.brukernavn
+
+            Glide.with(this@EventFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(it.profilBilde) //hvilket bilde som skal loades
+                .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
+        })
+
+        personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid)
+
+        personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
+
+            innloggetProfil = it
+
+            Glide.with(this@EventFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(it.profilBilde) //hvilket bilde som skal loades
+                .into(view.kommentar_profil_bilde) //Hvor vi ønsker å loade bildet inn i
+        })
+
+        personViewModel.søkEtterPerson(sendtBundle.forfatter)
 
         //observerer endring i data, og blir trigget dersom det skjer noe
         kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             //Show og hide progress bar if isUpdating false osv.
-            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
-                ?: 0) -1)
+//            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
+//                ?: 0) -1)
         })
 
         //løsning uten databinding og modelview
@@ -101,24 +135,11 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.dato_og_tid.text = sendtBundle.dato
         view.klokkeSlett.text = " klokken " + sendtBundle.klokke
         view.by.text = sendtBundle.sted
-        view.brukernavn_event.text = sendtBundle.forfatter.brukernavn
         view.beskrivelse.text = sendtBundle.body
         view.event_kategori.text = sendtBundle.kategori
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
-        var personBildeAdresse = sendtBundle.forfatter.profilBilde
 
-
-
-        //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
-        val requestOptions = RequestOptions()
-            .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.ic_baseline_comment_24)
-
-        Glide.with(this@EventFragment)
-            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-            .load(personBildeAdresse) //hvilket bilde som skal loades
-            .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
 
         Glide.with(this@EventFragment)
             .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
@@ -133,27 +154,39 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         //placeholder logget inn person
-        view.button_post_comment.setOnClickListener{
-            kommentarViewModel.leggTilKommentar(
-                Kommentar(
-                    "KV",
-                    Person(
-                        "PV",
-                        "PlaceHolderMEG",
-                        "24",
-                        "Oslo",
-                        "@String/input",
-                        "")
-                    ,
-                    view.kommentar_edit_tekst.text.toString())
-            )
+        view.button_post_comment.setOnClickListener {
+
+            if (loginViewModel.getBruker() != null) {
+                dateFormat = SimpleDateFormat("dd/MM/yyyy")
+                date = dateFormat.format(calendar.getTime())
+
+//                var arr = sendtBundle.kommentarListe
+//                arr.add(
+//                    Kommentar(
+//                        innloggetProfil!!,
+//                        date,
+//                        view.kommentar_edit_tekst.text.toString()
+//                    )
+//                )
+                //eventViewModel.leggTilKommentar(sendtBundle.eventID, arr)
+
+                kommentarViewModel.leggTilKommentar(
+                    Kommentar(
+                        sendtBundle.eventID,
+                        innloggetProfil!!,
+                                date,
+                        view.kommentar_edit_tekst.text.toString()
+                    )
+                )
+            }
+
         }
 
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 
-        view.brukernavn_event.setOnClickListener{
-            val bundle = bundleOf("Person" to sendtBundle.forfatter)
+        view.brukernavn_event.setOnClickListener {
+            val bundle = bundleOf("Person" to personViewModel.getEnkeltPerson().value)
             navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
         }
 
@@ -161,9 +194,9 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         addDataSet()
     }
 
-    //DUMMY DATA
+
     private fun addDataSet() {
-        kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
+       kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
     //Initierer og kobler recycleView til activityMain
@@ -178,18 +211,18 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         }
     }
 
-        //PLACEHOLDER GOOGLE MAPS IMAGE
-        fun setPlaceholderGoogleMap(view: View) {
-            //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
-            val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_baseline_comment_24)
+    //PLACEHOLDER GOOGLE MAPS IMAGE
+    fun setPlaceholderGoogleMap(view: View) {
+        //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+        val requestOptions = RequestOptions()
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_baseline_comment_24)
 
-            Glide.with(this@EventFragment)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-                .load("https://leafletjs.com/examples/quick-start/thumbnail.png") //hvilket bilde som skal loades
-                .into(view.google_placeholder_image) //Hvor vi ønsker å loade bildet inn i
-        }
+        Glide.with(this@EventFragment)
+            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+            .load("https://leafletjs.com/examples/quick-start/thumbnail.png") //hvilket bilde som skal loades
+            .into(view.google_placeholder_image) //Hvor vi ønsker å loade bildet inn i
+    }
 
     override fun onItemClick(item: Kommentar, position: Int) {
 

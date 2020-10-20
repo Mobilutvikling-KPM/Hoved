@@ -7,14 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.loader.content.AsyncTaskLoader
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
+class PersonViewModel(type: Int, id :String): ViewModel(), DataCallbackSingleValue<Person> {
 
     private var mPersoner: MutableLiveData<List<Person>>
+    private var innloggetSinProfil: MutableLiveData<Person> = MutableLiveData()
     private var enkeltPerson: MutableLiveData<Person> = MutableLiveData()
     private var personRepo: PersonRepository = PersonRepository().getTheInstance()
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
@@ -26,10 +28,10 @@ class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
         mPersoner = personRepo.getPersoner(type)  //Henter data fra databasen. EVent Repository
     }
 
-    fun leggTilPerson(person: Person){
+    fun leggTilPerson(person: Person, bruker: FirebaseUser){
         mIsUpdating.setValue(true)
 
-        personRepo.leggTilPerson(person)
+        personRepo.leggTilPerson(person, bruker)
 
         var liste: ArrayList<Person> = mPersoner.value as ArrayList<Person>
         if (liste != null) {
@@ -40,6 +42,30 @@ class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
 
     }
 
+    fun bliVenn(folg: Folg){
+        personRepo.bliVenn(folg)
+    }
+
+    fun hentInnloggetProfil(id: String){
+        ref.child(id).addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                if(p0.exists()){
+                    var mellom: MutableLiveData<Person> = MutableLiveData()
+
+                    mellom.setValue( p0.getValue(Person::class.java))
+
+                    onValueReadInnlogget(mellom)
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("lala", "Feil med databasen i personViewModel")
+            }
+
+        })
+    }
+
     fun søkEtterPerson(id: String){
 
        ref.child(id).addListenerForSingleValueEvent(object: ValueEventListener{
@@ -48,7 +74,7 @@ class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
                    var mellom: MutableLiveData<Person> = MutableLiveData()
 
                   mellom.setValue( p0.getValue(Person::class.java))
-                   Log.i("lala","funnet internt: " +  mellom.value )
+
                  onValueRead(mellom)
                }
 
@@ -60,6 +86,10 @@ class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
 
        })
 
+    }
+
+    fun getInnloggetProfil(): LiveData<Person>{
+        return innloggetSinProfil
     }
 
     fun getEnkeltPerson(): LiveData<Person>{
@@ -76,7 +106,10 @@ class PersonViewModel(type: Int): ViewModel(), DataCallbackSingleValue<Person> {
 
     override fun onValueRead(verdi: MutableLiveData<Person>) {
         enkeltPerson.setValue(verdi.value)
-        Log.i("lala","funnet eksternt: " +  verdi.value )
+    }
+
+    override fun onValueReadInnlogget(verdi: MutableLiveData<Person>) {
+        innloggetSinProfil.setValue(verdi.value)
     }
 
 }

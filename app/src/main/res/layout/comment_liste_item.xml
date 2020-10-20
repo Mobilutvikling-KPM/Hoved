@@ -42,12 +42,22 @@
              />
 
         <TextView
+            android:id="@+id/kommentar_dato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21-09-2020"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/page_margin"
+            android:layout_below="@id/brukernavn_kommentar"
+            android:layout_toEndOf="@id/bilde_frame"/>
+
+        <TextView
             android:id="@+id/kommentar_tekst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/page_margin"
             android:layout_toEndOf="@id/bilde_frame"
-            android:layout_below="@id/brukernavn_kommentar"
+            android:layout_below="@id/kommentar_dato"
             android:text="@string/input"/>
 
     </RelativeLayout>

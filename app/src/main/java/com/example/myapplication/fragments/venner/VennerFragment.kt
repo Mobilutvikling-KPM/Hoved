@@ -42,7 +42,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
         val view = inflater.inflate(R.layout.fragment_venner, container, false)
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1)
+        val viewModelFactory = ViewModelFactory(1,"")
 
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)

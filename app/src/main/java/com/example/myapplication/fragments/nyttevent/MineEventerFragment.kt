@@ -40,7 +40,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener {
         val view = inflater.inflate(R.layout.fragment_mine_eventer, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(2)
+        val viewModelFactory = ViewModelFactory(2,"")
 
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)

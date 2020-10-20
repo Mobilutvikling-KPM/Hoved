@@ -2,6 +2,7 @@ package com.example.myapplication.fragments.mineevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
+import RecyclerView.RecyclerView.Moduls.Kommentar
 import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
@@ -21,6 +22,9 @@ import com.example.myapplication.viewmodels.LoginViewModel
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_profil.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -29,6 +33,9 @@ import kotlinx.android.synthetic.main.fragment_profil.*
 
 class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
 
+    private var calendar: Calendar = Calendar.getInstance();
+    private lateinit var dateFormat: SimpleDateFormat
+    private lateinit var date: String
     val loginViewModel = LoginViewModel()
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
@@ -86,6 +93,35 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
 
     //DUMMY DATA
     private fun addDataSet(){
+                dateFormat = SimpleDateFormat("MM/dd/yyyy");
+        date = dateFormat.format(calendar.getTime());
+//        var arr: ArrayList<Kommentar> = ArrayList()
+//                    arr.add(Kommentar(
+//                        "-MJ7NjgdeI26SdLz-7Me",
+//                Person(
+//                    "-MJfZwZdE3vbcO2qIMvA",
+//                    "Henriette Pedersen",
+//                    "24",
+//                    "Bø",
+//                    "@String/input",
+//                    "https://i.pinimg.com/originals/f7/60/87/f76087d518532f3a0c6b027d18e1212a.jpg"
+//                ),
+//                date,
+//                "Dette er en dummy kommentar med random tekst, Yo let's go!"
+//            ))
+//        arr.add(Kommentar(
+//            "-MJ7NjgdeI26SdLz-7Me",
+//                Person(
+//                    "-MJf_NohvXNs5VjToRd_",
+//                    "Chris Jack",
+//                    "30",
+//                    "Langesund",
+//                    "@String/input",
+//                    "https://i.pinimg.com/originals/35/d2/eb/35d2ebe20571c03d8f257ae725a780aa.jpg"
+//                ),date,
+//                "Hey, ho, hey, ho, lets'a go for merry so"
+//            )
+//        )
        // val data = DataSource.createDataset()
         var liste:ArrayList<Event> = ArrayList()
         liste.add(
@@ -97,14 +133,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
                 "07-08-20",
                 "17:00",
                 "Skien",
-                Person(
-                    "PD",
-                    "Roger Floger",
-                    "27",
-                    "Langesund",
-                    "@String/input",
-                    "https://media.gettyimages.com/photos/closeup-of-a-mans-head-profile-picture-id157192886")
-                ,
+              "-MJf_NohvXNs5VjToRd_",
                 "Kos",
                 "24",
                 "39",
@@ -120,14 +149,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
                 "11-15-20",
                 "18:00",
                 "Bø",
-                Person(
-                    "PA",
-                    "Maria S. Akselsen",
-                    "45",
-                    "Oslo",
-                    "@String/input",
-                    "https://www.maximimages.com/stock-photo/beautiful-asian-woman-closeup-of-face-profile-MXI31426.jpg"
-                ),
+               "-MJf_XPDXcKzoTs01wnB",
                 "Spill",
                 "26",
                 "4",

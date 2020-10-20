@@ -67,10 +67,12 @@ class KommentarRecyclerAdapter(var clickListener: OnKommentarItemClickListener) 
         val person_navn = itemView.brukernavn_kommentar
         val kommentar_Tekst = itemView.kommentar_tekst
         val person_bilde = itemView.bilde_profil_kommentar
+        val dato = itemView.kommentar_dato
 
         fun bind(kommentar: Kommentar) {
             person_navn.setText(kommentar.person.brukernavn)
             kommentar_Tekst.setText(kommentar.kommentarTekst)
+            dato.setText(kommentar.date)
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()

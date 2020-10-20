@@ -2,6 +2,7 @@ package com.example.myapplication.fragments.profil
 
 import RecyclerView.RecyclerView.Moduls.DataCallbackSingleValue
 import RecyclerView.RecyclerView.Moduls.Event
+import RecyclerView.RecyclerView.Moduls.Folg
 import RecyclerView.RecyclerView.Moduls.Person
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +16,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.KommentarViewModel
+import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_event.view.*
 import kotlinx.android.synthetic.main.fragment_profil.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
@@ -31,9 +34,11 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
  */
 class BesoekProfilFragment : Fragment() {
 
+    private var loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     private lateinit var sendtBundle: Person
     private var person: Person = Person()
+    val user = loginViewModel.getBruker()
 
 
 
@@ -49,7 +54,7 @@ class BesoekProfilFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
-        val viewModelFactory = ViewModelFactory(0)
+        val viewModelFactory = ViewModelFactory(0,"")
 
         view.bilde_profil_item.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
@@ -83,9 +88,6 @@ class BesoekProfilFragment : Fragment() {
 
         })
 
-        view.bli_venn.setOnClickListener {
-
-        }
 
         personViewModel.søkEtterPerson(sendtBundle.personID)
 
@@ -94,6 +96,22 @@ class BesoekProfilFragment : Fragment() {
         view.LOLKNAPP.visibility = View.GONE
         // Inflate the layout for this fragment
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Følg denne brukeren
+        view.bli_venn.setOnClickListener {
+            if( user != null ){
+                val folg = user?.uid?.let { it1 -> Folg(it1,sendtBundle.personID) }
+                personViewModel.bliVenn(folg!!)
+                view.bli_venn.text = "Fjern som venn"
+            }else {
+
+                view.bli_venn.text = "Fjern som venn"
+            }
+        }
     }
 
 //    override fun onValueRead(verdi: Person) {

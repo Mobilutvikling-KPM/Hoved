@@ -1,5 +1,7 @@
 package com.example.myapplication.fragments.profil
 
+import RecyclerView.RecyclerView.Moduls.Event
+import RecyclerView.RecyclerView.Moduls.Person
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
@@ -9,12 +11,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
+import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
+import com.example.myapplication.viewmodels.PersonViewModel
+import com.example.myapplication.viewmodels.ViewModelFactory
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -23,39 +32,86 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
 
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * Profil fragment som rendrer innlogget brukers profilside
  */
 class ProfilFragment : Fragment() {
 
+    private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
     var navController: NavController? = null
-
+    val bruker = viewModelLogin.getBruker()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
 
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
+
+        //Skjul elementer frem til det er funnet data.
+        view.bilde_profil_item.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
+        view.strek.visibility = View.GONE
+        view.strek2.visibility = View.GONE
+        view.bio.visibility = View.GONE
+        view.bli_venn.visibility = View.GONE
+        view.redigerKnapp.visibility = View.GONE
+        view.slettKnapp.visibility = View.GONE
+
+        val viewModelFactory = ViewModelFactory(1,"")
+        personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
+
+        //når data er funnet for innlogget bruker
+        personViewModel.getEnkeltPerson().observe(viewLifecycleOwner, Observer {
+            view.pnavn.text = it.brukernavn
+            view.palder.text = "Alder: " + it.alder
+            view.pBosted.text = "Bosted: " + it.bosted
+            view.biotext.text = it.bio
+
+            //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_baseline_comment_24)
+
+            Glide.with(this@ProfilFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(it.profilBilde) //hvilket bilde som skal loades
+                .into(view.bilde_profil_item) //Hvor vi ønsker å loade bildet inn i
+
+            view.bilde_profil_item.visibility = View.VISIBLE
+            view.strek.visibility = View.VISIBLE
+            view.bio.visibility = View.VISIBLE
+            view.redigerKnapp.visibility = View.VISIBLE
+            view.slettKnapp.visibility = View.VISIBLE
+            view.strek2.visibility = View.VISIBLE
+
+            view.profil_progress.visibility = View.GONE
+        })
+
+        personViewModel.søkEtterPerson(bruker!!.uid)
+        Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
+
         view.redigerKnapp.setOnClickListener() {
-            navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment)
+            var person: Person? = personViewModel.getEnkeltPerson().value
+            val bundle = bundleOf("Person" to person)
+            navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment, bundle)
         }
+
         view.slettKnapp.setOnClickListener() {
             showDeleteDialog()
         }
-        return view
 
+        return view
     }
+
     private fun showDeleteDialog() {
         AlertDialog.Builder(context)
-            .setTitle("Delete entry")
-            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
+            .setTitle("Slett bruker")
+            .setMessage("Er du sikker på at du vil slette denne brukeren?") // Specifying a listener allows you to take an action before dismissing the dialog.
             // The dialog is automatically dismissed when a dialog button is clicked.
             .setPositiveButton(
                 android.R.string.yes
@@ -74,6 +130,7 @@ class ProfilFragment : Fragment() {
         LOLKNAPP.setOnClickListener { launchSignInFlow() }
 
     }
+
     private fun launchSignInFlow() {
         // Give users the option to sign in / register with their email or Google account.
         // If users choose to register with their email,
@@ -103,7 +160,10 @@ class ProfilFragment : Fragment() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // User successfully signed in
-                Log.i(TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
+                Log.i(
+                    TAG,
+                    "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!"
+                )
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -112,35 +172,39 @@ class ProfilFragment : Fragment() {
             }
         }
     }
+
     private fun observeAuthenticationState() {
 
-        viewModelLogin.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
-            when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    LOLKNAPP.text = getString(R.string.logout)
-                    LOLKNAPP.setOnClickListener {
-                        AuthUI.getInstance().signOut(requireContext())
+        viewModelLogin.authenticationState.observe(
+            viewLifecycleOwner,
+            Observer { authenticationState ->
+                // TODO 1. Use the authenticationState variable you just added
+                // in LoginViewModel and change the UI accordingly.
+                when (authenticationState) {
+                    // TODO 2.  If the user is logged in,
+                    // you can customize the welcome message they see by
+                    // utilizing the getFactWithPersonalization() function provided
+                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                        LOLKNAPP.text = getString(R.string.logout)
+                        LOLKNAPP.setOnClickListener {
+                            AuthUI.getInstance().signOut(requireContext())
                             navController!!.navigate(R.id.event_liste_fragment2)
                         }
                     }
 
-                else -> {
-                    // TODO 3. Lastly, if there is no logged-in user,
-                    // auth_button should display Login and
-                    // launch the sign in screen when clicked.
-                    LOLKNAPP.text = getString(R.string.loginn)
-                    LOLKNAPP.setOnClickListener {
-                        launchSignInFlow()
+                    else -> {
+                        // TODO 3. Lastly, if there is no logged-in user,
+                        // auth_button should display Login and
+                        // launch the sign in screen when clicked.
+                        LOLKNAPP.text = getString(R.string.loginn)
+                        LOLKNAPP.setOnClickListener {
+                            launchSignInFlow()
+                        }
                     }
                 }
-            }
-        })
+            })
     }
+
     companion object {
         val SIGN_IN_REQUEST_CODE = 123
     }

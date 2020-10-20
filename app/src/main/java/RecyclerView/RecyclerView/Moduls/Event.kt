@@ -12,15 +12,15 @@ data class Event(
     var dato: String,
     var klokke: String,
     var sted: String,
-    var forfatter: Person,
+    var forfatter: String,
     var kategori: String,
     var antPåmeldte: String,
     var antKommentar: String,
     var viewType: Int
 ): Parcelable {
 
-    constructor() : this("","", " ", " ", " ", " "," ", Person(),
-    "", "0", "0", 1){
+    constructor() : this("","", " ", " ", " ", " "," ", "",
+    "", "0", "0",1){
 
     }
 }

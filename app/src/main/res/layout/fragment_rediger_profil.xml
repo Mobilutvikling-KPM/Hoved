@@ -62,10 +62,12 @@
                 style="@style/utfylling_tekstboks"
                 android:inputType="text|textMultiLine"
                 android:hint="Biografi" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
+
                 <Button
                     android:id="@+id/button_registrer"
                     android:layout_marginTop="@dimen/page_margin"
