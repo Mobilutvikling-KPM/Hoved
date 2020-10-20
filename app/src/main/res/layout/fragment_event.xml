@@ -6,7 +6,7 @@
     <data>
         <variable
             name="modelEvent"
-            type="com.example.myapplication.fragments.mineevents.ModelEvent" />
+            type="com.example.myapplication.fragments.paameldteevents.ModelEvent" />
     </data>
 
     <ScrollView

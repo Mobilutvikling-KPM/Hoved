@@ -38,6 +38,7 @@ class ProfilFragment : Fragment() {
 
     private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
+    val loginViewModel = LoginViewModel()
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,9 +93,10 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
-        personViewModel.søkEtterPerson(bruker!!.uid)
-        Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
-
+        if ( bruker != null) {
+            personViewModel.søkEtterPerson(bruker!!.uid)
+            Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
+        }
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
             val bundle = bundleOf("Person" to person)
@@ -175,34 +177,22 @@ class ProfilFragment : Fragment() {
 
     private fun observeAuthenticationState() {
 
-        viewModelLogin.authenticationState.observe(
-            viewLifecycleOwner,
-            Observer { authenticationState ->
-                // TODO 1. Use the authenticationState variable you just added
-                // in LoginViewModel and change the UI accordingly.
-                when (authenticationState) {
-                    // TODO 2.  If the user is logged in,
-                    // you can customize the welcome message they see by
-                    // utilizing the getFactWithPersonalization() function provided
-                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                        LOLKNAPP.text = getString(R.string.logout)
-                        LOLKNAPP.setOnClickListener {
-                            AuthUI.getInstance().signOut(requireContext())
-                            navController!!.navigate(R.id.event_liste_fragment2)
-                        }
-                    }
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            // TODO 1. Use the authenticationState variable you just added
+            // in LoginViewModel and change the UI accordingly.
+            when (authenticationState) {
+                // TODO 2.  If the user is logged in,
+                // you can customize the welcome message they see by
+                // utilizing the getFactWithPersonalization() function provided
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
-                    else -> {
-                        // TODO 3. Lastly, if there is no logged-in user,
-                        // auth_button should display Login and
-                        // launch the sign in screen when clicked.
-                        LOLKNAPP.text = getString(R.string.loginn)
-                        LOLKNAPP.setOnClickListener {
-                            launchSignInFlow()
-                        }
-                    }
                 }
-            })
+
+                else -> {
+                    navController!!.navigate(R.id.loginFragment2)
+                }
+            }
+        })
     }
 
     companion object {

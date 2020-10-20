@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments.mineevents
+package com.example.myapplication.fragments.paameldteevents
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
