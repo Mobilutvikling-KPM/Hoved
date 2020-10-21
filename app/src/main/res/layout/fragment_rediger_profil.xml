@@ -24,12 +24,14 @@
                 android:layout_below="@id/utfylling_bilde"
                 android:background="@color/white">
                 <ImageButton
+
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="100dp"
                     android:background="@color/white"
                     android:src="@drawable/ic_baseline_group_24" />
                 <ImageButton
+                    android:id="@+id/velg_bilde_collection"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:background="@color/white"

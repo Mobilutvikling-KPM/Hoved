@@ -1,32 +1,35 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Person
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
-import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profil.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
@@ -41,10 +44,25 @@ class ProfilFragment : Fragment() {
     val loginViewModel = LoginViewModel()
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
+    var filePath: Uri? = null
+
+    private var user: FirebaseUser? = null
+    private var uuid: String? = ""
+
+    private var storage: FirebaseStorage? = null
+    private var storageReference: StorageReference? = null
+    //private var user: FirebaseUser? = null
+   // private var uuid: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        user = FirebaseAuth.getInstance().currentUser
+        uuid = user?.uid
+        storage = FirebaseStorage.getInstance()
+        storageReference = storage!!.reference.child("images").child(uuid!!)
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +71,14 @@ class ProfilFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
 
+
+        val imageView = view.bilde_profil_item
+
+        Picasso.get()
+            .load("https://firebasestorage.googleapis.com/v0/b/eventer-e4813.appspot.com/o/images%2FYAOJfnr3MRR2EKucbGt5kIWZodf1?alt=media&token=ae090750-410c-4542-bd61-b30623eb0caa")
+            .into(imageView)
+
+
         //Skjul elementer frem til det er funnet data.
         view.bilde_profil_item.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
@@ -60,8 +86,8 @@ class ProfilFragment : Fragment() {
         view.strek2.visibility = View.GONE
         view.bio.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
-        view.redigerKnapp.visibility = View.GONE
-        view.slettKnapp.visibility = View.GONE
+        //view.redigerKnapp.visibility = View.GONE
+        //view.slettKnapp.visibility = View.GONE
 
         val viewModelFactory = ViewModelFactory(1,"")
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
@@ -74,14 +100,8 @@ class ProfilFragment : Fragment() {
             view.biotext.text = it.bio
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
-            val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_baseline_comment_24)
 
-            Glide.with(this@ProfilFragment)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-                .load(it.profilBilde) //hvilket bilde som skal loades
-                .into(view.bilde_profil_item) //Hvor vi ønsker å loade bildet inn i
+
 
             view.bilde_profil_item.visibility = View.VISIBLE
             view.strek.visibility = View.VISIBLE
@@ -130,6 +150,10 @@ class ProfilFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
         LOLKNAPP.setOnClickListener { launchSignInFlow() }
+        LOLKNAPP2.setOnClickListener{
+            //getUserProfile()
+        }
+
 
     }
 
@@ -152,7 +176,7 @@ class ProfilFragment : Fragment() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build(),
-            ProfilFragment.SIGN_IN_REQUEST_CODE
+            SIGN_IN_REQUEST_CODE
         )
     }
 
@@ -172,6 +196,9 @@ class ProfilFragment : Fragment() {
                 // response.getError().getErrorCode() and handle the error.
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
+        }
+        if (requestCode == IMAGE_SIGN_IN_CODE) {
+
         }
     }
 
@@ -194,9 +221,38 @@ class ProfilFragment : Fragment() {
             }
         })
     }
+    /*private fun getUserProfile() {
+        // [START get_user_profile]
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            // Name, email address, and profile photo Url
+            val name = user.displayName
+            val email = user.email
+            val photoUrl = user.photoUrl
+
+            // Check if user's email is verified
+            val emailVerified = user.isEmailVerified
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getToken() instead.
+            val uid = user.uid
+
+            Log.i(TAG, "Bucket: "+storageReference)
+
+/*
+            Log.i(TAG, "UserName "+name)
+            Log.i(TAG, "UserEmail "+email)
+            Log.i(TAG, "UserPhoto "+photoUrl)
+            Log.i(TAG, "UserVerifiedEmail "+emailVerified)
+            Log.i(TAG, "UserUID "+uid)
+*/
+        }
+        // [END get_user_profile]
+    }*/
 
     companion object {
         val SIGN_IN_REQUEST_CODE = 123
+        val IMAGE_SIGN_IN_CODE = 438
     }
-
 }
