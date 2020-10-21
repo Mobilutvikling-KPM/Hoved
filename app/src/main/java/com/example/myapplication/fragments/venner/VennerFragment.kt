@@ -66,7 +66,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        observeAuthenticationState()
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
         initRecyclerView()

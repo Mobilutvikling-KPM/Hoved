@@ -109,6 +109,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/rediger_informasjon" />
         <Button
+            android:layout_marginTop="20dp"
             android:id="@+id/slettKnapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,6 +117,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/slett_bruker"
             android:background="@color/red"/>
+
         <Button
             android:layout_marginTop="15dp"
             android:id="@+id/LOLKNAPP"

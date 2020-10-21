@@ -148,6 +148,7 @@ class ProfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view) //referanse til navGraph
+
         observeAuthenticationState()
         LOLKNAPP.setOnClickListener { launchSignInFlow() }
         LOLKNAPP2.setOnClickListener{

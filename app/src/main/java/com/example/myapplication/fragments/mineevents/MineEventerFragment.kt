@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
  */
 class MineEventerFragment : Fragment(), OnEventItemClickListener {
 
+
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var eventViewModel: EventViewModel
 
@@ -65,13 +66,13 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeAuthenticationState()
+
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         view.floating_action_button.setOnClickListener {
-
             navController!!.navigate(R.id.action_nyttEventFragment_to_event_utfyllingsskjema)
         }
+        observeAuthenticationState()
         initRecyclerView()
        addDataSet()
     }
