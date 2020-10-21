@@ -37,11 +37,13 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
 /**
  * Profil fragment som rendrer innlogget brukers profilside
  */
+
 class ProfilFragment : Fragment() {
 
+    private var loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
-    val loginViewModel = LoginViewModel()
+
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
     var filePath: Uri? = null
@@ -89,7 +91,7 @@ class ProfilFragment : Fragment() {
         //view.redigerKnapp.visibility = View.GONE
         //view.slettKnapp.visibility = View.GONE
 
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1, "")
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
         //når data er funnet for innlogget bruker
@@ -113,10 +115,12 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
-        if ( bruker != null) {
+
+        if (bruker != null) {
             personViewModel.søkEtterPerson(bruker!!.uid)
-            Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
         }
+
+
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
             val bundle = bundleOf("Person" to person)
@@ -129,6 +133,7 @@ class ProfilFragment : Fragment() {
 
         return view
     }
+
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(context)
@@ -205,6 +210,9 @@ class ProfilFragment : Fragment() {
 
     private fun observeAuthenticationState() {
 
+
+
+
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             // TODO 1. Use the authenticationState variable you just added
             // in LoginViewModel and change the UI accordingly.
@@ -213,6 +221,7 @@ class ProfilFragment : Fragment() {
                 // you can customize the welcome message they see by
                 // utilizing the getFactWithPersonalization() function provided
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
 
                 }
 

@@ -27,25 +27,23 @@ class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommen
     }
 
     fun leggTilKommentar(kommentar: Kommentar){
-       // mIsUpdating.value = true;
-
-        // du skriver inn
+        mIsUpdating.setValue(true)
 
         kommentarRepo.leggTilKommentar(kommentar)
 
         var liste: ArrayList<Kommentar> = mKommentar.value as ArrayList<Kommentar>
         if (liste != null) {
             liste.add(kommentar)
-            mKommentar.setValue(liste)
-            mIsUpdating.postValue(false)
+            mKommentar.postValue(liste)
         }
+
+        mIsUpdating.setValue(false)
 
     }
 
     //Skal repsentere om data er hentet eller ikke
 
     fun getKommentarer(): LiveData<List<Kommentar>>{
-        createDataset()
         return mKommentar
     }
 
@@ -54,7 +52,7 @@ class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommen
     }
 
     fun createDataset() {
-        Log.i("lala",id)
+        mIsUpdating.setValue(true)
         ref.orderByChild("eventID").equalTo(id).addListenerForSingleValueEvent(object :
             ValueEventListener {
 
@@ -65,13 +63,13 @@ class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommen
 
                     for (kmt in p0.children) {
                         val kommentar = kmt.getValue(Kommentar::class.java)
-                        Log.i("lala",kommentar!!.kommentarTekst)
+
                         arr.add(kommentar!!)
                     }
 
                     onCallBack(arr)
                 }
-                Log.i("lala","Utenfor exists")
+
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -82,7 +80,7 @@ class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommen
     }
 
     override fun onCallBack(liste: ArrayList<Kommentar>) {
-        Log.i("lala", "Callback er aktivert i kommentarviewmodel")
+        mIsUpdating.setValue(false)
         mKommentar.setValue(liste)
     }
 }

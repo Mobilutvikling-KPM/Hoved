@@ -3,6 +3,7 @@ package com.example.myapplication.fragments.paameldteevents
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
+import RecyclerView.RecyclerView.OnKnappItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,28 +12,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.viewmodels.EventViewModel
 
 import com.example.myapplication.viewmodels.LoginViewModel
+
+import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 
-class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
+class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItemClickListener {
 
-    private var calendar: Calendar = Calendar.getInstance();
-    private lateinit var dateFormat: SimpleDateFormat
-    private lateinit var date: String
     val loginViewModel = LoginViewModel()
+    private lateinit var eventViewModel :EventViewModel
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
 
@@ -44,6 +44,19 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
+
+        val viewModelFactory = ViewModelFactory(0, "")
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
+
+
+            eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
+                eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
+                eventAdapter.notifyDataSetChanged()
+            })
+
+            if(loginViewModel.getBruker() != null) {
+            eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
+        }
 /*
         navController = findNavController()
             val user = FirebaseAuth.getInstance().currentUser
@@ -87,71 +100,11 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
             })
     }
 
-    //DUMMY DATA
+
     private fun addDataSet(){
-                dateFormat = SimpleDateFormat("MM/dd/yyyy");
-        date = dateFormat.format(calendar.getTime());
-//        var arr: ArrayList<Kommentar> = ArrayList()
-//                    arr.add(Kommentar(
-//                        "-MJ7NjgdeI26SdLz-7Me",
-//                Person(
-//                    "-MJfZwZdE3vbcO2qIMvA",
-//                    "Henriette Pedersen",
-//                    "24",
-//                    "Bø",
-//                    "@String/input",
-//                    "https://i.pinimg.com/originals/f7/60/87/f76087d518532f3a0c6b027d18e1212a.jpg"
-//                ),
-//                date,
-//                "Dette er en dummy kommentar med random tekst, Yo let's go!"
-//            ))
-//        arr.add(Kommentar(
-//            "-MJ7NjgdeI26SdLz-7Me",
-//                Person(
-//                    "-MJf_NohvXNs5VjToRd_",
-//                    "Chris Jack",
-//                    "30",
-//                    "Langesund",
-//                    "@String/input",
-//                    "https://i.pinimg.com/originals/35/d2/eb/35d2ebe20571c03d8f257ae725a780aa.jpg"
-//                ),date,
-//                "Hey, ho, hey, ho, lets'a go for merry so"
-//            )
-//        )
-       // val data = DataSource.createDataset()
-        var liste:ArrayList<Event> = ArrayList()
-        liste.add(
-            Event(
-                "C",
-                "Grilling i hagen",
-                "Ta med deg masse mat selv",
-                "https://cnet1.cbsistatic.com/img/7KqpBDebOSEhF9ajWbSGwL8Zv-E=/420x236/2019/12/14/37b968ef-c55f-4a8b-a84d-4049cb94846d/smart-fire-5.jpg",
-                "07-08-20",
-                "17:00",
-                "Skien",
-              "-MJf_NohvXNs5VjToRd_",
-                "Kos",
-                "24",
-                "39",
-                EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
-            )
-        )
-        liste.add(
-            Event(
-                "D",
-                "Lan på Kroa",
-                "It's dangerous to go alone. Grab a game!",
-                "https://forebyggendetjenester.com/_files/200000178-a46d2a5669/700/Lambertseter%20Gaming%20Center2.png",
-                "11-15-20",
-                "18:00",
-                "Bø",
-               "-MJf_XPDXcKzoTs01wnB",
-                "Spill",
-                "26",
-                "4",
-                EventRecyclerAdapter.VIEW_TYPE_ADMINLISTE
-            ))
-        eventAdapter.submitList(liste)
+
+        if(loginViewModel.getBruker() != null)
+        eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
     }
 
     //Initierer og kobler recycleView til activityMain
@@ -161,7 +114,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment)
+            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment,this@PaameldteEventFragment)
             adapter = eventAdapter
         }
 
@@ -172,6 +125,14 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener {
         val bundle = bundleOf("Event" to item)
         navController!!.navigate(R.id.action_mineEventFragment_to_eventFragment22, bundle)
 
+    }
+
+    override fun onSlettClick(item: Event, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRedigerClick(item: Event, position: Int) {
+        TODO("Not yet implemented")
     }
 
 

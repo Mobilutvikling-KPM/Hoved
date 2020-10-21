@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     internal var storage: FirebaseStorage? = null
     internal var storageReference: StorageReference? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -1,5 +1,6 @@
 package RecyclerView.RecyclerView.Moduls
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
@@ -29,20 +30,21 @@ class PersonRepository() {
         return data
     }
 
-    fun leggTilPerson(person: Person, bruker: FirebaseUser) {
+    fun leggTilPerson(person: Person) {
 
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
         //val personID = ref.push().key // Lager en unik id som kan brukes i objektet
 
+        Log.i("lala","person lagt til: " + person.personID)
         //person.personID = personID!!
-        if (bruker.uid != null) {
-            ref.child(bruker.uid).setValue(person).addOnCompleteListener {
+
+            ref.child(person.personID).setValue(person).addOnCompleteListener {
                 //Noe kan skje når databsen er ferdig lastet inn
 
             }
-        }
+
 
     }
 
@@ -59,7 +61,7 @@ class PersonRepository() {
 
 
     fun createDataset(type: Int) {
-        dataset.addAll(DataSourcePerson.createDataset())
+        //dataset.add(Person("","","","","",""))
     }
 
 }

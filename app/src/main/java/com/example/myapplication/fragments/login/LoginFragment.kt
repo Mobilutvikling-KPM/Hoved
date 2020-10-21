@@ -16,6 +16,7 @@ import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.viewmodels.LoginViewModel
+import com.example.myapplication.viewmodels.PersonViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -45,6 +46,8 @@ class LoginFragment : Fragment() {
         return view
 
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,6 +84,9 @@ class LoginFragment : Fragment() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // User successfully signed in
+                val bruker = FirebaseAuth.getInstance().currentUser!!
+                val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid)
+                personViewModel.opprettBruker(bruker)
                 Log.i(ContentValues.TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
             } else {
                 // Sign in failed. If response is null the user canceled the

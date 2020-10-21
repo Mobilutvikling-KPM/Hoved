@@ -54,8 +54,7 @@ class KommentarRepository() : DataCallback<Kommentar> {
     }
 
     fun createDataset(type: Int, eventIDEN: String) {
-            Log.i("lala",eventIDEN)
-            ref.orderByChild("eventID").equalTo(eventIDEN).addListenerForSingleValueEvent(object : ValueEventListener {
+            ref.orderByChild("eventID").equalTo(eventIDEN).addValueEventListener(object : ValueEventListener {
 
                 //Inneholder alle verdier fra tabellen
                 override fun onDataChange(p0: DataSnapshot) {
@@ -64,13 +63,11 @@ class KommentarRepository() : DataCallback<Kommentar> {
 
                         for (kmt in p0.children) {
                             val kommentar = kmt.getValue(Kommentar::class.java)
-                            Log.i("lala",kommentar!!.kommentarTekst)
                             arr.add(kommentar!!)
                         }
 
                         onCallBack(arr)
                     }
-                    Log.i("lala","Utenfor exists")
                 }
 
                 override fun onCancelled(p0: DatabaseError) {
@@ -133,7 +130,6 @@ class KommentarRepository() : DataCallback<Kommentar> {
     }
 
     override fun onCallBack(liste: ArrayList<Kommentar>) {
-        Log.i("lala","Inni callback: " + liste.toString())
         dataset.addAll(liste)
     }
 }

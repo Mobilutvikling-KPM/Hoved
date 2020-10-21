@@ -39,6 +39,7 @@
                 android:src="@drawable/ic_baseline_camera_alt_24" />
 
             <ImageButton
+                android:id="@+id/button_gallery"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:background="@color/white"
