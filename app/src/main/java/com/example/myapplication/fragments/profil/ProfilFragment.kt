@@ -40,6 +40,7 @@ class ProfilFragment : Fragment() {
     private var loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
+
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,10 +95,11 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
+
         if (bruker != null) {
             personViewModel.søkEtterPerson(bruker!!.uid)
-            Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
         }
+
 
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
@@ -180,24 +182,26 @@ class ProfilFragment : Fragment() {
 
     private fun observeAuthenticationState() {
 
-        loginViewModel.authenticationState.observe(
-            viewLifecycleOwner,
-            Observer { authenticationState ->
-                // TODO 1. Use the authenticationState variable you just added
-                // in LoginViewModel and change the UI accordingly.
-                when (authenticationState) {
-                    // TODO 2.  If the user is logged in,
-                    // you can customize the welcome message they see by
-                    // utilizing the getFactWithPersonalization() function provided
-                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
-                    }
 
-                    else -> {
-                        navController!!.navigate(R.id.loginFragment2)
-                    }
+
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            // TODO 1. Use the authenticationState variable you just added
+            // in LoginViewModel and change the UI accordingly.
+            when (authenticationState) {
+                // TODO 2.  If the user is logged in,
+                // you can customize the welcome message they see by
+                // utilizing the getFactWithPersonalization() function provided
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
+
                 }
-            })
+
+                else -> {
+                    navController!!.navigate(R.id.loginFragment2)
+                }
+            }
+        })
     }
 
     companion object {

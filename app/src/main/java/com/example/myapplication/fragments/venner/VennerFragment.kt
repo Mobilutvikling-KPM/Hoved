@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
@@ -29,7 +30,9 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
     private lateinit var personAdapter: PersonRecyclerAdapter
     private lateinit var personViewModel: PersonViewModel
+
     private var loginViewModel = LoginViewModel()
+
     var navController: NavController? = null
 
     override fun onCreateView(
@@ -93,7 +96,6 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
             }
         })
     }
-
 
     private fun addDataSet() {
         personAdapter.submitList(personViewModel.getPersoner().value!!);

@@ -1,7 +1,7 @@
-package com.example.myapplication.fragments.nyttevent
+package com.example.myapplication.fragments.mineevents
 
 import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.Moduls.Person
+
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController

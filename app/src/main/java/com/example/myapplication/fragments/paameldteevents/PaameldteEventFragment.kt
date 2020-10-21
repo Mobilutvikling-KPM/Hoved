@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments.mineevents
+package com.example.myapplication.fragments.paameldteevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
@@ -20,6 +20,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 
 import com.example.myapplication.viewmodels.LoginViewModel
+
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 

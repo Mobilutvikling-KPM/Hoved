@@ -1,4 +1,4 @@
-package com.example.myapplication.fragments.nyttevent
+package com.example.myapplication.fragments.mineevents
 
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
@@ -33,8 +33,10 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
     private lateinit var eventAdapter: EventRecyclerAdapter
     private lateinit var eventViewModel: EventViewModel
+
     private var loginViewModel:LoginViewModel = LoginViewModel()
     private lateinit var viewModelFactory: ViewModelFactory
+
     var navController: NavController? = null
 
     override fun onCreateView(
@@ -76,6 +78,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeAuthenticationState()
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
 
@@ -83,7 +86,6 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
             navController!!.navigate(R.id.action_nyttEventFragment_to_event_utfyllingsskjema)
         }
-
         initRecyclerView()
        addDataSet()
     }
@@ -108,6 +110,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         })
     }
 
+
     private fun showDeleteDialog(event: Event) {
         AlertDialog.Builder(context)
             .setTitle("Slett Event")
@@ -122,6 +125,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
+
 
     //hent data fra viewModel og skriv dem inn i recyclerview
     private fun addDataSet() {
