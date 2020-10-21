@@ -56,7 +56,7 @@
             <EditText
                 android:id="@+id/utfyll_bosted"
                 style="@style/utfylling_tekstboks"
-                android:hint="Navn" />
+                android:hint="Bosted" />
             <EditText
                 android:id="@+id/utfyll_bio"
                 style="@style/utfylling_tekstboks"

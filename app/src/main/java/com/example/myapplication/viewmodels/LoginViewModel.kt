@@ -17,6 +17,8 @@ class LoginViewModel : ViewModel() {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
+
+
     val authenticationState = FirebaseUserLiveData().map { user ->
         if (user != null) {
             AuthenticationState.AUTHENTICATED
@@ -30,5 +32,9 @@ class LoginViewModel : ViewModel() {
     fun getBruker(): FirebaseUser?{
 
         return FirebaseAuth.getInstance().currentUser
+    }
+
+    fun getFirebase():FirebaseAuth{
+        return FirebaseAuth.getInstance()
     }
 }

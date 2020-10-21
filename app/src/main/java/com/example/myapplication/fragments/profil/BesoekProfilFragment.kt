@@ -68,7 +68,7 @@ class BesoekProfilFragment : Fragment() {
         view.pBosted.text = "Bosted: " +it.bosted
         view.biotext.text = it.bio
 
-
+        person = Person(it.personID,it.brukernavn,it.alder,it.bosted,it.bio,it.profilBilde)
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_launcher_background)
@@ -104,7 +104,7 @@ class BesoekProfilFragment : Fragment() {
         //Følg denne brukeren
         view.bli_venn.setOnClickListener {
             if( user != null ){
-                val folg = user?.uid?.let { it1 -> Folg(it1,sendtBundle.personID) }
+                val folg = user?.uid?.let { it1 -> Folg(it1,person) }
                 personViewModel.bliVenn(folg!!)
                 view.bli_venn.text = "Fjern som venn"
             }else {

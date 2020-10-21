@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Folg (
+data class Påmeld (
     var innloggetID: String,
-    var person: Person
+    var event: Event
 ): Parcelable{
-    constructor(): this("",Person("","","","","",""))
+    constructor(): this("",Event("","","","","","","","","","","",1))
 }

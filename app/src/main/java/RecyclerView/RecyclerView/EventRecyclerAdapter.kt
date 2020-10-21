@@ -4,7 +4,6 @@ import RecyclerView.RecyclerView.Moduls.Event
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -12,7 +11,7 @@ import com.example.myapplication.R
 import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 
-class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knappClickListener: OnKnappItemClickListener?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object{
         const val VIEW_TYPE_HOVEDLISTE = 1
@@ -46,7 +45,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 
             is EventAdminViewHolder ->{
                 holder.bind(items.get(position))
-                holder.initialize(items.get(position),clickListener)
+                holder.initialize(items.get(position),clickListener, knappClickListener)
         }
 
 
@@ -115,7 +114,6 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
-               // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
             }
         }
     }
@@ -127,6 +125,8 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
         val event_image = itemView.bilde_admin_liste
         val event_title = itemView.tittel_admin_liste
         val event_tid = itemView.dato_admin_liste
+        val slett_knapp = itemView.button_delete
+        val rediger_knapp = itemView.button_rediger
 
         val event_antPåmeldt = itemView.ant_påmeldte_tall_admin_liste
         val event_anKommentar = itemView.antall_kommentar_tall_admin_liste
@@ -151,7 +151,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
         }
 
         //click listener initiliasiering
-        fun initialize(item: Event, action:OnEventItemClickListener){
+        fun initialize(item: Event, action:OnEventItemClickListener, action2:OnKnappItemClickListener?){
             event_title.text = item.title
 
             event_tid.text = item.dato
@@ -162,6 +162,17 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
             }
+
+            slett_knapp.setOnClickListener({
+                action2!!.onSlettClick(item,adapterPosition)
+            })
+
+            rediger_knapp.setOnClickListener {
+                action2!!.onRedigerClick(item,adapterPosition)
+            }
+
+
+
         }
     }
 }
@@ -170,4 +181,13 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener): Recycle
 interface OnEventItemClickListener{
     fun onItemClick(item: Event, position: Int)
 }
+
+interface OnKnappItemClickListener{
+
+    fun onSlettClick(item:Event, position: Int)
+
+    fun onRedigerClick(item:Event, position: Int)
+}
+
+
 

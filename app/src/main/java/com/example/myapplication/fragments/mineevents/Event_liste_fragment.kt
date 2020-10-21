@@ -103,7 +103,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@Event_liste_fragment)
+            eventAdapter = EventRecyclerAdapter(this@Event_liste_fragment, null)
             adapter = eventAdapter
         }
     }

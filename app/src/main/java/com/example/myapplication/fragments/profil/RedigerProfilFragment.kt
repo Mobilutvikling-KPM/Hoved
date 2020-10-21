@@ -1,24 +1,21 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Person
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_rediger_profil.view.*
 
 
@@ -34,6 +31,7 @@ class RedigerProfilFragment : Fragment() {
     var navController: NavController? = null
     lateinit var sendtBundle: Person
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,15 +40,17 @@ class RedigerProfilFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_rediger_profil, container, false)
         sendtBundle = arguments?.getParcelable<Person>("Person")!!
 
+
+
         //legg inn verdiene som skal endres
-        view.utfyll_navn.setText( sendtBundle.brukernavn)
+        view.utfyll_navn.setText(sendtBundle.brukernavn)
         view.utfyll_alder.setText(sendtBundle.alder)
         view.utfyll_bio.setText(sendtBundle.bio)
         view.utfyll_bosted.setText(sendtBundle.bosted)
         //view.utfylling_bilde. -- BILDEADDRESSE NÅR DET ER PÅ PLASS!!!!
 
         // Inflate the layout for this fragment
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1, "")
 
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
@@ -66,13 +66,15 @@ class RedigerProfilFragment : Fragment() {
 
         view.button_registrer.setOnClickListener{
 
-            val person = Person("", //genereres automatisk
-                                view.utfyll_navn.text.toString(),
-                                view.utfyll_alder.text.toString(),
-                                view.utfyll_bosted.text.toString(),
-                                view.utfyll_bio.text.toString(),
-                        "") //LEGG TIL BILDEADRESSE HER!!
-            personViewModel.leggTilPerson(person, loginViewModel.getBruker()!!)
+            val person = Person(
+                sendtBundle.personID, //genereres automatisk
+                view.utfyll_navn.text.toString(),
+                view.utfyll_alder.text.toString(),
+                view.utfyll_bosted.text.toString(),
+                view.utfyll_bio.text.toString(),
+                ""
+            ) //LEGG TIL BILDEADRESSE HER!!
+            personViewModel.leggTilPerson(person)
 
             navController!!.navigateUp()
         }

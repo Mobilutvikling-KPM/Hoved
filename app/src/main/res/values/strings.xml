@@ -18,7 +18,7 @@
     <string name="previous">Previous</string>
     <string name="Beskrivelse_Event">Beskrivelse</string>
     <string name="knapp_event_bliMed">Bli med</string>
-    <string name="knapp_event_sePåmeldte">10 Påmeldte</string>
+    <string name="knapp_event_sePåmeldte">0 Påmeldte</string>
     <string name="lag_nytt_event">Lag nytt event +</string>
     <string name="hint_kommentarFelt">Skriv en kommentar ...</string>
     <string name="post">Post</string>
@@ -67,6 +67,7 @@
         <item>Dugnad</item>
     </string-array>
 
+    <string name="default_value">0</string>
     <string name="bli_venn">Følg</string>
     <string name="text_error">Error</string>
     <string name="text_success">Success</string>

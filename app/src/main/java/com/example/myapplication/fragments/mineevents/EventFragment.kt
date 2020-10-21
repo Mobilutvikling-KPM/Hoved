@@ -4,6 +4,7 @@ import RecyclerView.RecyclerView.KommentarRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Kommentar
 import RecyclerView.RecyclerView.Moduls.Person
+import RecyclerView.RecyclerView.Moduls.Påmeld
 import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +42,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     private lateinit var personViewModel: PersonViewModel
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
+    private var eventViewModel: EventViewModel = EventViewModel(1,"")
    // private lateinit var eventViewModel: EventViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
@@ -89,9 +92,26 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         //Observerer endringer i event listen
         kommentarViewModel.getKommentarer().observe(viewLifecycleOwner, Observer {
-            Log.i("lala", "endring i kommentar tabell")
+            kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!)
             kommentarAdapter.notifyDataSetChanged()
         })
+
+        kommentarViewModel.createDataset()
+
+        //observerer endring i data, og blir trigget dersom det skjer noe
+        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+
+            //Show og hide progress bar if isUpdating false osv.
+//            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
+//                ?: 0) -1)
+        })
+
+        //observerer endring i data, og blir trigget dersom det skjer noe
+//        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+//            //Show og hide progress bar if isUpdating false osv.
+//            view.recycler_view_nyttEvent.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
+//                ?: 0) -1)
+//        })
 
 //        eventViewModel.getEnkeltEvent().observe(viewLifecycleOwner, Observer {
 //            kommentarAdapter.notifyDataSetChanged()
@@ -109,7 +129,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
         })
 
-        personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid)
+        personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
 
         personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
 
@@ -122,13 +142,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         })
 
         personViewModel.søkEtterPerson(sendtBundle.forfatter)
-
-        //observerer endring i data, og blir trigget dersom det skjer noe
-        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            //Show og hide progress bar if isUpdating false osv.
-//            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
-//                ?: 0) -1)
-        })
 
         //løsning uten databinding og modelview
         view.tittel.text = sendtBundle.title
@@ -182,6 +195,37 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         }
 
+        view.button_bliMed.setOnClickListener {
+            if(loginViewModel.getBruker() != null){
+
+                val event = Event(
+                sendtBundle.eventID,
+                sendtBundle.title,
+                sendtBundle.body
+                ,sendtBundle.image
+                ,sendtBundle.dato
+                ,sendtBundle.klokke
+                ,sendtBundle.sted
+                ,sendtBundle.forfatter
+                ,sendtBundle.kategori
+                ,sendtBundle.antPåmeldte
+            ,sendtBundle.antKommentar
+            ,1)
+
+            val påmeld = Påmeld(loginViewModel.getBruker()!!.uid,event)
+                eventViewModel.påmeldEvent(påmeld)
+
+                view.button_bliMed.text = "Meld av"
+                var endOfString = 1
+                if(view.button_se_andre_påmeldte.text.toString().length > 10)
+                    endOfString = 2
+
+                var tekst = view.button_se_andre_påmeldte.text.toString().substring(0,endOfString)
+                var tall = tekst.toInt()
+                view.button_se_andre_påmeldte.text = ""+(tall+1)+" påmeldte"
+
+            }
+        }
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 

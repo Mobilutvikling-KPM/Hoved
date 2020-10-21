@@ -34,8 +34,10 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
 /**
  * Profil fragment som rendrer innlogget brukers profilside
  */
+
 class ProfilFragment : Fragment() {
 
+    private var loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
     var navController: NavController? = null
@@ -62,7 +64,7 @@ class ProfilFragment : Fragment() {
         view.redigerKnapp.visibility = View.GONE
         view.slettKnapp.visibility = View.GONE
 
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1, "")
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
         //når data er funnet for innlogget bruker
@@ -92,8 +94,10 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
-        personViewModel.søkEtterPerson(bruker!!.uid)
-        Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
+        if (bruker != null) {
+            personViewModel.søkEtterPerson(bruker!!.uid)
+            Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
+        }
 
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
@@ -107,6 +111,7 @@ class ProfilFragment : Fragment() {
 
         return view
     }
+
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(context)
@@ -175,7 +180,7 @@ class ProfilFragment : Fragment() {
 
     private fun observeAuthenticationState() {
 
-        viewModelLogin.authenticationState.observe(
+        loginViewModel.authenticationState.observe(
             viewLifecycleOwner,
             Observer { authenticationState ->
                 // TODO 1. Use the authenticationState variable you just added
@@ -185,21 +190,11 @@ class ProfilFragment : Fragment() {
                     // you can customize the welcome message they see by
                     // utilizing the getFactWithPersonalization() function provided
                     LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                        LOLKNAPP.text = getString(R.string.logout)
-                        LOLKNAPP.setOnClickListener {
-                            AuthUI.getInstance().signOut(requireContext())
-                            navController!!.navigate(R.id.event_liste_fragment2)
-                        }
+
                     }
 
                     else -> {
-                        // TODO 3. Lastly, if there is no logged-in user,
-                        // auth_button should display Login and
-                        // launch the sign in screen when clicked.
-                        LOLKNAPP.text = getString(R.string.loginn)
-                        LOLKNAPP.setOnClickListener {
-                            launchSignInFlow()
-                        }
+                        navController!!.navigate(R.id.loginFragment2)
                     }
                 }
             })
