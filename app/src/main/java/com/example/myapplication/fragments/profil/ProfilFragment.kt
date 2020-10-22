@@ -19,6 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
@@ -62,7 +64,6 @@ class ProfilFragment : Fragment() {
         uuid = user?.uid
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference.child("images").child(uuid!!)
-
     }
 
 
@@ -75,11 +76,6 @@ class ProfilFragment : Fragment() {
 
 
         val imageView = view.bilde_profil_item
-
-        Picasso.get()
-            .load("https://firebasestorage.googleapis.com/v0/b/eventer-e4813.appspot.com/o/images%2FYAOJfnr3MRR2EKucbGt5kIWZodf1?alt=media&token=ae090750-410c-4542-bd61-b30623eb0caa")
-            .into(imageView)
-
 
         //Skjul elementer frem til det er funnet data.
         view.bilde_profil_item.visibility = View.GONE
@@ -102,7 +98,14 @@ class ProfilFragment : Fragment() {
             view.biotext.text = it.bio
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_baseline_comment_24)
 
+            Glide.with(this@ProfilFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(it.profilBilde) //hvilket bilde som skal loades
+                .into(view.bilde_profil_item) //Hvor vi ønsker å loade bildet inn i
 
 
             view.bilde_profil_item.visibility = View.VISIBLE

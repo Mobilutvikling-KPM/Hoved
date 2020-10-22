@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
@@ -69,7 +71,16 @@ class Event_utfyllingsskjema: Fragment() {
             view.event_utfyll_klokke.setText(sendtBundle!!.klokke)
             //view.event_kategori.
             view.event_utfyll_sted.setText(sendtBundle!!.sted)
-           // view.utfylling_bilde.setImageResource(sendtBundle!!.image) BILDEADRESSE
+
+
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_image_24)
+
+            Glide.with(this@Event_utfyllingsskjema)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(sendtBundle!!.image) //hvilket bilde som skal loades
+                .into(view.utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
         }
 
         return view

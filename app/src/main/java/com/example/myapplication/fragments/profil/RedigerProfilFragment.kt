@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,10 @@ class RedigerProfilFragment : Fragment() {
     var navController: NavController? = null
     lateinit var sendtBundle: Person
 
+    companion object {
+        val REQUEST_CODE = 100
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +83,6 @@ class RedigerProfilFragment : Fragment() {
 
         //view.utfylling_bilde. -- BILDEADDRESSE NÅR DET ER PÅ PLASS!!!!
 
-
         // Inflate the layout for this fragment
         val viewModelFactory = ViewModelFactory(1, "")
 
@@ -95,11 +99,14 @@ class RedigerProfilFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         velg_bilde_collection.setOnClickListener {
-            openGalleryForImage()
+           // openGalleryForImage()
         }
 
 
+
+
         view.button_registrer.setOnClickListener{
+        Log.i("lala", "REgistrer profil blir trykket på")
 
             val person = Person(
                 sendtBundle.personID, //genereres automatisk
@@ -110,13 +117,12 @@ class RedigerProfilFragment : Fragment() {
                 ""
             ) //LEGG TIL BILDEADRESSE HER!!
             personViewModel.leggTilPerson(person)
+            uploadFile()
 
             navController!!.navigateUp()
         }
 
-        button_registrer.setOnClickListener {
-            uploadFile()
-        }
+
     }
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -131,11 +137,11 @@ class RedigerProfilFragment : Fragment() {
             val imageRef = storageReference!!.child("images/"+uuid.toString())
             imageRef.putFile(filePath!!)
                 .addOnSuccessListener {
-                    Toast.makeText(context, "Profil oppdatert", Toast.LENGTH_SHORT).show()
-                    navController!!.navigateUp()
+                    //Toast.makeText(context, "Profil oppdatert", Toast.LENGTH_SHORT).show()
+                    //navController!!.navigateUp()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(context, "Oppdatering feilet", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Kunne ikke legge inn bilde", Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -155,7 +161,4 @@ class RedigerProfilFragment : Fragment() {
         }
     }
 
-    companion object {
-        val REQUEST_CODE = 100
-    }
 }
