@@ -7,6 +7,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,8 @@ import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
+import kotlinx.android.synthetic.main.fragment_rediger_profil.*
+import java.io.IOException
 
 class Event_utfyllingsskjema: Fragment() {
     private lateinit var eventViewModel: EventViewModel
@@ -143,7 +146,12 @@ class Event_utfyllingsskjema: Fragment() {
 
         if(requestCode == requestKode && resultCode == Activity.RESULT_OK && data!!.data != null){
             imageURI = data.data
-            Toast.makeText(context,"Opplaster...",Toast.LENGTH_SHORT).show()
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageURI)
+                utfylling_bilde!!.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 }

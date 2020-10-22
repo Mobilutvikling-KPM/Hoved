@@ -99,7 +99,7 @@ class RedigerProfilFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         velg_bilde_collection.setOnClickListener {
-           // openGalleryForImage()
+            openGalleryForImage()
         }
 
 
