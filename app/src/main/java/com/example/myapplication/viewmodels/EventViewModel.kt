@@ -18,13 +18,15 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 
-class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, DataCallback2<Event>, DataCallBack3<Event> {
+class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewModel(), DataCallback<Event>, DataCallback2<Event>, DataCallBack3<Event>, OnFind {
 
     private var mEvents: MutableLiveData<List<Event>>
     private var eventRepo: EventRepository = EventRepository().getTheInstance()
     private var mLagdeEvents: MutableLiveData<List<Event>>
     private var mPåmeldteEvents: MutableLiveData<List<Event>>
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
+    private var erPåmeldt: MutableLiveData<Boolean> = MutableLiveData()
+
 
     //Bilde fra storage
     private var mStorageRef: StorageReference? = null
@@ -57,9 +59,10 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
 
     }
 
-    fun updateEvent(event: Event){
+    fun updateEvent(event: Event, imageURI: Uri?){
 
         eventRepo.updateEvent(event)
+        lastOppBilde(imageURI, event.eventID)
     }
 
     private fun lastOppBilde(imageURI: Uri?, eventID: String){
@@ -86,19 +89,23 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
 
                     val map = HashMap<String, Any>()
                     map["image"] = url
-                    ref.updateChildren(map)
+                    ref.updateChildren(map).addOnCompleteListener {
+                        isLoading!!.loadingFinished(url)
+                    }
                 }
 
             }
         }
     }
 
-    fun påmeldEvent(påmeld:Påmeld){
-        eventRepo.påmeldEvent(påmeld)
+    fun påmeldEvent(påmeld:Påmeld, erPåmeldt: Boolean){
+        eventRepo.påmeldEvent(påmeld, erPåmeldt)
+        erFunnet(true)
     }
 
     fun slettEvent(event: Event){
         eventRepo.slettEvent(event)
+        mStorageRef!!.child(event.eventID+".jpg").delete() //Slett bildet som er lagret i storage
 
         var liste: ArrayList<Event> = mLagdeEvents.value as ArrayList<Event>
         if (liste != null) {
@@ -107,9 +114,6 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
         }
     }
 
-    fun økMedlemer(event: Event){
-
-    }
 
     fun økKommentarer(event: Event){
 
@@ -198,6 +202,44 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
 
     }
 
+    fun finnUtOmPåmeldt(innloggetID:String, eventID: String){
+        var ref = FirebaseDatabase.getInstance()
+            .getReference("Påmeld")
+
+        ref.orderByChild("innloggetID").equalTo(innloggetID).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+
+            //Inneholder alle verdier fra tabellen
+            override fun onDataChange(p0: DataSnapshot) {
+                var funnetEvent = false
+                if (p0!!.exists()) {
+
+
+                    for (pml in p0.children) {
+                        val påmeldt = pml.getValue(Påmeld::class.java)
+
+                        if(påmeldt!!.event.eventID == eventID) {
+                            funnetEvent = true
+                        }
+                    }
+
+                    erFunnet(funnetEvent)
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
+
+        })
+    }
+
+    fun avsluttPåmeldt(innloggetID: String, eventID: String, erPåmeldt: Boolean){
+        eventRepo.avsluttPåmeldt(innloggetID,eventID, erPåmeldt)
+        erFunnet(false)
+    }
+
 //    fun getEnkeltEvent(): LiveData<Event>{
 //        return enkeltEvent
 //    }
@@ -238,6 +280,10 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
         return mIsUpdating
     }
 
+    fun getErPåmeldt(): LiveData<Boolean>{
+        return erPåmeldt
+    }
+
     override fun onCallBack(liste: ArrayList<Event>) {
         mIsUpdating.setValue(false)
 
@@ -252,5 +298,9 @@ class EventViewModel(type: Int, id: String) : ViewModel(), DataCallback<Event>, 
     override fun onCallBack3(liste: ArrayList<Event>) {
         mIsUpdating.setValue(false)
         mPåmeldteEvents.setValue(liste)
+    }
+
+    override fun erFunnet(skjekk: Boolean) {
+        erPåmeldt.setValue(skjekk)
     }
 }

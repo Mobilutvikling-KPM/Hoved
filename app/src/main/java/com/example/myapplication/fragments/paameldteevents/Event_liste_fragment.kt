@@ -48,7 +48,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1,"",null)
 
         eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
@@ -56,7 +56,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         })
 
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            Log.i("lala", "UPDATING!")
+
             if(it) {
                 view.event_liste_ProgressBar.visibility = View.VISIBLE
             } else{  view.event_liste_ProgressBar.visibility = View.GONE}

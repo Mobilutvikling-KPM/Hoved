@@ -24,21 +24,22 @@
                 android:layout_below="@id/utfylling_bilde"
                 android:background="@color/white">
                 <ImageButton
-
+                    android:id="@+id/ta_bilde_kamera"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="100dp"
                     android:background="@color/white"
-                    android:src="@drawable/ic_baseline_group_24" />
+                    android:src="@drawable/ic_baseline_camera_alt_24" />
                 <ImageButton
                     android:id="@+id/velg_bilde_collection"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:background="@color/white"
-                    android:src="@drawable/ic_baseline_group_24" />
+                    android:src="@drawable/ic_baseline_collections_24" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/editTexts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ufylling_velg_bilde"
@@ -63,17 +64,18 @@
                 android:id="@+id/utfyll_bio"
                 style="@style/utfylling_tekstboks"
                 android:inputType="text|textMultiLine"
+                android:minLines="4"
                 android:hint="Biografi" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/button_registrer"
                     android:layout_marginTop="@dimen/page_margin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fullfør"
                     android:textSize="10dp" />

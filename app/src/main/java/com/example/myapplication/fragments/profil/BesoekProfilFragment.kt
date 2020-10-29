@@ -1,11 +1,8 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.Moduls.DataCallbackSingleValue
-import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Folg
 import RecyclerView.RecyclerView.Moduls.Person
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
-import com.example.myapplication.viewmodels.KommentarViewModel
-import com.example.myapplication.viewmodels.LoginViewModel
-import com.example.myapplication.viewmodels.PersonViewModel
-import com.example.myapplication.viewmodels.ViewModelFactory
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_event.view.*
-import kotlinx.android.synthetic.main.fragment_profil.*
+import com.example.myapplication.viewmodels.*
+import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,6 +31,7 @@ class BesoekProfilFragment : Fragment() {
     private lateinit var sendtBundle: Person
     private var person: Person = Person()
     val user = loginViewModel.getBruker()
+    var erBekjent = false;
 
 
 
@@ -54,12 +47,13 @@ class BesoekProfilFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
-        val viewModelFactory = ViewModelFactory(0,"")
+        val viewModelFactory = ViewModelFactory(0,"",null)
 
         view.bilde_profil_item.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
         view.strek.visibility = View.GONE
         view.bio.visibility = View.GONE
+        view.LoggUtKnapp.visibility = View.GONE
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
         personViewModel.getEnkeltPerson().observe(viewLifecycleOwner, Observer{
@@ -91,9 +85,22 @@ class BesoekProfilFragment : Fragment() {
 
         personViewModel.søkEtterPerson(sendtBundle.personID)
 
+        personViewModel.getErBekjent().observe(viewLifecycleOwner, Observer {
+            if(it){
+                view.bli_venn.text = "Slutt å følg"
+                erBekjent = true
+            } else {
+                view.bli_venn.text = "Følg"
+                erBekjent = false
+            }
+
+        })
+
+        personViewModel.finnUtOmVenn(loginViewModel.getBruker()!!.uid,sendtBundle.personID)
+
+
         view.redigerKnapp.visibility = View.GONE
         view.slettKnapp.visibility = View.GONE
-        view.LOLKNAPP.visibility = View.GONE
         // Inflate the layout for this fragment
         return view
     }
@@ -103,16 +110,19 @@ class BesoekProfilFragment : Fragment() {
 
         //Følg denne brukeren
         view.bli_venn.setOnClickListener {
-            if( user != null ){
-                val folg = user?.uid?.let { it1 -> Folg(it1,person) }
-                personViewModel.bliVenn(folg!!)
-                view.bli_venn.text = "Fjern som venn"
-            }else {
+            if( user != null) {
+                if (!erBekjent) {
+                    val folg = user?.uid?.let { it1 -> Folg(it1, person) }
+                    personViewModel.bliVenn(folg!!)
 
-                view.bli_venn.text = "Fjern som venn"
+                } else {
+                    personViewModel.sluttÅFølg(loginViewModel.getBruker()!!.uid,sendtBundle.personID)
+
+                }
             }
         }
     }
+
 
 //    override fun onValueRead(verdi: Person) {
 //        Log.i("lala", "PERSON ER HENTET FRA CALLBACK " + verdi.brukernavn)

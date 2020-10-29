@@ -3,7 +3,10 @@ package RecyclerView.RecyclerView.Moduls
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 /*
 * Singleton Pattern
@@ -57,6 +60,38 @@ class PersonRepository() {
         ref.child(vennskapID).setValue(folg).addOnCompleteListener {
             //Noe kan skje når databsen er ferdig lastet inn
         }
+    }
+
+    fun sluttÅFølg(innloggetID: String, brukerID: String){
+        var ref = FirebaseDatabase.getInstance()
+            .getReference("Folg")
+
+        ref.orderByChild("innloggetID").equalTo(innloggetID).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+
+            //Inneholder alle verdier fra tabellen
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0!!.exists()) {
+
+
+                    for (flg in p0.children) {
+                        val folg = flg.getValue(Folg::class.java)
+
+                        if(folg!!.person.personID == brukerID) {
+                            ref.child(flg.key!!).removeValue()
+                        }
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
+
+        })
     }
 
 

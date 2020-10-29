@@ -26,7 +26,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
-import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
+import kotlinx.android.synthetic.main.fragment_profil.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,11 +42,12 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     private lateinit var personViewModel: PersonViewModel
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
-    private var eventViewModel: EventViewModel = EventViewModel(1,"")
+    private var eventViewModel: EventViewModel = EventViewModel(1,"",null)
    // private lateinit var eventViewModel: EventViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
     var innloggetProfil: Person? = null
+    var erPåmeldt = false
 
     //kalender
     private var calendar: Calendar = Calendar.getInstance();
@@ -82,7 +83,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(0, sendtBundle.eventID)
+        val viewModelFactory = ViewModelFactory(0, sendtBundle.eventID,null)
 
         //Sender inn viewModel
         kommentarViewModel =
@@ -130,6 +131,19 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         })
 
         personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
+
+        eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
+            if(it){
+                view.button_bliMed.text = "Meld av"
+                erPåmeldt = true
+            } else {
+                view.button_bliMed.text = "Bli med"
+                erPåmeldt = false
+            }
+
+        })
+
+        eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
 
         personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
 
@@ -198,31 +212,34 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.button_bliMed.setOnClickListener {
             if(loginViewModel.getBruker() != null){
 
-                val event = Event(
-                sendtBundle.eventID,
-                sendtBundle.title,
-                sendtBundle.body
-                ,sendtBundle.image
-                ,sendtBundle.dato
-                ,sendtBundle.klokke
-                ,sendtBundle.sted
-                ,sendtBundle.forfatter
-                ,sendtBundle.kategori
-                ,sendtBundle.antPåmeldte
-            ,sendtBundle.antKommentar
-            ,1)
+                if(!erPåmeldt) {
+                    val event = Event(
+                        sendtBundle.eventID,
+                        sendtBundle.title,
+                        sendtBundle.body,
+                        sendtBundle.image,
+                        sendtBundle.dato,
+                        sendtBundle.klokke,
+                        sendtBundle.sted,
+                        sendtBundle.forfatter,
+                        sendtBundle.kategori,
+                        sendtBundle.antPåmeldte,
+                        sendtBundle.antKommentar,
+                        1
+                    )
 
-            val påmeld = Påmeld(loginViewModel.getBruker()!!.uid,event)
-                eventViewModel.påmeldEvent(påmeld)
+                    val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, event)
+                    eventViewModel.påmeldEvent(påmeld, erPåmeldt)
 
-                view.button_bliMed.text = "Meld av"
-                var endOfString = 1
-                if(view.button_se_andre_påmeldte.text.toString().length > 10)
-                    endOfString = 2
+                    var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                    view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
+                } else {
 
-                var tekst = view.button_se_andre_påmeldte.text.toString().substring(0,endOfString)
-                var tall = tekst.toInt()
-                view.button_se_andre_påmeldte.text = ""+(tall+1)+" påmeldte"
+
+                    eventViewModel.avsluttPåmeldt(loginViewModel.getBruker()!!.uid,sendtBundle.eventID, erPåmeldt)
+                    var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                    view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
+                }
 
             }
         }
@@ -241,6 +258,23 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
     private fun addDataSet() {
        kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
+    }
+
+    private fun lagPåmeldteString(length: Int, tekst:String ): Int{
+        var endOfString = 1
+        if (length > 10)
+            endOfString = 2
+
+        var reformat =
+            tekst.substring(0, endOfString)
+        var tall = reformat.toInt()
+
+        Log.i("lala","Tallet inn stringformat: " + tall)
+        if(!erPåmeldt){
+            tall = tall - 1
+        } else tall = tall + 1
+
+        return tall
     }
 
     //Initierer og kobler recycleView til activityMain

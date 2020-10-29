@@ -45,7 +45,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
 
-        val viewModelFactory = ViewModelFactory(0, "")
+        val viewModelFactory = ViewModelFactory(0, "",null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
 

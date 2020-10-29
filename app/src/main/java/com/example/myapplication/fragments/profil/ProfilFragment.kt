@@ -5,14 +5,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,8 +29,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_profil.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
 
@@ -63,7 +59,7 @@ class ProfilFragment : Fragment() {
         user = FirebaseAuth.getInstance().currentUser
         uuid = user?.uid
         storage = FirebaseStorage.getInstance()
-        storageReference = storage!!.reference.child("images").child(uuid!!)
+        //storageReference = storage!!.reference.child("images").child(uuid!!)
     }
 
 
@@ -87,7 +83,7 @@ class ProfilFragment : Fragment() {
         //view.redigerKnapp.visibility = View.GONE
         //view.slettKnapp.visibility = View.GONE
 
-        val viewModelFactory = ViewModelFactory(1, "")
+        val viewModelFactory = ViewModelFactory(1, "",null)
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
         //når data er funnet for innlogget bruker
@@ -99,7 +95,7 @@ class ProfilFragment : Fragment() {
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_baseline_account_circle_24)
                 .error(R.drawable.ic_baseline_comment_24)
 
             Glide.with(this@ProfilFragment)
@@ -158,9 +154,11 @@ class ProfilFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         observeAuthenticationState()
-        LOLKNAPP.setOnClickListener { launchSignInFlow() }
-        LOLKNAPP2.setOnClickListener{
-            //getUserProfile()
+
+        view.LoggUtKnapp.setOnClickListener {
+            if (user != null) {
+                FirebaseAuth.getInstance().signOut()
+            }
         }
 
 

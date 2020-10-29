@@ -4,7 +4,6 @@ import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.PersonRecyclerAdapter
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +41,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
         val view = inflater.inflate(R.layout.fragment_venner, container, false)
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1,"",null)
 
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)

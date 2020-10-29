@@ -85,7 +85,7 @@ class LoginFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 // User successfully signed in
                 val bruker = FirebaseAuth.getInstance().currentUser!!
-                val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid)
+                val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid,null)
                 personViewModel.opprettBruker(bruker)
                 Log.i(ContentValues.TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
             } else {

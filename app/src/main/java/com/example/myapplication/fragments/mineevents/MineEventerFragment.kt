@@ -7,7 +7,6 @@ import RecyclerView.RecyclerView.OnKnappItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -49,8 +48,8 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
         //Lager en viewModel med argumenter
         if(loginViewModel.getBruker() != null)
-        viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid)
-        else viewModelFactory = ViewModelFactory(2,"")
+        viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid,null)
+        else viewModelFactory = ViewModelFactory(2,"",null)
 
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)

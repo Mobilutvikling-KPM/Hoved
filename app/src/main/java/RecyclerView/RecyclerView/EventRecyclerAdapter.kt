@@ -27,10 +27,14 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.layout_event_list_item, parent, false)
             )
-        } else {
+        } else if(viewType == VIEW_TYPE_ADMINLISTE){
             return EventAdminViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.administrer_event_liste_item, parent, false))
+        }else{
+            return EventPåmeldViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.administrer2_event_liste_item, parent, false))
         }
     }
 
@@ -47,6 +51,10 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener, knappClickListener)
         }
+            is EventPåmeldViewHolder ->{
+                holder.bind(items.get(position))
+                holder.initialize(items.get(position),clickListener)
+            }
 
 
         }
@@ -118,7 +126,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         }
     }
 
-    //En view holder som skriver ut info på påmeldt listen og mine eventer listen
+    //En view holder som skriver ut info mine eventer listen
     class EventAdminViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
@@ -175,6 +183,52 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
 
         }
     }
+
+    //En view holder som skriver ut info mine eventer listen
+    class EventPåmeldViewHolder constructor(
+        itemView: View
+    ): RecyclerView.ViewHolder(itemView){
+        val event_image = itemView.bilde_admin_liste
+        val event_title = itemView.tittel_admin_liste
+        val event_tid = itemView.dato_admin_liste
+
+        val event_antPåmeldt = itemView.ant_påmeldte_tall_admin_liste
+        val event_anKommentar = itemView.antall_kommentar_tall_admin_liste
+
+        fun bind(event: Event){
+            event_title.setText(event.title)
+            event_tid.setText(event.dato)
+
+            event_antPåmeldt.setText(event.antPåmeldte)
+            event_anKommentar.setText(event.antKommentar)
+
+
+            //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+
+            Glide.with(itemView.context)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(event.image) //hvilket bilde som skal loades
+                .into(event_image) //Hvor vi ønsker å loade bildet inn i
+        }
+
+        //click listener initiliasiering
+        fun initialize(item: Event, action:OnEventItemClickListener){
+            event_title.text = item.title
+
+            event_tid.text = item.dato
+            event_antPåmeldt.text = item.antPåmeldte
+            event_anKommentar.text = item.antKommentar
+            //Og bilde?
+
+            itemView.setOnClickListener{
+                action.onItemClick(item, adapterPosition)
+            }
+
+        } //Slutt på initilize
+    } //Slutt på AdminViewholder2
 }
 
 //Click listener på alle items
