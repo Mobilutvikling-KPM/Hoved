@@ -18,7 +18,7 @@
         android:paddingBottom="20dp">
 
         <ImageView
-            android:id="@+id/utfylling_bilde"
+            android:id="@+id/MineEvent_utfylling_bilde"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:src="@drawable/ic_baseline_image_24" />
@@ -26,18 +26,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:layout_below="@id/utfylling_bilde"
             android:background="@color/white">
 
             <ImageButton
+                android:id="@+id/nyttEventKameraKnapp"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="100dp"
                 android:background="@color/white"
-
                 android:src="@drawable/ic_baseline_camera_alt_24" />
-
             <ImageButton
                 android:id="@+id/button_gallery"
                 android:layout_width="100dp"
@@ -50,6 +47,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/utfyllingsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ufylling_velg_bilde"
@@ -76,13 +74,17 @@
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_beskrivelse" />
 
-        <EditText
+        <TextView
             android:id="@+id/event_utfyll_dato"
+            android:textSize="16dp"
+            android:clickable="true"
             style="@style/utfylling_tekstboks"
-            android:hint="@string/utfylling_dato" />
+            android:hint="@string/utfylling_dato"
+            android:focusable="true" />
 
-        <EditText
+        <TextView
             android:id="@+id/event_utfyll_klokke"
+            android:textSize="16dp"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_klokke" />
 
