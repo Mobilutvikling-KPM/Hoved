@@ -1,20 +1,24 @@
 package com.example.myapplication.fragments.profil
 
 import RecyclerView.RecyclerView.Moduls.Person
-
+import android.R.attr.bitmap
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.lifecycle.Observer
+import androidx.core.content.FileProvider
+import androidx.core.text.isDigitsOnly
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -25,8 +29,10 @@ import com.example.myapplication.viewmodels.ViewModelFactory
 import com.example.myapplication.viewmodels.isLoading
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.fragment_rediger_profil.view.*
 import kotlinx.android.synthetic.main.fragment_rediger_profil.*
+import kotlinx.android.synthetic.main.fragment_rediger_profil.view.*
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 
 
@@ -35,6 +41,9 @@ import java.io.IOException
  * Use the [RedigerProfilFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private const val FILE_NAME ="photo.jpg"
+
 class RedigerProfilFragment : Fragment(), isLoading {
 
 
@@ -44,6 +53,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
 //    private var user: FirebaseUser? = null
 //    private var uuid: String? = ""
     private var imageURI: Uri? = null
+    private lateinit var photoFile: File
 
 
     private var loginViewModel: LoginViewModel  = LoginViewModel()
@@ -57,6 +67,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
 
     companion object {
         val REQUEST_CODE = 100
+        val REQUEST_IMAGE_CAPTURE = 1
     }
 
 
@@ -89,12 +100,10 @@ class RedigerProfilFragment : Fragment(), isLoading {
         //view.utfylling_bilde. -- BILDEADDRESSE NÅR DET ER PÅ PLASS!!!!
 
         // Inflate the layout for this fragment
-        val viewModelFactory = ViewModelFactory(1, "",this@RedigerProfilFragment)
+        val viewModelFactory = ViewModelFactory(1, "", this@RedigerProfilFragment)
 
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
-
-
         return view
 
     }
@@ -107,30 +116,32 @@ class RedigerProfilFragment : Fragment(), isLoading {
         velg_bilde_collection.setOnClickListener {
             openGalleryForImage()
         }
-
-
-
-
-        view.button_registrer.setOnClickListener{
-        Log.i("lala", "REgistrer profil blir trykket på")
-
-            val person = Person(
-                sendtBundle.personID, //genereres automatisk
-                view.utfyll_navn.text.toString(),
-                view.utfyll_alder.text.toString(),
-                view.utfyll_bosted.text.toString(),
-                view.utfyll_bio.text.toString(),
-                ""
-            ) //LEGG TIL BILDEADRESSE HER!!
-            personViewModel.leggTilPerson(person)
-            personViewModel.lastOppBilde(imageURI, loginViewModel.getBruker()!!.uid)
-
-            progressBar!!.show()
-
-
+        ta_bilde_kamera.setOnClickListener {
+            dispatchTakePictureIntent()
         }
 
-
+        view.button_registrer.setOnClickListener{
+            if (utfyll_navn.text.toString().isEmpty()) {
+                utfyll_navn.error = "Du må velge brukernavn!"
+            }
+            if ( ! utfyll_alder.text.toString().isDigitsOnly()) {
+                utfyll_alder.error = "Du må skrive nummer!"
+            }
+            else {
+                Log.i("lala", "REgistrer profil blir trykket på")
+                val person = Person(
+                    sendtBundle.personID, //genereres automatisk
+                    view.utfyll_navn.text.toString(),
+                    view.utfyll_alder.text.toString(),
+                    view.utfyll_bosted.text.toString(),
+                    view.utfyll_bio.text.toString(),
+                    ""
+                ) //LEGG TIL BILDEADRESSE HER!!
+                personViewModel.leggTilPerson(person)
+                personViewModel.lastOppBilde(imageURI, loginViewModel.getBruker()!!.uid)
+                progressBar!!.show()
+            }
+        }
     }
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -138,12 +149,25 @@ class RedigerProfilFragment : Fragment(), isLoading {
         startActivityForResult(intent, REQUEST_CODE)
     }
 
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        photoFile = getPhotoFile(FILE_NAME)
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFile)
+        val fileProvider = FileProvider.getUriForFile(this.requireContext(), "com.example.myapplication.fileprovider", photoFile)
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+        //if (takePictureIntent.resolveActivity(activity!!.packageManager) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        //}
+    }
 
+    private fun getPhotoFile(fileName: String): File {
+        val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", storageDirectory)
+   }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null && data.data != null) {
             imageURI = data.data
-
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageURI)
                 utfylling_bilde!!.setImageBitmap(bitmap)
@@ -151,9 +175,15 @@ class RedigerProfilFragment : Fragment(), isLoading {
                 e.printStackTrace()
             }
         }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            //val takenImage = data?.extras?.get("data") as Bitmap
+            val myUri = Uri.fromFile(File(photoFile.absolutePath))
+            val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
+            imageURI = myUri
+            utfylling_bilde.setImageBitmap(takenImage)
+        }
     }
-
-    override fun loadingFinished(id:String) {
+    override fun loadingFinished(id: String) {
         progressBar!!.dismiss()
         navController!!.navigateUp()
     }
