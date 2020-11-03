@@ -12,6 +12,7 @@ import android.view.ViewGroup
 
 
 import android.util.Log
+import android.widget.SearchView
 import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
@@ -39,6 +40,9 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
     private lateinit var eventViewModel: EventViewModel
+    var eventListe = ArrayList<Event>()
+    var filtrertListe = ArrayList<Event>() //Listen som tar vare på det filtrerte resultatet
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +56,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
+           if(eventListe.size == 0)
+            eventListe.addAll(it)
             eventAdapter.notifyDataSetChanged()
         })
 
@@ -65,6 +71,34 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         view.knapp_åpne_kategori.setOnClickListener{
         showFilterDialog()
         }
+
+
+        view.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                return false
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                filtrertListe.clear()
+                if(newText == null || newText.length == 0){
+                    filtrertListe.addAll(eventListe)
+                }else {
+                    var filterMønster: String = newText.toString().toLowerCase().trim()
+
+                    for (item: Event in eventListe){
+                        if(item.title.toLowerCase().contains(filterMønster) ) {
+                            filtrertListe.add(item)
+                        }
+                    }
+                }
+
+                eventAdapter.submitList(filtrertListe)
+                eventAdapter.notifyDataSetChanged()
+                return false
+            }
+        })
+
 
         return view
     }

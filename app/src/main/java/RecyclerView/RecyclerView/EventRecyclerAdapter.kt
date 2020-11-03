@@ -1,9 +1,12 @@
 package RecyclerView.RecyclerView
 
 import RecyclerView.RecyclerView.Moduls.Event
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,7 +21,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         const val VIEW_TYPE_ADMINLISTE = 2
     }
 
-    private var items: List<Event> = ArrayList()
+    private var items: ArrayList<Event> = ArrayList()
 
     //Sender ut hver individuelle viewholder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,8 +58,6 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 holder.bind(items.get(position))
                 holder.initialize(items.get(position),clickListener)
             }
-
-
         }
 
         //Hva skal skje når en item har blitt klikket på
@@ -68,7 +69,20 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
     }
 
     fun submitList(eventListe: List<Event>){
-            items = eventListe
+        items = eventListe as ArrayList<Event>
+    }
+
+    fun updateFilterListe(){
+        for (item: Event in items){
+            Log.i("lala","items: " + item.title)
+        }
+
+        for (item: Event in items){
+            Log.i("lala","itemsFull: " + item.title)
+        }
+
+        Log.i("lala" ,"        " +
+                "        ")
     }
 
 
@@ -229,6 +243,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
 
         } //Slutt på initilize
     } //Slutt på AdminViewholder2
+
 }
 
 //Click listener på alle items
