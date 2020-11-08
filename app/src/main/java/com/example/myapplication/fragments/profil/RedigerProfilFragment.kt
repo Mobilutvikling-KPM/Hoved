@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
@@ -29,6 +31,7 @@ import com.example.myapplication.viewmodels.ViewModelFactory
 import com.example.myapplication.viewmodels.isLoading
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import kotlinx.android.synthetic.main.fragment_rediger_profil.*
 import kotlinx.android.synthetic.main.fragment_rediger_profil.view.*
 import java.io.ByteArrayOutputStream
@@ -97,7 +100,15 @@ class RedigerProfilFragment : Fragment(), isLoading {
         view.utfyll_bio.setText(sendtBundle.bio)
         view.utfyll_bosted.setText(sendtBundle.bosted)
 
-        //view.utfylling_bilde. -- BILDEADDRESSE NÅR DET ER PÅ PLASS!!!!
+        val requestOptions = RequestOptions()
+            .placeholder(R.drawable.ic_baseline_group_24)
+            .error(R.drawable.ic_baseline_group_24)
+
+        Glide.with(this@RedigerProfilFragment)
+            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+            .load(sendtBundle!!.profilBilde) //hvilket bilde som skal loades
+            .into(view.utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+
 
         // Inflate the layout for this fragment
         val viewModelFactory = ViewModelFactory(1, "", this@RedigerProfilFragment)
@@ -127,19 +138,29 @@ class RedigerProfilFragment : Fragment(), isLoading {
             if ( ! utfyll_alder.text.toString().isDigitsOnly()) {
                 utfyll_alder.error = "Du må skrive nummer!"
             }
+
             else if (! utfyll_navn.text.toString().isEmpty() && utfyll_alder.text.toString().isDigitsOnly()){
                 Log.i("lala", "REgistrer profil blir trykket på")
+
                 val person = Person(
                     sendtBundle.personID, //genereres automatisk
                     view.utfyll_navn.text.toString(),
                     view.utfyll_alder.text.toString(),
                     view.utfyll_bosted.text.toString(),
                     view.utfyll_bio.text.toString(),
-                    ""
+                    sendtBundle.profilBilde
                 ) //LEGG TIL BILDEADRESSE HER!!
                 personViewModel.leggTilPerson(person)
-                personViewModel.lastOppBilde(imageURI, loginViewModel.getBruker()!!.uid)
-                progressBar!!.show()
+
+
+                if(imageURI == null){
+                    loadingFinished("");
+                }else{
+                    personViewModel.lastOppBilde(imageURI, loginViewModel.getBruker()!!.uid)
+                    progressBar!!.show()
+                }
+
+
             }
         }
     }

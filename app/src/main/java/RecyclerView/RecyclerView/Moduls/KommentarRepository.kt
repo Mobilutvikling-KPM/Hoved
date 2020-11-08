@@ -15,11 +15,8 @@ import kotlin.collections.ArrayList
 /*
 * Singleton Pattern
  */
-class KommentarRepository() : DataCallback<Kommentar> {
+class KommentarRepository(val callback: DataCallback<Kommentar>) {
 
-    private var calendar: Calendar = Calendar.getInstance();
-    private lateinit var dateFormat: SimpleDateFormat
-    private lateinit var date: String
     lateinit var instance: KommentarRepository
     val ref = FirebaseDatabase.getInstance()
         .getReference("Kommentar") //Henter referanse til det du skriver inn
@@ -27,8 +24,8 @@ class KommentarRepository() : DataCallback<Kommentar> {
     private var dataset: ArrayList<Kommentar> = ArrayList()
 
 
-    fun getTheInstance(): KommentarRepository {
-        instance = KommentarRepository()
+    fun getTheInstance(callback: DataCallback<Kommentar>): KommentarRepository {
+        instance = KommentarRepository(callback)
         return instance
     }
 
@@ -54,82 +51,28 @@ class KommentarRepository() : DataCallback<Kommentar> {
     }
 
     fun createDataset(type: Int, eventIDEN: String) {
-            ref.orderByChild("eventID").equalTo(eventIDEN).addValueEventListener(object : ValueEventListener {
+        ref.orderByChild("eventID").equalTo(eventIDEN).addValueEventListener(object : ValueEventListener {
 
-                //Inneholder alle verdier fra tabellen
-                override fun onDataChange(p0: DataSnapshot) {
-                    val arr: ArrayList<Kommentar> = ArrayList()
-                    if (p0!!.exists()) {
+            //Inneholder alle verdier fra tabellen
+            override fun onDataChange(p0: DataSnapshot) {
+                val arr: ArrayList<Kommentar> = ArrayList()
+                if (p0!!.exists()) {
 
-                        for (kmt in p0.children) {
-                            val kommentar = kmt.getValue(Kommentar::class.java)
-                            arr.add(kommentar!!)
-                        }
-
-                        onCallBack(arr)
+                    for (kmt in p0.children) {
+                        val kommentar = kmt.getValue(Kommentar::class.java)
+                        arr.add(kommentar!!)
                     }
+
+                    callback.onCallBack(arr)
                 }
+            }
 
-                override fun onCancelled(p0: DatabaseError) {
-                    Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
-                }
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
 
-            })
-
-//        dateFormat = SimpleDateFormat("MM/dd/yyyy");
-//        date = dateFormat.format(calendar.getTime());
-//
-//        dataset.add(
-//
-//            Kommentar(
-//                "-MJ7NjgdeI26SdLz-7Me",
-//                Person(
-//                    "-MJfZwZdE3vbcO2qIMvA",
-//                    "Henriette Pedersen",
-//                    "24",
-//                    "Bø",
-//                    "@String/input",
-//                    "https://i.pinimg.com/originals/f7/60/87/f76087d518532f3a0c6b027d18e1212a.jpg"
-//                ),
-//                date,
-//                "Dette er en dummy kommentar med random tekst, Yo let's go!"
-//            )
-//        )
-//
-//        dataset.add(
-//            Kommentar(
-//                "-MJ7k7NVJ_ye5ZUwZAda",
-//                Person(
-//                    "-MJf_NohvXNs5VjToRd_",
-//                    "Chris Jack",
-//                    "30",
-//                    "Langesund",
-//                    "@String/input",
-//                    "https://i.pinimg.com/originals/35/d2/eb/35d2ebe20571c03d8f257ae725a780aa.jpg"
-//                ),date,
-//                "Hey, ho, hey, ho, lets'a go for merry so"
-//            )
-//        )
-//        dataset.add(
-//            Kommentar(
-//                "-MJRcwMJ0ivStGWAP6Pi",
-//                Person(
-//                    "-MJf_XPDXcKzoTs01wnB",
-//                    "Roger Floger",
-//                    "27",
-//                    "Oslo",
-//                    "@String/input",
-//                    "https://media.gettyimages.com/photos/closeup-of-a-mans-head-profile-picture-id157192886"
-//                ),
-//                date,
-//                "Lorem ipsum, Dummy tekst, dummy tekst" +
-//                        "Test. TEST!"
-//            )
-//        )
+        })
 
     }
 
-    override fun onCallBack(liste: ArrayList<Kommentar>) {
-        dataset.addAll(liste)
-    }
 }

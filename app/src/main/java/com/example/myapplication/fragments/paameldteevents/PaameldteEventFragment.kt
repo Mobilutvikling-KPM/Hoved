@@ -22,7 +22,9 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 
 import com.example.myapplication.viewmodels.ViewModelFactory
+import kotlinx.android.synthetic.main.event_liste.view.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
+import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
 
 /**
@@ -57,6 +59,13 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             if(loginViewModel.getBruker() != null) {
             eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
         }
+
+        eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
+
+            if(it) {
+                view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
+            } else{  view.påmeldt_liste_ProgressBar.visibility = View.GONE}
+        })
 /*
         navController = findNavController()
             val user = FirebaseAuth.getInstance().currentUser

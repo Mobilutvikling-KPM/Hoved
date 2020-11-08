@@ -19,6 +19,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
+import kotlinx.android.synthetic.main.event_liste.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
 
@@ -58,8 +59,9 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         //observerer endring i data, og blir trigget dersom det skjer noe
         personViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             //Show og hide progress bar if isUpdating false osv.
-            view.recycler_view_venner.smoothScrollToPosition((personViewModel.getPersoner().value?.size
-                ?: 0) -1)
+            if(it) {
+                view.venner_liste_ProgressBar.visibility = View.VISIBLE
+            } else{  view.venner_liste_ProgressBar.visibility = View.GONE}
         })
         // Inflate the layout for this fragment
         return view

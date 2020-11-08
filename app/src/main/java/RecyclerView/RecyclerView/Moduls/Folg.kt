@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Folg (
     var innloggetID: String,
-    var person: Person
+    var personID: String
 ): Parcelable{
-    constructor(): this("",Person("","","","","",""))
+    constructor(): this("","")
 }
