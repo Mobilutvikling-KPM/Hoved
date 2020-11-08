@@ -148,7 +148,7 @@ companion object {
         }
         view.lag_event_button.setOnClickListener {
             if (event_utfyll_tittel.text.toString().isEmpty()) {
-                event_utfyll_tittel.error = "Du må velge tittel!"
+                event_utfyll_tittel.error = "Du må skrive tittel!"
             }
             if (event_utfyll_sted.text.toString().isEmpty()) {
                 event_utfyll_sted.error = "Du må velge sted!"
@@ -157,23 +157,30 @@ companion object {
                 event_utfyll_dato.error = "du må velge dato!"
             } else {
                 var eventID = ""
+                var antPåmeldte = "0"
+                var antKommentar= "0"
+                var image = ""
 
-                if (sendtBundle != null)
+                if (sendtBundle != null) {
                     eventID = sendtBundle!!.eventID
+                    antPåmeldte = sendtBundle!!.antPåmeldte
+                    antKommentar= sendtBundle!!.antKommentar
+                    image = sendtBundle!!.image
+                }
 
                 //husk å Legge til lovlige felt test osv. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 nyEvent = Event(
                     eventID,
                     view.event_utfyll_tittel.text.toString(),
                     view.event_utfyll_Beskrivelse.text.toString(),
-                    "",
+                    image,
                     view.event_utfyll_dato.text.toString(),
                     view.event_utfyll_klokke.text.toString(),
                     view.event_utfyll_sted.text.toString(),
                     loginViewModel.getBruker()!!.uid,
                     view.utfylling_spinner.selectedItem.toString(),
-                    "0",
-                    "0",
+                    antPåmeldte,
+                    antKommentar,
                     1
                 )
 
@@ -182,7 +189,10 @@ companion object {
                         eventViewModel.leggTilEvent(nyEvent!!, imageURI)
                     else eventViewModel.updateEvent(nyEvent!!, imageURI)
                 }
-                progressBar!!.show()
+
+                if(imageURI == null){
+                    loadingFinished("")
+                }else progressBar!!.show()
             }
         }
     }

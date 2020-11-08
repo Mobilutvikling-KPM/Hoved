@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Påmeld (
     var innloggetID: String,
-    var event: Event
+    var eventID: String
 ): Parcelable{
-    constructor(): this("",Event("","","","","","","","","","","",1))
+    constructor(): this("","")
 }

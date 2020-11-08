@@ -17,6 +17,15 @@
             style="@style/Title"
             android:text="@string/mine_eventer" />
 
+    <ProgressBar
+        android:id="@+id/påmeldt_liste_ProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        android:layout_marginTop="250dp"
+        android:layout_centerHorizontal="true"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

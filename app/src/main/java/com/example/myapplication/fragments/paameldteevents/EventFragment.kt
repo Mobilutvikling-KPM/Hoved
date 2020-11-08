@@ -97,8 +97,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             kommentarAdapter.notifyDataSetChanged()
         })
 
-        kommentarViewModel.createDataset()
-
         //observerer endring i data, og blir trigget dersom det skjer noe
         kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
 
@@ -213,22 +211,22 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             if(loginViewModel.getBruker() != null){
 
                 if(!erPåmeldt) {
-                    val event = Event(
-                        sendtBundle.eventID,
-                        sendtBundle.title,
-                        sendtBundle.body,
-                        sendtBundle.image,
-                        sendtBundle.dato,
-                        sendtBundle.klokke,
-                        sendtBundle.sted,
-                        sendtBundle.forfatter,
-                        sendtBundle.kategori,
-                        sendtBundle.antPåmeldte,
-                        sendtBundle.antKommentar,
-                        1
-                    )
+//                    val event = Event(
+//                        sendtBundle.eventID,
+//                        sendtBundle.title,
+//                        sendtBundle.body,
+//                        sendtBundle.image,
+//                        sendtBundle.dato,
+//                        sendtBundle.klokke,
+//                        sendtBundle.sted,
+//                        sendtBundle.forfatter,
+//                        sendtBundle.kategori,
+//                        sendtBundle.antPåmeldte,
+//                        sendtBundle.antKommentar,
+//                        1
+//                    )
 
-                    val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, event)
+                    val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
                     eventViewModel.påmeldEvent(påmeld, erPåmeldt)
 
                     var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
@@ -257,6 +255,9 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
 
     private fun addDataSet() {
+//        var arr: ArrayList<Person> =  kommentarViewModel.getKommentarPerson().value!!
+//        for(person: Person in arr)
+//        Log.i("lala","addDataSet " + person.brukernavn )
        kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
@@ -309,6 +310,12 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
 
     }
+
+
+
+
+
+
 
 
 }

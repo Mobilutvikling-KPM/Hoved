@@ -104,5 +104,3 @@ class KommentarRecyclerAdapter(var clickListener: OnKommentarItemClickListener) 
 interface OnKommentarItemClickListener{
     fun onItemClick(item: Kommentar, position: Int)
 }
-
-

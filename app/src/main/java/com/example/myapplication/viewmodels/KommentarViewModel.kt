@@ -15,10 +15,10 @@ import com.google.firebase.database.ValueEventListener
 class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommentar> {
 
     private var mKommentar: MutableLiveData<List<Kommentar>>
-    private var kommentarRepo: KommentarRepository = KommentarRepository().getTheInstance()
+    private var kommentarRepo: KommentarRepository = KommentarRepository(this@KommentarViewModel).getTheInstance(this@KommentarViewModel)
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
 
-    val ref = FirebaseDatabase.getInstance().getReference("Kommentar") //Henter referanse til det
+//    val ref = FirebaseDatabase.getInstance().getReference("Kommentar") //Henter referanse til det
     var type: Int = type
     var id: String = id
 
@@ -41,42 +41,12 @@ class KommentarViewModel(type: Int, id:String): ViewModel(), DataCallback<Kommen
 
     }
 
-    //Skal repsentere om data er hentet eller ikke
-
     fun getKommentarer(): LiveData<List<Kommentar>>{
         return mKommentar
     }
 
     fun getIsUpdating(): LiveData<Boolean>{
         return mIsUpdating
-    }
-
-    fun createDataset() {
-        mIsUpdating.setValue(true)
-        ref.orderByChild("eventID").equalTo(id).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-
-            //Inneholder alle verdier fra tabellen
-            override fun onDataChange(p0: DataSnapshot) {
-                val arr: ArrayList<Kommentar> = ArrayList()
-                if (p0!!.exists()) {
-
-                    for (kmt in p0.children) {
-                        val kommentar = kmt.getValue(Kommentar::class.java)
-
-                        arr.add(kommentar!!)
-                    }
-
-                    onCallBack(arr)
-                }
-
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
-            }
-
-        })
     }
 
     override fun onCallBack(liste: ArrayList<Kommentar>) {
