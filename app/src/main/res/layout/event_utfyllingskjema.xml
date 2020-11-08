@@ -68,44 +68,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/Kategorier"/>
-
-        <EditText
-            android:id="@+id/event_utfyll_Beskrivelse"
-            style="@style/utfylling_tekstboks"
-            android:hint="@string/utfylling_beskrivelse" />
-
-        <TextView
-            android:id="@+id/event_utfyll_dato"
-            android:textSize="16dp"
-            android:clickable="true"
-            style="@style/utfylling_tekstboks"
-            android:hint="@string/utfylling_dato"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/event_utfyll_klokke"
-            android:textSize="16dp"
-            style="@style/utfylling_tekstboks"
-            android:hint="@string/utfylling_klokke" />
-
         <EditText
             android:id="@+id/event_utfyll_sted"
             style="@style/utfylling_tekstboks"
             android:hint="@string/utfylling_sted" />
+        <EditText
+            android:id="@+id/event_utfyll_Beskrivelse"
+            style="@style/utfylling_tekstboks"
+            android:hint="@string/utfylling_beskrivelse"
+            android:inputType="text|textMultiLine"
+            android:minLines="4" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+            <TextView
+                android:id="@+id/event_utfyll_dato"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_marginRight="5dp"
+                android:textSize="16dp"
+                android:clickable="true"
+                style="@style/utfylling_tekstboks"
+                android:hint="@string/utfylling_dato"
+                android:gravity="center"
+                android:focusable="true" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:id="@+id/event_utfyll_klokke"
+                android:textSize="16dp"
+                style="@style/utfylling_tekstboks"
+                android:gravity="center"
+                android:hint="@string/utfylling_klokke" />
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-
+             android:layout_gravity="center">
             <Button
                 android:id="@+id/lag_event_button"
                 android:layout_marginTop="@dimen/page_margin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lag_Event"
                 android:textSize="10dp" />
-
         </LinearLayout>
 
     </LinearLayout>

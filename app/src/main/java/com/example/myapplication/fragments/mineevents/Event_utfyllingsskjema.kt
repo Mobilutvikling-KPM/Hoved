@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import java.io.File
 import java.io.IOException
 import java.util.*
+import java.util.Calendar.HOUR_OF_DAY
 
 private const val FILE_NAME ="photo.jpg"
 
@@ -126,19 +127,22 @@ companion object {
                     it1,
                     { _, year, monthOfYear, dayOfMonth ->
                         // Display Selected date in textbox
-                        event_utfyll_dato.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
+                        event_utfyll_dato.text = "" + dayOfMonth + "." + monthOfYear + "." + year
                     }, year, month, day
                 )
             }?.show()
         }
         event_utfyll_klokke.setOnClickListener{
+            event_utfyll_klokke.text = ""
             val mcurrentTime = Calendar.getInstance()
             val hour = mcurrentTime[Calendar.HOUR_OF_DAY]
             val minute = mcurrentTime[Calendar.MINUTE]
             val mTimePicker: TimePickerDialog
             mTimePicker = TimePickerDialog(
                 context,
-                { timePicker, selectedHour, selectedMinute -> event_utfyll_klokke.text = "$selectedHour:$selectedMinute" },
+                { timePicker, selectedHour, selectedMinute ->
+                    event_utfyll_klokke.text = String.format("%02d:%02d", selectedHour, selectedMinute)
+                },
                 hour,
                 minute,
                 true
@@ -155,7 +159,8 @@ companion object {
             }
             if (event_utfyll_dato.text.toString().isEmpty()) {
                 event_utfyll_dato.error = "du må velge dato!"
-            } else {
+            }
+            else if (!event_utfyll_tittel.text.toString().isEmpty() && !event_utfyll_sted.text.toString().isEmpty() && !event_utfyll_dato.text.toString().isEmpty()) {
                 var eventID = ""
                 var antPåmeldte = "0"
                 var antKommentar= "0"
