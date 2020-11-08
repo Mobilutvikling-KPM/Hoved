@@ -98,6 +98,9 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
     }
 
 
+    /**
+     * Sletter event og dens tilhørende json objekter
+     **/
     fun slettEvent(event: Event){
         ref = FirebaseDatabase.getInstance()
             .getReference("Event") //Henter referanse til det du skriver inn
@@ -105,7 +108,63 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         if(event.image != "")
             mStorageRef!!.child(event.eventID+".jpg").delete() //Slett bildet som er lagret i storage
 
+        //sletter event
         ref.child(event.eventID).removeValue()
+
+        //Slett påmeldte
+        ref=FirebaseDatabase.getInstance()
+            .getReference("Påmeld") //Henter referanse til det du skriver inn
+
+        ref.orderByChild("eventID").equalTo(event.eventID).addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot!!.exists()) {
+
+                    for (pml in snapshot.children) {
+                      ref.child(pml.key!!).removeValue()
+                    }
+
+                }
+
+                slettKommentar(event.eventID)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
+
+        })
+
+
+    }
+
+    /**
+     * Slett kommentarene som tilhører ett event
+     */
+    fun slettKommentar(eventID: String) {
+        //        //
+        ref=FirebaseDatabase.getInstance()
+            .getReference("Kommentar") //Henter referanse til det du skriver inn
+
+        ref.orderByChild("eventID").equalTo(eventID).addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot!!.exists()) {
+                    for (kmt in snapshot.children) {
+                        ref.child(kmt.key!!).removeValue()
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
+
+        }
+        )
     }
 
     fun avsluttPåmeldt(innloggetID: String, eventID: String, erPåmeldt: Boolean){
@@ -219,6 +278,27 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             }
         })
 
+    }
+
+    fun økAntKommentar(eventID: String){
+        ref = FirebaseDatabase.getInstance()
+            .getReference("Event").child(eventID).child("antKommentar")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var ant = dataSnapshot.getValue(String::class.java)
+
+                var nr: Int = Integer.parseInt(ant.toString())
+
+                nr = nr +1
+
+                ref.setValue(""+(nr))
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("lala", "onCancelled", databaseError.toException())
+            }
+        })
     }
 
 

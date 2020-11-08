@@ -13,6 +13,7 @@
             android:background="@color/grey"
             android:orientation="vertical"
             android:paddingBottom="20dp">
+
             <ImageView
                 android:id="@+id/rProfil_utfylling_bilde"
                 android:layout_width="match_parent"

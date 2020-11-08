@@ -97,6 +97,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
 
         //legg inn verdiene som skal endres
 
+
         view.utfyll_navn.setText(sendtBundle.brukernavn)
         view.utfyll_alder.setText(sendtBundle.alder)
         view.utfyll_bio.setText(sendtBundle.bio)
@@ -111,6 +112,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
                 .load(sendtBundle.profilBilde) //hvilket bilde som skal loades
                 .into(view.rProfil_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+
         }
 
         // Inflate the layout for this fragment

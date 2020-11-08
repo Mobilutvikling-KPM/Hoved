@@ -112,23 +112,22 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                 var ref2 = FirebaseDatabase.getInstance()
                     .getReference("Person") //Henter referanse til det du skriver inn
 
+                var nullSjekk: Boolean = false;
                 for (folg in p0.children) {
 
-
+                    nullSjekk = true;
                     var personID = folg.child("personID").value as String
 
                     ref2.orderByChild("personID").equalTo(personID).addValueEventListener(object : ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
 
                             if (snapshot!!.exists()) {
-
                                 for (prs in snapshot.children) {
                                     val person = prs.getValue(Person::class.java)
                                     dataCallbackHolder.onCallbackHolder(person!!)
                                 }
-
-
                             }
+
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -142,6 +141,8 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
 //                        arr.add(event!!)
                 }
 
+                if(!nullSjekk)
+                dataCallbackHolder.onCallbackHolder(null)
                 // onCallBack3(arr)
             }
 
@@ -287,5 +288,5 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
 }
 
 interface DataCallbackHolder<E>{
-    fun onCallbackHolder(person: Person)
+    fun onCallbackHolder(person: Person?)
 }

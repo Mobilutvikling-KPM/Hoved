@@ -91,7 +91,8 @@
     <string name="order_asc">ASC</string>
     <string name="order_desc">DESC</string>
     <string name="spinner_title">Velg kategori</string>
-
+    <string name="dialog_box_n">Avbryt</string>
+    <string name="dialog_box_message_login">Ønsker du å logge inn?</string>
     <string name="loginn">Log inn</string>
     <string name="logout">Logg ut</string>
 
