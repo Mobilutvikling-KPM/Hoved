@@ -77,8 +77,8 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 //        }
         //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
         val requestOptions = RequestOptions()
-            .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.ic_baseline_comment_24)
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .error(R.drawable.ic_baseline_image_24)
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
