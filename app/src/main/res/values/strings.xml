@@ -54,6 +54,8 @@
     <string name="pick_toppings">toppings</string>
     <string name="dialog_fire_missiles">hoho</string>
     <string name="fire">haha</string>
+    <string name="kommentarfeilmelding">Kommentarfelt kan ikke være tomt</string>
+
 
     <string-array name="Kategorier">
         <item>Underholdning</item>

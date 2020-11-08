@@ -90,7 +90,6 @@ companion object {
             //view.event_kategori.
             view.event_utfyll_sted.setText(sendtBundle!!.sted)
 
-
             if(!sendtBundle!!.image.equals("")) {
                 val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_baseline_image_24)
@@ -236,7 +235,6 @@ companion object {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if(requestCode == REQUEST_KODE && resultCode == Activity.RESULT_OK && data!!.data != null){
             imageURI = data.data
             try {

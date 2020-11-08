@@ -77,7 +77,8 @@ class KommentarRecyclerAdapter(var clickListener: OnKommentarItemClickListener) 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_baseline_account_circle_24)
-                .error(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_baseline_account_circle_24)
+
 
             Glide.with(itemView.context)
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
