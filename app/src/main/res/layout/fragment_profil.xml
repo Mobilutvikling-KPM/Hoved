@@ -105,6 +105,7 @@
             android:layout_margin="@dimen/page_margin"
             android:layout_below="@+id/biotext"
             android:background="@android:color/darker_gray"/>
+
         <RelativeLayout
             android:id="@+id/buttonLayout"
             android:layout_below="@id/strek3"
@@ -135,8 +136,23 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/slett_bruker"
                 app:backgroundTint="@color/red"/>
+
         </RelativeLayout>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/venner_lagdeEvent_tittel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/buttonLayout"
+            style="@style/Title"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/venners_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/venner_lagdeEvent_tittel"/>
+        </RelativeLayout>
+
 
 </ScrollView>

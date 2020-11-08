@@ -47,8 +47,6 @@ class LoginFragment : Fragment() {
 
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeAuthenticationState()
@@ -106,6 +104,7 @@ class LoginFragment : Fragment() {
                 // you can customize the welcome message they see by
                 // utilizing the getFactWithPersonalization() function provided
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                        navController!!.popBackStack(R.id.event_liste_fragment2, true)
                         navController!!.navigate(R.id.event_liste_fragment2)
                     }
 

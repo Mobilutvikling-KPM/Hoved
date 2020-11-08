@@ -74,8 +74,8 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
     }
 
 
-    fun økKommentarer(event: Event){
-
+    fun økAntKommentarer(eventID: String){
+        eventRepo.økAntKommentar(eventID)
     }
 
 
@@ -151,7 +151,7 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
 
     override fun onCallbackHolder(event: Event) {
         mPåmeldteEventsHolder.add(event)
-
+        Log.i("lala","hey ho")
         for(ev: Event in mPåmeldteEventsHolder)
             onCallBack3(mPåmeldteEventsHolder)
     }

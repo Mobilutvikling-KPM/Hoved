@@ -91,14 +91,16 @@ companion object {
             view.event_utfyll_sted.setText(sendtBundle!!.sted)
 
 
-            val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_baseline_image_24)
-                .error(R.drawable.ic_baseline_image_24)
+            if(!sendtBundle!!.image.equals("")) {
+                val requestOptions = RequestOptions()
+                    .placeholder(R.drawable.ic_baseline_image_24)
+                    .error(R.drawable.ic_baseline_image_24)
 
-            Glide.with(this@Event_utfyllingsskjema)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-                .load(sendtBundle!!.image) //hvilket bilde som skal loades
-                .into(view.MineEvent_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+                Glide.with(this@Event_utfyllingsskjema)
+                    .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                    .load(sendtBundle!!.image) //hvilket bilde som skal loades
+                    .into(view.MineEvent_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+            }
         }
 
         return view

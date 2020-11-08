@@ -70,6 +70,9 @@
         <action
             android:id="@+id/action_besoekProfilFragment_to_event_Besoek_Rendrer"
             app:destination="@id/event_Besoek_Rendrer" />
+        <action
+            android:id="@+id/action_besoekProfilFragment_to_eventFragment2"
+            app:destination="@id/eventFragment2" />
     </fragment>
     <fragment
         android:id="@+id/event_Besoek_Rendrer"
@@ -91,5 +94,10 @@
     <fragment
         android:id="@+id/loginFragment2"
         android:name="com.example.myapplication.fragments.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment2_to_event_liste_fragment2"
+            app:destination="@id/event_liste_fragment2"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

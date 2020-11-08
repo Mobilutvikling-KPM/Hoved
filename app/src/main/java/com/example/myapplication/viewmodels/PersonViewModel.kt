@@ -2,6 +2,7 @@ package com.example.myapplication.viewmodels
 
 import RecyclerView.RecyclerView.Moduls.*
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
@@ -73,8 +74,10 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     }
 
     fun finnVenner(personID: String){
+        mIsUpdating.setValue(true)
         mPersonHolder.clear()
         personRepo.finnVenner(personID)
+
     }
 
     fun hentInnloggetProfil(id: String, nyBruker: Boolean){
@@ -121,6 +124,7 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
 
     override fun onCallBack(liste: ArrayList<Person>) {
         mIsUpdating.setValue(false)
+        Log.i("lala","hey ho")
         mPersoner.setValue(liste)
     }
 
@@ -129,10 +133,14 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
        erBekjent.setValue(skjekk)
     }
 
-    override fun onCallbackHolder(person: Person) {
-        mPersonHolder.add(person);
-
-        onCallBack(mPersonHolder)
+    override fun onCallbackHolder(person: Person?) {
+        if(person != null) {
+            mPersonHolder.add(person);
+            mIsUpdating.setValue(false)
+            Log.i("lala", "hey ho")
+            // for(prs: Person in mPersonHolder)
+            onCallBack(mPersonHolder)
+        } else  mIsUpdating.setValue(false)
     }
 
 }

@@ -80,6 +80,7 @@ class ProfilFragment : Fragment() {
         view.strek2.visibility = View.GONE
         view.bio.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
+
         //view.redigerKnapp.visibility = View.GONE
         //view.slettKnapp.visibility = View.GONE
 
@@ -102,6 +103,7 @@ class ProfilFragment : Fragment() {
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
                 .load(it.profilBilde) //hvilket bilde som skal loades
                 .into(view.bilde_profil_item) //Hvor vi ønsker å loade bildet inn i
+
 
 
             view.bilde_profil_item.visibility = View.VISIBLE

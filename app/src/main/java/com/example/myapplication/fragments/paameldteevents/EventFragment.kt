@@ -7,6 +7,7 @@ import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.Moduls.Påmeld
 import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -128,6 +129,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
         })
 
+        if(loginViewModel.getBruker() != null)
         personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
 
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
@@ -141,6 +143,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         })
 
+        if(loginViewModel.getBruker() != null)
         eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
 
         personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
@@ -185,16 +188,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 dateFormat = SimpleDateFormat("dd/MM/yyyy")
                 date = dateFormat.format(calendar.getTime())
 
-//                var arr = sendtBundle.kommentarListe
-//                arr.add(
-//                    Kommentar(
-//                        innloggetProfil!!,
-//                        date,
-//                        view.kommentar_edit_tekst.text.toString()
-//                    )
-//                )
-                //eventViewModel.leggTilKommentar(sendtBundle.eventID, arr)
-
                 kommentarViewModel.leggTilKommentar(
                     Kommentar(
                         sendtBundle.eventID,
@@ -203,7 +196,9 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                         view.kommentar_edit_tekst.text.toString()
                     )
                 )
-            }
+
+                eventViewModel.økAntKommentarer(sendtBundle.eventID)
+            } else showLoginDialog("Du må logge deg på for å legge ut kommentar")
 
         }
 
@@ -211,20 +206,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             if(loginViewModel.getBruker() != null){
 
                 if(!erPåmeldt) {
-//                    val event = Event(
-//                        sendtBundle.eventID,
-//                        sendtBundle.title,
-//                        sendtBundle.body,
-//                        sendtBundle.image,
-//                        sendtBundle.dato,
-//                        sendtBundle.klokke,
-//                        sendtBundle.sted,
-//                        sendtBundle.forfatter,
-//                        sendtBundle.kategori,
-//                        sendtBundle.antPåmeldte,
-//                        sendtBundle.antKommentar,
-//                        1
-//                    )
 
                     val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
                     eventViewModel.påmeldEvent(påmeld, erPåmeldt)
@@ -239,18 +220,35 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                     view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
                 }
 
-            }
+            } else showLoginDialog("Du må logge deg på for å bli med på ett event")
         }
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         view.brukernavn_event.setOnClickListener {
-            val bundle = bundleOf("Person" to personViewModel.getEnkeltPerson().value)
-            navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+            if(innloggetProfil != null) {
+                val bundle = bundleOf("Person" to personViewModel.getEnkeltPerson().value)
+                navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+            } else showLoginDialog("Du må logge deg på for å besøke en profil")
         }
 
         initRecyclerView()
         addDataSet()
+    }
+
+    private fun showLoginDialog(handling: String) {
+        AlertDialog.Builder(context)
+            .setTitle(handling)
+            .setMessage(R.string.dialog_box_message_login) // Specifying a listener allows you to take an action before dismissing the dialog.
+            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setPositiveButton(
+                android.R.string.yes
+            ) { dialog, which ->
+                navController!!.navigate(R.id.loginFragment2)
+            } // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton(R.string.dialog_box_n,null )
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
 
@@ -306,9 +304,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     override fun onItemClick(item: Kommentar, position: Int) {
 
         //Gjør om til personID
-        val bundle = bundleOf("Person" to item.person)
-        navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
-
+        if(innloggetProfil != null) {
+            val bundle = bundleOf("Person" to item.person)
+            navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+        }else showLoginDialog("Du må logge deg på for å besøke profil")
     }
 
 
