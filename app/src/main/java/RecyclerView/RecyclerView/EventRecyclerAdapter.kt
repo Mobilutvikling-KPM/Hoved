@@ -117,7 +117,7 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_baseline_image_24)
-                .error(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_baseline_image_24)
 
             Glide.with(itemView.context)
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
@@ -163,8 +163,8 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_image_24)
 
             Glide.with(itemView.context)
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
@@ -219,8 +219,8 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_image_24)
 
             Glide.with(itemView.context)
                 .applyDefaultRequestOptions(requestOptions) // putt inn requestOption

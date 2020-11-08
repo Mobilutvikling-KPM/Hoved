@@ -1,21 +1,25 @@
 package com.example.myapplication.fragments.profil
 
 import RecyclerView.RecyclerView.Moduls.Person
-import android.R.attr.bitmap
 import android.app.Activity
+import android.app.AppOpsManager
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
@@ -31,10 +35,8 @@ import com.example.myapplication.viewmodels.ViewModelFactory
 import com.example.myapplication.viewmodels.isLoading
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import kotlinx.android.synthetic.main.fragment_rediger_profil.*
 import kotlinx.android.synthetic.main.fragment_rediger_profil.view.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -104,11 +106,12 @@ class RedigerProfilFragment : Fragment(), isLoading {
             .placeholder(R.drawable.ic_baseline_group_24)
             .error(R.drawable.ic_baseline_group_24)
 
-        Glide.with(this@RedigerProfilFragment)
-            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-            .load(sendtBundle!!.profilBilde) //hvilket bilde som skal loades
-            .into(view.utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
-
+        if(!sendtBundle.profilBilde.equals("")) {
+            Glide.with(this@RedigerProfilFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(sendtBundle.profilBilde) //hvilket bilde som skal loades
+                .into(view.rProfil_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+        }
 
         // Inflate the layout for this fragment
         val viewModelFactory = ViewModelFactory(1, "", this@RedigerProfilFragment)
@@ -164,6 +167,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
             }
         }
     }
+
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -174,7 +178,11 @@ class RedigerProfilFragment : Fragment(), isLoading {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = getPhotoFile(FILE_NAME)
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFile)
-        val fileProvider = FileProvider.getUriForFile(this.requireContext(), "com.example.myapplication.fileprovider", photoFile)
+        val fileProvider = FileProvider.getUriForFile(
+            this.requireContext(),
+            "com.example.myapplication.fileprovider",
+            photoFile
+        )
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
         //if (takePictureIntent.resolveActivity(activity!!.packageManager) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -185,13 +193,14 @@ class RedigerProfilFragment : Fragment(), isLoading {
         val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null && data.data != null) {
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data!!.data != null){
             imageURI = data.data
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageURI)
-                utfylling_bilde!!.setImageBitmap(bitmap)
+                rProfil_utfylling_bilde!!.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -201,7 +210,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
             val myUri = Uri.fromFile(File(photoFile.absolutePath))
             val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
             imageURI = myUri
-            utfylling_bilde.setImageBitmap(takenImage)
+            view?.rProfil_utfylling_bilde?.setImageBitmap(takenImage)
         }
     }
     override fun loadingFinished(id: String) {

@@ -7,12 +7,15 @@ import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.Moduls.Påmeld
 import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -58,6 +61,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         super.onCreate(savedInstanceState)
 
         sendtBundle = arguments?.getParcelable<Event>("Event")!!
+
     }
 
     override fun onCreateView(
@@ -79,6 +83,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.ic_baseline_image_24)
             .error(R.drawable.ic_baseline_image_24)
+
+        val requestOptionsProfil = RequestOptions()
+            .placeholder(R.drawable.ic_baseline_account_circle_24)
+            .error(R.drawable.ic_baseline_account_circle_24)
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
@@ -123,7 +131,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             view.brukernavn_event.text = it.brukernavn
 
             Glide.with(this@EventFragment)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .applyDefaultRequestOptions(requestOptionsProfil) // putt inn requestOption
                 .load(it.profilBilde) //hvilket bilde som skal loades
                 .into(view.bilde_profil_event) //Hvor vi ønsker å loade bildet inn i
         })
@@ -148,7 +156,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             innloggetProfil = it
 
             Glide.with(this@EventFragment)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .applyDefaultRequestOptions(requestOptionsProfil) // putt inn requestOption
                 .load(it.profilBilde) //hvilket bilde som skal loades
                 .into(view.kommentar_profil_bilde) //Hvor vi ønsker å loade bildet inn i
         })
@@ -171,19 +179,21 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             .load(bildeAdresse) //hvilket bilde som skal loades
             .into(view.frontBilde) //Hvor vi ønsker å loade bildet inn i
 
-        setPlaceholderGoogleMap(view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //recycler_view_kommentar.suppressLayout(true)
+        //recycler_view_kommentar.setNestedScrollingEnabled(false);
         //placeholder logget inn person
         view.button_post_comment.setOnClickListener {
-
-            if (loginViewModel.getBruker() != null) {
-                dateFormat = SimpleDateFormat("dd/MM/yyyy")
-                date = dateFormat.format(calendar.getTime())
+            view.hideKeyboard()
+            if (!view.kommentar_edit_tekst.text.toString().equals("")) {
+                if (loginViewModel.getBruker() != null) {
+                    dateFormat = SimpleDateFormat("dd/MM/yyyy")
+                    date = dateFormat.format(calendar.getTime())
 
 //                var arr = sendtBundle.kommentarListe
 //                arr.add(
@@ -193,18 +203,21 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 //                        view.kommentar_edit_tekst.text.toString()
 //                    )
 //                )
-                //eventViewModel.leggTilKommentar(sendtBundle.eventID, arr)
+                    //eventViewModel.leggTilKommentar(sendtBundle.eventID, arr)
 
-                kommentarViewModel.leggTilKommentar(
-                    Kommentar(
-                        sendtBundle.eventID,
-                        innloggetProfil!!,
-                                date,
-                        view.kommentar_edit_tekst.text.toString()
+                    kommentarViewModel.leggTilKommentar(
+                        Kommentar(
+                            sendtBundle.eventID,
+                            innloggetProfil!!,
+                            date,
+                            view.kommentar_edit_tekst.text.toString()
+                        )
                     )
-                )
+                }
+                kommentar_edit_tekst.setText("")
             }
-
+            else
+                view.kommentar_edit_tekst.error = "Kommentarfeltet kan ikke være tomt"
         }
 
         view.button_bliMed.setOnClickListener {
@@ -252,7 +265,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         initRecyclerView()
         addDataSet()
     }
-
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 
     private fun addDataSet() {
 //        var arr: ArrayList<Person> =  kommentarViewModel.getKommentarPerson().value!!
@@ -291,17 +307,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     }
 
     //PLACEHOLDER GOOGLE MAPS IMAGE
-    fun setPlaceholderGoogleMap(view: View) {
-        //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
-        val requestOptions = RequestOptions()
-            .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.ic_baseline_comment_24)
-
-        Glide.with(this@EventFragment)
-            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-            .load("https://leafletjs.com/examples/quick-start/thumbnail.png") //hvilket bilde som skal loades
-            .into(view.google_placeholder_image) //Hvor vi ønsker å loade bildet inn i
-    }
 
     override fun onItemClick(item: Kommentar, position: Int) {
 

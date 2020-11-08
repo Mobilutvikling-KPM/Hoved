@@ -9,7 +9,7 @@
             type="com.example.myapplication.fragments.paameldteevents.ModelEvent" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -159,12 +159,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/page_margin"
                     android:text="Kategori"/>
-
-                <ImageView
-                    android:id="@+id/google_placeholder_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -216,11 +210,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_kommentar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

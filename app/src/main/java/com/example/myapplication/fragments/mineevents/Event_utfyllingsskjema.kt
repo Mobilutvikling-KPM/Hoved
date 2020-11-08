@@ -95,10 +95,12 @@ companion object {
                 .placeholder(R.drawable.ic_baseline_image_24)
                 .error(R.drawable.ic_baseline_image_24)
 
-            Glide.with(this@Event_utfyllingsskjema)
-                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-                .load(sendtBundle!!.image) //hvilket bilde som skal loades
-                .into(view.MineEvent_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+            if(!sendtBundle!!.image.equals("")) {
+                Glide.with(this@Event_utfyllingsskjema)
+                    .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                    .load(sendtBundle!!.image) //hvilket bilde som skal loades
+                    .into(view.MineEvent_utfylling_bilde) //Hvor vi ønsker å loade bildet inn i
+            }
         }
 
         return view
@@ -234,7 +236,6 @@ companion object {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if(requestCode == REQUEST_KODE && resultCode == Activity.RESULT_OK && data!!.data != null){
             imageURI = data.data
             try {
