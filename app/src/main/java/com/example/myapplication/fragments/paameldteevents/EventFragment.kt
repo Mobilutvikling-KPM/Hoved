@@ -9,6 +9,7 @@ import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.content.Context
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -142,14 +143,24 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
             if(it){
+                view.button_bliMed.setBackgroundColor(Color.WHITE)
+                view.button_bliMed.setTextColor(Color.rgb(51, 0, 204))
                 view.button_bliMed.text = "Meld av"
                 erPåmeldt = true
             } else {
+                view.button_bliMed.setBackgroundColor(Color.rgb(51, 0, 204))
+                view.button_bliMed.setTextColor(Color.WHITE)
                 view.button_bliMed.text = "Bli med"
                 erPåmeldt = false
             }
 
+
+            if(sendtBundle.forfatter == innloggetProfil?.personID) {
+                view.button_bliMed.text = ""
+                view.button_bliMed.setBackgroundColor(Color.WHITE)
+            }
         })
+
 
         if(loginViewModel.getBruker() != null)
         eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
@@ -175,6 +186,8 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.event_kategori.text = sendtBundle.kategori
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
+
+
 
 
         Glide.with(this@EventFragment)
@@ -218,21 +231,24 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.button_bliMed.setOnClickListener {
             if(loginViewModel.getBruker() != null){
 
-                if(!erPåmeldt) {
+                if(sendtBundle.forfatter != innloggetProfil?.personID){
+                    if(!erPåmeldt) {
 
-                    val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
-                    eventViewModel.påmeldEvent(påmeld, erPåmeldt)
+                        var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                        view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
 
-                    var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
-                    view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
-                } else {
+                        val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
 
+                        eventViewModel.påmeldEvent(påmeld, erPåmeldt)
 
-                    eventViewModel.avsluttPåmeldt(loginViewModel.getBruker()!!.uid,sendtBundle.eventID, erPåmeldt)
-                    var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
-                    view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
+                    } else {
+
+                        var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                        view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
+
+                        eventViewModel.avsluttPåmeldt(loginViewModel.getBruker()!!.uid,sendtBundle.eventID, erPåmeldt)
+                    }
                 }
-
             } else showLoginDialog("Du må logge deg på for å bli med på ett event")
         }
 
@@ -240,8 +256,14 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         view.brukernavn_event.setOnClickListener {
             if(innloggetProfil != null) {
-                val bundle = bundleOf("Person" to personViewModel.getEnkeltPerson().value)
-                navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+
+                if( sendtBundle.forfatter != innloggetProfil!!.personID) {
+                    val bundle = bundleOf("Person" to personViewModel.getEnkeltPerson().value)
+                    navController!!.navigate(
+                        R.id.action_eventFragment2_to_besoekProfilFragment,
+                        bundle
+                    )
+                } else navController!!.navigate(R.id.profilFragment2)
             } else showLoginDialog("Du må logge deg på for å besøke en profil")
         }
 
@@ -281,14 +303,15 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         if (length > 10)
             endOfString = 2
 
+       // Log.i("lala","påmeldt? " + erPåmeldt)
+
         var reformat =
             tekst.substring(0, endOfString)
         var tall = reformat.toInt()
 
-        Log.i("lala","Tallet inn stringformat: " + tall)
         if(!erPåmeldt){
-            tall = tall - 1
-        } else tall = tall + 1
+            tall = tall + 1
+        } else tall = tall - 1
 
         return tall
     }
@@ -296,23 +319,29 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     //Initierer og kobler recycleView til activityMain
     private fun initRecyclerView() {
         //Apply skjønner contexten selv.
+        var layoutMng:LinearLayoutManager = LinearLayoutManager(context)
+        layoutMng.setReverseLayout(true)
         recycler_view_kommentar.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = layoutMng
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
+
             kommentarAdapter = KommentarRecyclerAdapter(this@EventFragment)
             adapter = kommentarAdapter
         }
     }
 
-    //PLACEHOLDER GOOGLE MAPS IMAGE
 
     override fun onItemClick(item: Kommentar, position: Int) {
 
         //Gjør om til personID
         if(innloggetProfil != null) {
-            val bundle = bundleOf("Person" to item.person)
-            navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+            if( item.person.personID != innloggetProfil!!.personID){
+                val bundle = bundleOf("Person" to item.person)
+                navController!!.navigate(R.id.action_eventFragment2_to_besoekProfilFragment, bundle)
+            } else {
+                navController!!.navigate(R.id.profilFragment2)
+            }
         }else showLoginDialog("Du må logge deg på for å besøke profil")
     }
 

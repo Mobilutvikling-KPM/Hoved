@@ -269,7 +269,6 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
                     nr = nr -1
                 else nr = nr +1
 
-                Log.i("lala","RegneStykke: " +(nr))
                 ref.setValue(""+(nr))
             }
 
