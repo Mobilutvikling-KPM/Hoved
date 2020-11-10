@@ -51,6 +51,9 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid,null)
         else viewModelFactory = ViewModelFactory(2,"",null)
 
+        view.ingeneventerTV.visibility = View.GONE
+        view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
+
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
@@ -60,6 +63,14 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             if(loginViewModel.getBruker() != null)
                 eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
             eventAdapter.notifyDataSetChanged()
+
+            if (eventViewModel.getLagdeEvents().value!!.isNotEmpty()) {
+                ingeneventerTV.visibility = View.GONE
+                recyclerviewmineeventsbackgroundimage.visibility = View.GONE
+            } else {
+                ingeneventerTV.visibility = View.VISIBLE
+                recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
+            }
         })
 
         if(loginViewModel.getBruker() != null)

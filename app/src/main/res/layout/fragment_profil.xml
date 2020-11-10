@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin">
+        android:layout_margin="@dimen/page_margin" >
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bilde_frame"
@@ -151,7 +151,8 @@
             android:id="@+id/venners_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/venner_lagdeEvent_tittel"/>
+            android:layout_below="@id/venner_lagdeEvent_tittel"
+            android:paddingBottom="10dp"/>
         </RelativeLayout>
 
 

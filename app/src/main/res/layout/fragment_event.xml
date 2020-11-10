@@ -46,7 +46,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_launcher_background" />
+                            android:src="@drawable/ic_baseline_account_circle_24" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -56,7 +56,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:text="Henriette Bergensen"
                         android:layout_toEndOf="@id/bilde_frame"
                         />
                 </LinearLayout>
@@ -172,23 +171,21 @@
                     android:layout_marginTop="@dimen/page_margin">
 
                     <androidx.cardview.widget.CardView
+                        android:layout_marginLeft="5dp"
                         android:id="@+id/bilde_frame"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         app:cardCornerRadius="30dp"
                         app:cardElevation="5dp"
-                        android:layout_marginTop="10dp"
-                        >
+                        android:layout_marginTop="10dp">
 
                     <ImageView
                         android:id="@+id/kommentar_profil_bilde"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background"/>
-
+                        android:src="@drawable/ic_baseline_account_circle_24"/>
                     </androidx.cardview.widget.CardView>
-
                     <EditText
                         android:id="@+id/kommentar_edit_tekst"
                         android:background="#ededed"
@@ -196,13 +193,15 @@
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/black"
                         android:textColor="@color/black"
+                        android:layout_gravity="center"
                         android:layout_margin="@dimen/page_margin"
                         android:hint="@string/hint_kommentarFelt"/>
 
                     <Button
+                        android:layout_marginLeft="20dp"
                         android:id="@+id/button_post_comment"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@string/post"/>
 
                 </LinearLayout>

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.paameldteevents.PaameldteEventFragment">
-    >
 
         <TextView
             android:id="@+id/tittel_påmeldteEventer"
@@ -34,8 +33,25 @@
         app:spanCount="1"
         android:id="@+id/recycler_view_påmeldte"/>
 
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <TextView
+            android:id="@+id/ingenpaameldteeventerTV"
+            android:text="Du har ikke meldt deg på \n     noen eventer enda!"
+            android:textSize="25sp"
+            android:layout_marginTop="320dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+        <ImageView
+            android:id="@+id/recyclerviewpåmeldteeventsbackgroundimage"
+            android:src="@drawable/recyclerviewbackgroundpaameldteeventer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="210dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </RelativeLayout>
 </RelativeLayout>
 
 

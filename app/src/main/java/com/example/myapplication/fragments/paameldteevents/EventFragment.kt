@@ -193,6 +193,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         //placeholder logget inn person
         view.button_post_comment.setOnClickListener {
             view.hideKeyboard()
+            kommentar_edit_tekst.clearFocus()
             if (loginViewModel.getBruker() != null) {
                 if (!view.kommentar_edit_tekst.text.toString().equals("")) {
                     dateFormat = SimpleDateFormat("dd/MM/yyyy")
