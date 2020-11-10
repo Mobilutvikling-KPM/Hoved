@@ -111,6 +111,7 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
     }
 
     fun avsluttPåmeldt(innloggetID: String, eventID: String, erPåmeldt: Boolean){
+        this.erPåmeldt.setValue(false)
         eventRepo.avsluttPåmeldt(innloggetID,eventID, erPåmeldt)
     }
 
@@ -151,7 +152,7 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
 
     override fun onCallbackHolder(event: Event) {
         mPåmeldteEventsHolder.add(event)
-        Log.i("lala","hey ho")
+
         for(ev: Event in mPåmeldteEventsHolder)
             onCallBack3(mPåmeldteEventsHolder)
     }

@@ -58,6 +58,7 @@
 
 
     <string-array name="Kategorier">
+        <item></item>
         <item>Underholdning</item>
         <item>Sport</item>
         <item>Musikk</item>
@@ -79,7 +80,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="text_yes">yes</string>
     <string name="ascending_or_descending_order">Ascending or descending order</string>
-    <string name="text_filter_options">Filter Options</string>
+    <string name="text_filter_options">Filtrer søkeresultat</string>
     <string name="filter_by_author_or_date">Filter by author or date</string>
     <string name="text_author">Author</string>
     <string name="text_date">Date</string>
@@ -95,5 +96,7 @@
     <string name="dialog_box_message_login">Ønsker du å logge inn?</string>
     <string name="loginn">Log inn</string>
     <string name="logout">Logg ut</string>
+    <string name="Søk">Søk</string>
+    <string name="Fjern">Fjern</string>
 
 </resources>

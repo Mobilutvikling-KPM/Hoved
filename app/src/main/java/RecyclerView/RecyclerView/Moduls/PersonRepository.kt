@@ -167,6 +167,20 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         }
     }
 
+//    fun bliVenn2(personID: String, innloggetID: String){
+//        val ref = FirebaseDatabase.getInstance()
+//            .getReference("Folg") //Henter referanse til det du skriver inn
+//
+//        val vennskapID = ref.push().key!! // Lager en unik id som kan brukes i objektet
+//        onFind.erFunnet(true)
+//        ref.child(innloggetID).push()
+//
+//        ref.child(innloggetID).child(vennskapID).setValue(personID).addOnCompleteListener {
+//            //Noe kan skje når databsen er ferdig lastet inn
+//
+//        }
+//    }
+
     fun finnUtOmVenn(innloggetID:String, brukerID: String){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Folg")
@@ -179,13 +193,14 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                 var funnetPerson = false
                 if (p0!!.exists()) {
 
-
+                   // Log.i("lala","folg "+p0.value)
                     for (flg in p0.children) {
                         val folg = flg.getValue(Folg::class.java)
 
                         if(folg!!.personID == brukerID) {
                             funnetPerson = true
                         }
+
                     }
 
                     onFind.erFunnet(funnetPerson)

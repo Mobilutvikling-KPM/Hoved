@@ -44,22 +44,14 @@ class ProfilFragment : Fragment() {
 
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
-    var filePath: Uri? = null
 
     private var user: FirebaseUser? = null
     private var uuid: String? = ""
-
-    private var storage: FirebaseStorage? = null
-    private var storageReference: StorageReference? = null
-    //private var user: FirebaseUser? = null
-   // private var uuid: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         user = FirebaseAuth.getInstance().currentUser
         uuid = user?.uid
-        storage = FirebaseStorage.getInstance()
-        //storageReference = storage!!.reference.child("images").child(uuid!!)
     }
 
 
@@ -69,9 +61,6 @@ class ProfilFragment : Fragment() {
 
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
-
-
-        val imageView = view.bilde_profil_item
 
         //Skjul elementer frem til det er funnet data.
         view.bilde_profil_item.visibility = View.GONE

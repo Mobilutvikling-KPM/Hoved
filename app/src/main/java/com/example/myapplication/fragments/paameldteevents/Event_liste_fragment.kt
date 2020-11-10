@@ -6,15 +6,21 @@ import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 
 import android.util.Log
-import android.widget.SearchView
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +36,8 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Event fragment som viser ett enkelt event og dens
@@ -44,7 +52,18 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     var eventListe = ArrayList<Event>()
     var filtrertListe = ArrayList<Event>() //Listen som tar vare på det filtrerte resultatet
 
+    //SøkeVerdier
+    var søkeTekst: String = ""
+    var byNavn: String = ""
+    var kategoriValg: String = ""
+    var datoen: String = ""
+    var dag = 0
+    var måned = 0
+    var år = 0
 
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,19 +102,14 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 filtrertListe.clear()
                 if(newText == null || newText.length == 0){
-                    filtrertListe.addAll(eventListe)
+                    søkeTekst = ""
+                    filterSearch()
                 }else {
                     var filterMønster: String = newText.toString().toLowerCase().trim()
-
-                    for (item: Event in eventListe){
-                        if(item.title.toLowerCase().contains(filterMønster) ) {
-                            filtrertListe.add(item)
-                        }
-                    }
+                    søkeTekst = filterMønster
                 }
 
-                eventAdapter.submitList(filtrertListe)
-                eventAdapter.notifyDataSetChanged()
+                filterSearch()
                 return false
             }
         })
@@ -104,14 +118,124 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         return view
     }
 
+    /**
+     * Åpner en dialogbox med søkevalg som kan filtrere eventlisten
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showFilterDialog() {
         val context: Context = requireContext()
-        val dialog = MaterialDialog(context)
-            .noAutoDismiss()
+
+       var dialog = MaterialDialog(context)
+             .noAutoDismiss()
             .customView(R.layout.layout_filter)
+        var dato = dialog.findViewById<DatePicker>(R.id.datePicker_kat)
+
+        dialog.findViewById<Spinner>(R.id.dialogspinner).setOnItemSelectedListener(object:  AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                kategoriValg = dialog.findViewById<Spinner>(R.id.dialogspinner).selectedItem.toString()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+        })
+
+        dialog.findViewById<DatePicker>(R.id.datePicker_kat).setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
+            override fun onDateChanged(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+                dag = dato.dayOfMonth
+                måned = dato.month
+                år = dato.year
+
+                datoen = ""+ dato.dayOfMonth + "."+dato.month + "." +dato.year
+            }
+
+        })
+
+        dialog.findViewById<EditText>(R.id.kategori_byNavn).addTextChangedListener(object:
+            TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //Log.i("lala","Jeg blir forandra!!")
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                byNavn = dialog.findViewById<TextView>(R.id.kategori_byNavn).text.toString()
+            }
+        }
+
+        )
+
+        //set verdier dersom de allerede er blitt valgt
+        if(kategoriValg != "") {
+            var spinner = dialog.findViewById<Spinner>(R.id.dialogspinner)
+
+            var ant: Int = spinner.getCount()
+            for (i in 0 until ant){
+                if (spinner.getItemAtPosition(i).toString().equals(kategoriValg)){
+                    dialog.findViewById<Spinner>(R.id.dialogspinner).setSelection(i)
+                }
+            }
+        }
+
+        if(dag != 0)
+        dialog.findViewById<DatePicker>(R.id.datePicker_kat).updateDate(år,måned,dag)
+        if(byNavn != "")
+        dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
+//            .show()
+        dialog.findViewById<Button>(R.id.positive_button).setOnClickListener({
+
+            filterSearch()
+
+            dialog.hide()
+        })
+
+        dialog.findViewById<Button>(R.id.negative_button).setOnClickListener({
+                removeFilter()
+            dialog.hide()
+        })
+
         dialog.show()
+
     }
 
+
+    private fun filterSearch(){
+        filtrertListe.clear()
+
+        var filterMønster: String = søkeTekst.toLowerCase().trim()
+
+        for (item: Event in eventListe){
+
+            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(filterMønster)
+                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(datoen.toLowerCase())) {
+
+                filtrertListe.add(item)
+            }
+
+        }
+
+        eventAdapter.submitList(filtrertListe)
+        eventAdapter.notifyDataSetChanged()
+    }
+
+    private fun removeFilter(){
+        //SøkeVerdier
+        søkeTekst= ""
+        byNavn = ""
+        kategoriValg = ""
+        datoen = ""
+        dag = 0
+        måned = 0
+        år = 0
+
+        filtrertListe.clear()
+        filtrertListe.addAll(eventListe)
+
+        eventAdapter.submitList(filtrertListe)
+        eventAdapter.notifyDataSetChanged()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

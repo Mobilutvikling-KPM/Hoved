@@ -61,6 +61,10 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
         personRepo.bliVenn(folg)
     }
 
+//    fun bliVenn2(personID: String,innloggetID: String){
+//        personRepo.bliVenn2(personID,innloggetID)
+//    }
+
     fun sluttÅFølg(innloggetID: String, brukerID: String){
         personRepo.sluttÅFølg(innloggetID,brukerID)
     }
