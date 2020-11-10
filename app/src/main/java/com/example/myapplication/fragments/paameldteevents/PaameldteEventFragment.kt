@@ -22,7 +22,7 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.event_liste.view.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
@@ -48,12 +48,22 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
 
         val viewModelFactory = ViewModelFactory(0, "",null)
+        view.ingenpaameldteeventerTV.visibility = View.GONE
+        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
 
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
                 eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                 eventAdapter.notifyDataSetChanged()
+
+                if (eventViewModel.getPåmeldteEvents().value!!.isNotEmpty()) {
+                    ingenpaameldteeventerTV.visibility = View.GONE
+                    recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+                } else {
+                    ingenpaameldteeventerTV.visibility = View.VISIBLE
+                    recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
+                }
             })
 
             if(loginViewModel.getBruker() != null) {
@@ -64,7 +74,11 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
             if(it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
-            } else{  view.påmeldt_liste_ProgressBar.visibility = View.GONE}
+                view.ingenpaameldteeventerTV.visibility = View.GONE
+                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+            } else {
+                view.påmeldt_liste_ProgressBar.visibility = View.GONE
+            }
         })
 /*
         navController = findNavController()

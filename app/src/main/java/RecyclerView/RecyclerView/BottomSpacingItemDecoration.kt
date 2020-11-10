@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 //Denne klassen lager spacing mellom hvert recyclerview objekt
-class TopSpacingItemDecoration(private val padding: Int): RecyclerView.ItemDecoration(
+class BottomSpacingItemDecoration(private val padding: Int): RecyclerView.ItemDecoration(
 
 ) {
     override fun getItemOffsets(
@@ -15,10 +15,7 @@ class TopSpacingItemDecoration(private val padding: Int): RecyclerView.ItemDecor
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        //outRect.top = padding
-        outRect.left= padding
-        outRect.right= padding
-        outRect.bottom= padding
+        outRect.bottom = padding
     }
 
 }

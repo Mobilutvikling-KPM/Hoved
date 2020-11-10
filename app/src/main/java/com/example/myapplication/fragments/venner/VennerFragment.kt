@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.size
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -20,6 +21,7 @@ import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.view.*
+import kotlinx.android.synthetic.main.fragment_profil.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
 
@@ -44,6 +46,8 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         //Lager en viewModel med argumenter
         val viewModelFactory = ViewModelFactory(1,"",null)
 
+        view.ingenvennerTV.visibility = View.GONE
+        view.recyclerviewfriendsbackgroundimage.visibility = View.GONE
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
@@ -51,6 +55,13 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         personViewModel.getPersoner().observe(viewLifecycleOwner, Observer {
             personAdapter.submitList(personViewModel.getPersoner().value!!)
             personAdapter.notifyDataSetChanged()
+            if (personViewModel.getPersoner().value!!.isNotEmpty()) {
+                ingenvennerTV.visibility = View.GONE
+                recyclerviewfriendsbackgroundimage.visibility = View.GONE
+            } else {
+                ingenvennerTV.visibility = View.VISIBLE
+                recyclerviewfriendsbackgroundimage.visibility = View.VISIBLE
+            }
         })
 
         if(loginViewModel.getBruker() != null)
@@ -61,10 +72,17 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
             //Show og hide progress bar if isUpdating false osv.
             if(it) {
                 view.venner_liste_ProgressBar.visibility = View.VISIBLE
-            } else{  view.venner_liste_ProgressBar.visibility = View.GONE}
+                view.ingenvennerTV.visibility = View.GONE
+                view.recyclerviewfriendsbackgroundimage.visibility = View.GONE
+            }
+            else {  view.venner_liste_ProgressBar.visibility = View.GONE
+                    view.ingenvennerTV.visibility = View.VISIBLE
+                    view.recyclerviewfriendsbackgroundimage.visibility = View.VISIBLE
+            }
         })
         // Inflate the layout for this fragment
         return view
+
     }
 
 

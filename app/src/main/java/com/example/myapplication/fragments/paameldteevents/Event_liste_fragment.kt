@@ -1,5 +1,6 @@
 package com.example.myapplication.event
 
+import RecyclerView.RecyclerView.BottomSpacingItemDecoration
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
@@ -260,7 +261,9 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         recycler_view.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
+            //val bottomSpacingItemDecoration = BottomSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
+            //addItemDecoration(bottomSpacingItemDecoration)
             eventAdapter = EventRecyclerAdapter(this@Event_liste_fragment, null)
             adapter = eventAdapter
         }

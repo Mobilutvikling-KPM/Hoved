@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments.profil
 
+import RecyclerView.RecyclerView.BottomSpacingItemDecoration
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.Moduls.Folg
@@ -173,7 +174,8 @@ class BesoekProfilFragment : Fragment(), OnEventItemClickListener {
         //Apply skjønner contexten selv.
         venners_recycler.apply {
             layoutManager = LinearLayoutManager(context)
-            val topSpacingDecoration = TopSpacingItemDecoration(20)
+            val topSpacingDecoration = TopSpacingItemDecoration(10)
+            val bottomSpacingItemDecoration= BottomSpacingItemDecoration(15)
             addItemDecoration(topSpacingDecoration)
             eventAdapter = EventRecyclerAdapter(this@BesoekProfilFragment, null)
             adapter = eventAdapter
