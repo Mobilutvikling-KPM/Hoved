@@ -72,7 +72,7 @@ class KommentarRecyclerAdapter(var clickListener: OnKommentarItemClickListener) 
         fun bind(kommentar: Kommentar) {
             person_navn.setText(kommentar.person.brukernavn)
             kommentar_Tekst.setText(kommentar.kommentarTekst)
-            dato.setText(kommentar.date)
+            dato.setText("-   " + kommentar.date)
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()

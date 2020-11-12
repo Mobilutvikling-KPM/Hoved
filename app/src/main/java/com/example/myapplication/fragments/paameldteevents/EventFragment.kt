@@ -148,7 +148,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 view.button_bliMed.text = "Meld av"
                 erPåmeldt = true
             } else {
-                view.button_bliMed.setBackgroundColor(Color.rgb(51, 0, 204))
+                view.button_bliMed.setBackgroundColor(Color.rgb(98, 0, 238))
                 view.button_bliMed.setTextColor(Color.WHITE)
                 view.button_bliMed.text = "Bli med"
                 erPåmeldt = false
@@ -208,7 +208,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             view.hideKeyboard()
             kommentar_edit_tekst.clearFocus()
             if (loginViewModel.getBruker() != null) {
-                if (!view.kommentar_edit_tekst.text.toString().equals("")) {
+                if (view.kommentar_edit_tekst.text.toString() != "") {
                     dateFormat = SimpleDateFormat("dd/MM/yyyy")
                     date = dateFormat.format(calendar.getTime())
 
@@ -272,7 +272,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         addDataSet()
     }
 
-    fun View.hideKeyboard() {
+    private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }

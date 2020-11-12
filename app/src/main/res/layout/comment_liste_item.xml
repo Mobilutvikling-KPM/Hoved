@@ -14,22 +14,23 @@
         android:layout_marginBottom="@dimen/page_margin"
         android:background="@android:color/darker_gray"/>
 
+    <LinearLayout
+        android:id="@+id/brukernavnLin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
             android:id="@+id/bilde_frame"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="5dp"
-            android:layout_marginTop="@dimen/page_margin"
-            >
-
+            android:layout_marginTop="@dimen/page_margin" >
             <ImageView
                 android:id="@+id/bilde_profil_kommentar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background" />
-
+                android:src="@drawable/ic_baseline_account_circle_24" />
         </androidx.cardview.widget.CardView>
 
         <Button
@@ -37,27 +38,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="Henriette Bergensen"
-            android:layout_toEndOf="@id/bilde_frame"
-             />
+            android:text="Henriette Bergensen" />
 
         <TextView
             android:id="@+id/kommentar_dato"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21-09-2020"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/page_margin"
-            android:layout_below="@id/brukernavn_kommentar"
-            android:layout_toEndOf="@id/bilde_frame"/>
+            android:textStyle="bold"/>
+    </LinearLayout>
 
         <TextView
             android:id="@+id/kommentar_tekst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/page_margin"
-            android:layout_toEndOf="@id/bilde_frame"
-            android:layout_below="@id/kommentar_dato"
+            android:layout_below="@id/brukernavnLin"
+            android:layout_marginLeft="50dp"
             android:text="@string/input"/>
 
     </RelativeLayout>

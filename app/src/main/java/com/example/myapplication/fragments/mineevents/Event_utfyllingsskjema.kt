@@ -28,6 +28,8 @@ import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import com.example.myapplication.viewmodels.isLoading
 import kotlinx.android.synthetic.main.event_utfyllingskjema.*
+import kotlinx.android.synthetic.main.event_utfyllingskjema.event_utfyll_dato
+import kotlinx.android.synthetic.main.event_utfyllingskjema.event_utfyll_klokke
 import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import java.io.File
 import java.io.IOException

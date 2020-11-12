@@ -1,10 +1,11 @@
 package com.example.myapplication.event
 
-import RecyclerView.RecyclerView.BottomSpacingItemDecoration
+
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -13,21 +14,15 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
-import android.util.Log
 import android.widget.*
+import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
-
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -36,8 +31,10 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
+import kotlinx.android.synthetic.main.event_utfyllingskjema.*
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Event fragment som viser ett enkelt event og dens
@@ -57,13 +54,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     var byNavn: String = ""
     var kategoriValg: String = ""
     var datoen: String = ""
-    var dag = 0
-    var måned = 0
-    var år = 0
 
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,24 +64,26 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
-        val viewModelFactory = ViewModelFactory(1,"",null)
+        val viewModelFactory = ViewModelFactory(1, "", null)
 
-        eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
-           if(eventListe.size == 0)
-            eventListe.addAll(it)
+            if (eventListe.size == 0)
+                eventListe.addAll(it)
             eventAdapter.notifyDataSetChanged()
         })
 
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
 
-            if(it) {
+            if (it) {
                 view.event_liste_ProgressBar.visibility = View.VISIBLE
-            } else{  view.event_liste_ProgressBar.visibility = View.GONE}
+            } else {
+                view.event_liste_ProgressBar.visibility = View.GONE
+            }
         })
 
-        view.knapp_åpne_kategori.setOnClickListener{
-        showFilterDialog()
+        view.knapp_åpne_kategori.setOnClickListener {
+            showFilterDialog()
         }
 
 
@@ -99,12 +93,13 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 filtrertListe.clear()
-                if(newText == null || newText.length == 0){
+                if (newText == null || newText.length == 0) {
                     søkeTekst = ""
                     filterSearch()
-                }else {
+                } else {
                     var filterMønster: String = newText.toString().toLowerCase().trim()
                     søkeTekst = filterMønster
                 }
@@ -114,73 +109,87 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             }
         })
 
-
         return view
     }
 
     /**
      * Åpner en dialogbox med søkevalg som kan filtrere eventlisten
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun showFilterDialog() {
         val context: Context = requireContext()
 
-       var dialog = MaterialDialog(context)
-             .noAutoDismiss()
-            .customView(R.layout.layout_filter)
-        var dato = dialog.findViewById<DatePicker>(R.id.datePicker_kat)
+        var dialog = MaterialDialog(context)
+            .noAutoDismiss()
+            .customView(R.layout.layout_filter_kategori)
+        var dato = dialog.findViewById<TextView>(R.id.kategori_dato)
+        var spinner = dialog.findViewById<Spinner>(R.id.kategori_spinner)
 
-        dialog.findViewById<Spinner>(R.id.dialogspinner).setOnItemSelectedListener(object:  AdapterView.OnItemSelectedListener {
+        dialog.findViewById<Spinner>(R.id.kategori_spinner).setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                kategoriValg = dialog.findViewById<Spinner>(R.id.dialogspinner).selectedItem.toString()
+                if(spinner.selectedItemPosition != 0)
+                kategoriValg =
+                    dialog.findViewById<Spinner>(R.id.kategori_spinner).selectedItem.toString()
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
         })
 
-        dialog.findViewById<DatePicker>(R.id.datePicker_kat).setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
-            override fun onDateChanged(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-                dag = dato.dayOfMonth
-                måned = dato.month
-                år = dato.year
-
-                datoen = ""+ dato.dayOfMonth + "."+dato.month + "." +dato.year
-            }
-
-        })
-
-        dialog.findViewById<EditText>(R.id.kategori_byNavn).addTextChangedListener(object:
-            TextWatcher{
+        dialog.findViewById<TextView>(R.id.kategori_dato).addTextChangedListener(object :
+            TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 //Log.i("lala","Jeg blir forandra!!")
             }
-
             override fun afterTextChanged(p0: Editable?) {
-                byNavn = dialog.findViewById<TextView>(R.id.kategori_byNavn).text.toString()
+                datoen = dialog.findViewById<TextView>(R.id.kategori_dato).text.toString()
             }
-        }
+        })
 
-        )
+        dialog.findViewById<EditText>(R.id.kategori_byNavn).addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //Log.i("lala","Jeg blir forandra!!")
+            }
+            override fun afterTextChanged(p0: Editable?) {
+                byNavn = dialog.findViewById<EditText>(R.id.kategori_byNavn).text.toString()
+            }
+        })
+        dato.setOnClickListener {
+            dato.error = null
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            context.let { it1 ->
+                DatePickerDialog(
+                    it1,
+                    { _, year, monthOfYear, dayOfMonth ->
+                        // Display Selected date in textbox
+                        dato.text = "" + dayOfMonth + "." + monthOfYear + "." + year
+                    }, year, month, day
+                )
+            }.show()
+        }
 
         //set verdier dersom de allerede er blitt valgt
         if(kategoriValg != "") {
-            var spinner = dialog.findViewById<Spinner>(R.id.dialogspinner)
+            var spinner = dialog.findViewById<Spinner>(R.id.kategori_spinner)
 
             var ant: Int = spinner.getCount()
             for (i in 0 until ant){
                 if (spinner.getItemAtPosition(i).toString().equals(kategoriValg)){
-                    dialog.findViewById<Spinner>(R.id.dialogspinner).setSelection(i)
+                    dialog.findViewById<Spinner>(R.id.kategori_spinner).setSelection(i)
                 }
             }
         }
 
-        if(dag != 0)
-        dialog.findViewById<DatePicker>(R.id.datePicker_kat).updateDate(år,måned,dag)
+        if(datoen != "")
+        dialog.findViewById<TextView>(R.id.kategori_dato).text = datoen
         if(byNavn != "")
         dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
 //            .show()
@@ -192,7 +201,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         })
 
         dialog.findViewById<Button>(R.id.negative_button).setOnClickListener({
-                removeFilter()
+            removeFilter()
             dialog.hide()
         })
 
@@ -208,8 +217,12 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         for (item: Event in eventListe){
 
-            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(filterMønster)
-                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(datoen.toLowerCase())) {
+            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(
+                    filterMønster
+                )
+                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(
+                    datoen.toLowerCase()
+                )) {
 
                 filtrertListe.add(item)
             }
@@ -226,9 +239,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         byNavn = ""
         kategoriValg = ""
         datoen = ""
-        dag = 0
-        måned = 0
-        år = 0
 
         filtrertListe.clear()
         filtrertListe.addAll(eventListe)

@@ -6,12 +6,14 @@ import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.OnKnappItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.app.AlertDialog
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -51,11 +53,17 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid,null)
         else viewModelFactory = ViewModelFactory(2,"",null)
 
-        view.ingeneventerTV.visibility = View.GONE
-        view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
-
         //Sender inn viewModel
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
+
+        // Endringer for Landscape
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.ingeneventerTV.layoutParams as ViewGroup.MarginLayoutParams
+            params1.setMargins(0, 480 ,0, 0, )
+            val params2 = view.recyclerviewmineeventsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
+            params2.setMargins(0, 250 ,0, 0, )
+        }
 
         //Observerer endringer i event listen
         if(loginViewModel.getBruker() != null)
@@ -63,7 +71,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             if(loginViewModel.getBruker() != null)
                 eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
             eventAdapter.notifyDataSetChanged()
-
+        // Fjerner bakgrunn om det er noe i listen - ellers viser det
             if (eventViewModel.getLagdeEvents().value!!.isNotEmpty()) {
                 ingeneventerTV.visibility = View.GONE
                 recyclerviewmineeventsbackgroundimage.visibility = View.GONE
