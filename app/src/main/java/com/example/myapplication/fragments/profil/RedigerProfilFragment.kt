@@ -145,7 +145,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
             }
 
             else if (! utfyll_navn.text.toString().isEmpty() && utfyll_alder.text.toString().isDigitsOnly()){
-                Log.i("lala", "REgistrer profil blir trykket på")
 
                 val person = Person(
                     sendtBundle.personID, //genereres automatisk

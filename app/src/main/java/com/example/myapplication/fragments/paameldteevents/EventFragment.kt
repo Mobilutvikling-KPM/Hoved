@@ -48,7 +48,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
     private var eventViewModel: EventViewModel = EventViewModel(1,"",null)
-   // private lateinit var eventViewModel: EventViewModel
+    // private lateinit var eventViewModel: EventViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
     var innloggetProfil: Person? = null
@@ -72,15 +72,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     ): View? {
 
 
-//        //DataBinding i ett fragment -- SKIFT TIL DATABINDING SENERE
-//        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_event, container, false)
-//
-//        binding.modelEvent = model
-//
-//        binding.apply {
-//            model?.tittel = "Dette er test nr2"
-//            invalidateAll()
-//        }
         //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.ic_baseline_image_24)
@@ -99,33 +90,13 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         kommentarViewModel =
             ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
-       // eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
+        // eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
         //Observerer endringer i event listen
         kommentarViewModel.getKommentarer().observe(viewLifecycleOwner, Observer {
             kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!)
             kommentarAdapter.notifyDataSetChanged()
         })
-
-        //observerer endring i data, og blir trigget dersom det skjer noe
-        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-
-            //Show og hide progress bar if isUpdating false osv.
-//            view.recycler_view_kommentar.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
-//                ?: 0) -1)
-        })
-
-        //observerer endring i data, og blir trigget dersom det skjer noe
-//        kommentarViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-//            //Show og hide progress bar if isUpdating false osv.
-//            view.recycler_view_nyttEvent.smoothScrollToPosition((kommentarViewModel.getKommentarer().value?.size
-//                ?: 0) -1)
-//        })
-
-//        eventViewModel.getEnkeltEvent().observe(viewLifecycleOwner, Observer {
-//            kommentarAdapter.notifyDataSetChanged()
-//        })
-
 
         //Skriv inn info om forfatter av event når det er blitt lastet inn
         personViewModel.getEnkeltPerson().observe(viewLifecycleOwner, Observer {
@@ -139,7 +110,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         })
 
         if(loginViewModel.getBruker() != null)
-        personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
+            personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
 
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
             if(it){
@@ -156,14 +127,15 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
 
             if(sendtBundle.forfatter == innloggetProfil?.personID) {
-                view.button_bliMed.text = ""
-                view.button_bliMed.setBackgroundColor(Color.WHITE)
+                //view.button_bliMed.text = ""
+                view.button_bliMed.visibility = View.GONE
+                //view.button_bliMed.setBackgroundColor(Color.WHITE)
             }
         })
 
 
         if(loginViewModel.getBruker() != null)
-        eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
+            eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
 
         personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
 
@@ -296,7 +268,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 //        var arr: ArrayList<Person> =  kommentarViewModel.getKommentarPerson().value!!
 //        for(person: Person in arr)
 //        Log.i("lala","addDataSet " + person.brukernavn )
-       kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
+        kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
     private fun lagPåmeldteString(length: Int, tekst:String ): Int{
@@ -304,7 +276,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         if (length > 10)
             endOfString = 2
 
-       // Log.i("lala","påmeldt? " + erPåmeldt)
+        // Log.i("lala","påmeldt? " + erPåmeldt)
 
         var reformat =
             tekst.substring(0, endOfString)

@@ -154,8 +154,7 @@ class BesoekProfilFragment : Fragment(), OnEventItemClickListener {
         view.bli_venn.setOnClickListener {
             if (user != null) {
                 if (!erBekjent) {
-                    val folg = user?.uid?.let { it1 -> Folg(it1, person.personID) }
-                   // personViewModel.bliVenn2(person.personID, loginViewModel.getBruker()!!.uid)
+                   val folg = user?.uid?.let { it1 -> Folg(it1, person.personID) }
                     personViewModel.bliVenn(folg)
 
                 } else {

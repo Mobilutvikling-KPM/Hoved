@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_venner" >
         <action
             android:id="@+id/action_mineEventFragment_to_eventFragment22"
-            app:destination="@id/eventFragment2" />
+            app:destination="@id/eventFragment2"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <fragment
@@ -22,10 +26,18 @@
 
         <action
             android:id="@+id/action_nyttEventFragment_to_eventFragment22"
-            app:destination="@id/eventFragment2" />
+            app:destination="@id/eventFragment2"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_nyttEventFragment_to_event_utfyllingsskjema"
-            app:destination="@id/event_utfyllingsskjema" />
+            app:destination="@id/event_utfyllingsskjema"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_rigth"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/profilFragment2"
@@ -33,7 +45,11 @@
         android:label="ProfilFragment" >
         <action
             android:id="@+id/action_profilFragment2_to_redigerProfilFragment"
-            app:destination="@id/redigerProfilFragment" />
+            app:destination="@id/redigerProfilFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_rigth"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_profilFragment2_to_loginFragment2"
             app:destination="@id/loginFragment2" />
@@ -44,7 +60,12 @@
         android:label="VennerFragment" >
         <action
             android:id="@+id/action_vennerFragment2_to_besoekProfilFragment"
-            app:destination="@id/besoekProfilFragment" />
+            app:destination="@id/besoekProfilFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            />
     </fragment>
 
     <fragment
@@ -53,7 +74,11 @@
         android:label="EventFragment" >
         <action
             android:id="@+id/action_eventFragment2_to_besoekProfilFragment"
-            app:destination="@id/besoekProfilFragment" />
+            app:destination="@id/besoekProfilFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_rigth"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/event_liste_fragment2"
@@ -61,27 +86,23 @@
         android:label="Event_liste_fragment" >
         <action
             android:id="@+id/action_event_liste_fragment2_to_eventFragment2"
-            app:destination="@id/eventFragment2" />
+            app:destination="@id/eventFragment2"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/besoekProfilFragment"
         android:name="com.example.myapplication.fragments.profil.BesoekProfilFragment"
         android:label="fragment_besoek_profil">
         <action
-            android:id="@+id/action_besoekProfilFragment_to_event_Besoek_Rendrer"
-            app:destination="@id/event_Besoek_Rendrer" />
-        <action
             android:id="@+id/action_besoekProfilFragment_to_eventFragment2"
-            app:destination="@id/eventFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/event_Besoek_Rendrer"
-        android:name="com.example.myapplication.fragments.paameldteevents.Event_Besoek_Rendrer"
-        android:label="fragment_event__besoek__rendrer"
-        tools:layout="@layout/fragment_event__besoek__rendrer" >
-        <action
-            android:id="@+id/action_event_Besoek_Rendrer_to_eventFragment2"
-            app:destination="@id/eventFragment2" />
+            app:destination="@id/eventFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_rigth"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/event_utfyllingsskjema"

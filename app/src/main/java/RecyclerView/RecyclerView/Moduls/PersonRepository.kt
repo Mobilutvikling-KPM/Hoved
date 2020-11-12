@@ -53,15 +53,28 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
-        //val personID = ref.push().key // Lager en unik id som kan brukes i objektet
+        ref.child(person.personID).setValue(person)
 
-        Log.i("lala","person lagt til: " + person.personID)
-        //person.personID = personID!!
+        //Oppdaterer kommentarfelt dersom bruker har postet noe
+        val ref2 = FirebaseDatabase.getInstance()
+            .getReference("Kommentar") //Henter referanse til det du skriver inn
 
-            ref.child(person.personID).setValue(person).addOnCompleteListener {
-                //Noe kan skje når databsen er ferdig lastet inn
+        ref2.orderByChild("person/personID").equalTo(person.personID).addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
 
+                for(kmt in snapshot.children){
+
+                    val map = HashMap<String, Any>()
+                    map["person"] = person
+                    ref2.child(kmt.key!!).updateChildren(map)
+                }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
+            }
+
+        })
     }
 
     fun lastOppBilde(imageURI: Uri?, personID: String){
@@ -142,7 +155,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                 }
 
                 if(!nullSjekk)
-                dataCallbackHolder.onCallbackHolder(null)
+                    dataCallbackHolder.onCallbackHolder(null)
                 // onCallBack3(arr)
             }
 
@@ -193,7 +206,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                 var funnetPerson = false
                 if (p0!!.exists()) {
 
-                   // Log.i("lala","folg "+p0.value)
+                    // Log.i("lala","folg "+p0.value)
                     for (flg in p0.children) {
                         val folg = flg.getValue(Folg::class.java)
 

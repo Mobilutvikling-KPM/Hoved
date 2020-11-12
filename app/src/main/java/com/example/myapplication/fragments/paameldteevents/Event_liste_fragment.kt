@@ -7,16 +7,17 @@ import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -32,9 +33,9 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
-import kotlinx.android.synthetic.main.event_utfyllingskjema.*
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 
 /**
@@ -62,6 +63,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        Log.i("lala","onCreateVIew")
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
@@ -69,8 +71,11 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
+
             if (eventListe.size == 0)
                 eventListe.addAll(it)
+            eventAdapter.submitList(it)
+
             eventAdapter.notifyDataSetChanged()
         })
 
@@ -145,6 +150,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             }
             override fun afterTextChanged(p0: Editable?) {
                 datoen = dialog.findViewById<TextView>(R.id.kategori_dato).text.toString()
+
             }
         })
 
@@ -178,6 +184,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         }
 
         //set verdier dersom de allerede er blitt valgt
+
         if(kategoriValg != "") {
             var spinner = dialog.findViewById<Spinner>(R.id.kategori_spinner)
 
@@ -191,9 +198,10 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         if(datoen != "")
         dialog.findViewById<TextView>(R.id.kategori_dato).text = datoen
+
         if(byNavn != "")
         dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
-//            .show()
+
         dialog.findViewById<Button>(R.id.positive_button).setOnClickListener({
 
             filterSearch()
@@ -251,9 +259,11 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i("lala","onVIEWCreated")
         navController = Navigation.findNavController(view) //referanse til navGraph
-        initRecyclerView()
-        addDataSet()
+
+            initRecyclerView()
+            addDataSet()
     }
 
 
@@ -261,16 +271,26 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     private fun addDataSet(){
        // val data = DataSource.createDataset()
        // val data = DataSource.createDataset()
-
+        Log.i("lala","SIze: " + eventViewModel.getEvents().value!!.size)
+        if(eventViewModel.getEvents().value!!.size == 0)
         eventAdapter.submitList(eventViewModel.getEvents().value!!);
+        eventAdapter.notifyDataSetChanged()
     }
 
 
     //Initierer og kobler recycleView til activityMain
     private fun initRecyclerView(){
+        var spanCount: Int
+        //Sjekker om mobilen er i landskapsmodus eller ikke
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = 3
+        } else {
+            spanCount = 2
+        }
         //Apply skjønner contexten selv.
         recycler_view.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             //val bottomSpacingItemDecoration = BottomSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)

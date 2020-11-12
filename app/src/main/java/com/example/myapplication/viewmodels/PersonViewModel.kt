@@ -24,12 +24,12 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     private var innloggetSinProfil: MutableLiveData<Person> = MutableLiveData()
     private var enkeltPerson: MutableLiveData<Person> = MutableLiveData()
     private var personRepo: PersonRepository = PersonRepository(isLoading,this@PersonViewModel,
-                                                                this@PersonViewModel,this@PersonViewModel,
-                                                            this@PersonViewModel)
-                                                .getTheInstance(
-                                                                    isLoading,this@PersonViewModel,
-                                                        this@PersonViewModel,this@PersonViewModel,
-                                                    this@PersonViewModel)
+        this@PersonViewModel,this@PersonViewModel,
+        this@PersonViewModel)
+        .getTheInstance(
+            isLoading,this@PersonViewModel,
+            this@PersonViewModel,this@PersonViewModel,
+            this@PersonViewModel)
 
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
     private var erBekjent: MutableLiveData<Boolean> = MutableLiveData()
@@ -134,7 +134,7 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
 
     override fun erFunnet(skjekk: Boolean) {
 
-       erBekjent.setValue(skjekk)
+        erBekjent.setValue(skjekk)
     }
 
     override fun onCallbackHolder(person: Person?) {
