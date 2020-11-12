@@ -58,7 +58,7 @@
 
 
     <string-array name="Kategorier">
-        <item></item>
+        <item>Velg Kategori</item>
         <item>Underholdning</item>
         <item>Sport</item>
         <item>Musikk</item>

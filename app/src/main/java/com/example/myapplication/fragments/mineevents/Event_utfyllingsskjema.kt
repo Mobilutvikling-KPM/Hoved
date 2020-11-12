@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -87,8 +88,15 @@ companion object {
             view.event_utfyll_Beskrivelse.setText(sendtBundle!!.body)
             view.event_utfyll_dato.setText(sendtBundle!!.dato)
             view.event_utfyll_klokke.setText(sendtBundle!!.klokke)
-            //view.event_kategori.
             view.event_utfyll_sted.setText(sendtBundle!!.sted)
+
+            var spinner = view.utfylling_spinner
+            var ant: Int = spinner.getCount()
+            for (i in 0 until ant){
+                if (spinner.getItemAtPosition(i).toString().equals(sendtBundle!!.kategori)){
+                    view.utfylling_spinner.setSelection(i)
+                }
+            }
 
             if(!sendtBundle!!.image.equals("")) {
                 val requestOptions = RequestOptions()
@@ -133,6 +141,7 @@ companion object {
                 )
             }?.show()
         }
+
         event_utfyll_klokke.setOnClickListener{
             event_utfyll_klokke.text = ""
             val mcurrentTime = Calendar.getInstance()
@@ -151,6 +160,7 @@ companion object {
             mTimePicker.setTitle("Velg Klokkeslett")
             mTimePicker.show()
         }
+
         view.lag_event_button.setOnClickListener {
             if (event_utfyll_tittel.text.toString().isEmpty()) {
                 event_utfyll_tittel.error = "Du må skrive tittel!"
@@ -174,7 +184,12 @@ companion object {
                     image = sendtBundle!!.image
                 }
 
-                //husk å Legge til lovlige felt test osv. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //Henter spinner verdi dersom index ikke er 0. 0 = "velg kategori"
+                var spinner = view.utfylling_spinner.selectedItem.toString()
+                if(view.utfylling_spinner.selectedItemPosition == 0)
+                    spinner = ""
+
+                //Oppretter ett nytt event objekt
                 nyEvent = Event(
                     eventID,
                     view.event_utfyll_tittel.text.toString(),
@@ -184,7 +199,7 @@ companion object {
                     view.event_utfyll_klokke.text.toString(),
                     view.event_utfyll_sted.text.toString(),
                     loginViewModel.getBruker()!!.uid,
-                    view.utfylling_spinner.selectedItem.toString(),
+                    spinner,
                     antPåmeldte,
                     antKommentar,
                     1

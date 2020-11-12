@@ -1,33 +1,28 @@
 package com.example.myapplication.event
 
-import RecyclerView.RecyclerView.BottomSpacingItemDecoration
+
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
-import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
-
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -36,8 +31,7 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * Event fragment som viser ett enkelt event og dens
@@ -62,6 +56,15 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     var år = 0
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i("lala","onCREATE")
+//        if(this::eventAdapter.isInitialized) {
+//            eventAdapter.notifyDataSetChanged()
+//            Log.i("lala","onCREATE")
+//        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -69,23 +72,28 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        Log.i("lala","onCreateVIew")
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
-        val viewModelFactory = ViewModelFactory(1,"",null)
+        val viewModelFactory = ViewModelFactory(1, "", null)
 
-        eventViewModel = ViewModelProvider(this,viewModelFactory).get(EventViewModel::class.java)
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
-           if(eventListe.size == 0)
-            eventListe.addAll(it)
+            Log.i("lala","get Events SIze: " + it.size)
+            if (eventListe.size == 0)
+                eventListe.addAll(it)
+            eventAdapter.submitList(it)
             eventAdapter.notifyDataSetChanged()
         })
 
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
 
-            if(it) {
+            if (it) {
                 view.event_liste_ProgressBar.visibility = View.VISIBLE
-            } else{  view.event_liste_ProgressBar.visibility = View.GONE}
+            } else {
+                view.event_liste_ProgressBar.visibility = View.GONE
+            }
         })
 
         view.knapp_åpne_kategori.setOnClickListener{
@@ -99,12 +107,13 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 filtrertListe.clear()
-                if(newText == null || newText.length == 0){
+                if (newText == null || newText.length == 0) {
                     søkeTekst = ""
                     filterSearch()
-                }else {
+                } else {
                     var filterMønster: String = newText.toString().toLowerCase().trim()
                     søkeTekst = filterMønster
                 }
@@ -129,10 +138,12 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
              .noAutoDismiss()
             .customView(R.layout.layout_filter)
         var dato = dialog.findViewById<DatePicker>(R.id.datePicker_kat)
-
-        dialog.findViewById<Spinner>(R.id.dialogspinner).setOnItemSelectedListener(object:  AdapterView.OnItemSelectedListener {
+        var spinner = dialog.findViewById<Spinner>(R.id.dialogspinner)
+        dialog.findViewById<Spinner>(R.id.dialogspinner).setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                kategoriValg = dialog.findViewById<Spinner>(R.id.dialogspinner).selectedItem.toString()
+                kategoriValg =
+                    dialog.findViewById<Spinner>(R.id.dialogspinner).selectedItem.toString()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -140,19 +151,20 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         })
 
-        dialog.findViewById<DatePicker>(R.id.datePicker_kat).setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
+        dialog.findViewById<DatePicker>(R.id.datePicker_kat).setOnDateChangedListener(object :
+            DatePicker.OnDateChangedListener {
             override fun onDateChanged(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
                 dag = dato.dayOfMonth
                 måned = dato.month
                 år = dato.year
 
-                datoen = ""+ dato.dayOfMonth + "."+dato.month + "." +dato.year
+                datoen = "" + dato.dayOfMonth + "." + dato.month + "." + dato.year
             }
 
         })
 
-        dialog.findViewById<EditText>(R.id.kategori_byNavn).addTextChangedListener(object:
-            TextWatcher{
+        dialog.findViewById<EditText>(R.id.kategori_byNavn).addTextChangedListener(object :
+            TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -168,7 +180,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         )
 
         //set verdier dersom de allerede er blitt valgt
-        if(kategoriValg != "") {
+        if(kategoriValg != "" ) {
             var spinner = dialog.findViewById<Spinner>(R.id.dialogspinner)
 
             var ant: Int = spinner.getCount()
@@ -180,7 +192,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         }
 
         if(dag != 0)
-        dialog.findViewById<DatePicker>(R.id.datePicker_kat).updateDate(år,måned,dag)
+        dialog.findViewById<DatePicker>(R.id.datePicker_kat).updateDate(år, måned, dag)
         if(byNavn != "")
         dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
 //            .show()
@@ -192,7 +204,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         })
 
         dialog.findViewById<Button>(R.id.negative_button).setOnClickListener({
-                removeFilter()
+            removeFilter()
             dialog.hide()
         })
 
@@ -208,8 +220,12 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         for (item: Event in eventListe){
 
-            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(filterMønster)
-                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(datoen.toLowerCase())) {
+            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(
+                    filterMønster
+                )
+                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(
+                    datoen.toLowerCase()
+                )) {
 
                 filtrertListe.add(item)
             }
@@ -240,9 +256,11 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i("lala","onVIEWCreated")
         navController = Navigation.findNavController(view) //referanse til navGraph
-        initRecyclerView()
-        addDataSet()
+
+            initRecyclerView()
+            addDataSet()
     }
 
 
@@ -250,16 +268,26 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     private fun addDataSet(){
        // val data = DataSource.createDataset()
        // val data = DataSource.createDataset()
-
+        Log.i("lala","SIze: " + eventViewModel.getEvents().value!!.size)
+        if(eventViewModel.getEvents().value!!.size == 0)
         eventAdapter.submitList(eventViewModel.getEvents().value!!);
+        eventAdapter.notifyDataSetChanged()
     }
 
 
     //Initierer og kobler recycleView til activityMain
     private fun initRecyclerView(){
+        var spanCount: Int
+        //Sjekker om mobilen er i landskapsmodus eller ikke
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = 3
+        } else {
+            spanCount = 2
+        }
         //Apply skjønner contexten selv.
         recycler_view.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             //val bottomSpacingItemDecoration = BottomSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)

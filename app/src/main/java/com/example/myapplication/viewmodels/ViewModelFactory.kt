@@ -1,5 +1,6 @@
 package com.example.myapplication.viewmodels
 
+import RecyclerView.RecyclerView.Moduls.Person
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
@@ -7,7 +8,8 @@ import java.lang.IllegalArgumentException
 /*
 * Hjelper viewmodel med å ta imot argumenter
  */
-class ViewModelFactory(private var type: Int, private var id: String, private var callBack: isLoading?): ViewModelProvider.Factory {
+class ViewModelFactory(private var type: Int, private var id: String, private var callBack: isLoading?,
+                       ): ViewModelProvider.Factory {
 
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
