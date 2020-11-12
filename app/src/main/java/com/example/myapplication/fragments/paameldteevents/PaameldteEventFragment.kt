@@ -76,8 +76,8 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
                 view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.påmeldt_liste_ProgressBar.visibility = View.GONE
-                view.ingenpaameldteeventerTV.visibility = View.VISIBLE
-                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
+                //view.ingenpaameldteeventerTV.visibility = View.VISIBLE
+                //view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
             }
         })
 /*
