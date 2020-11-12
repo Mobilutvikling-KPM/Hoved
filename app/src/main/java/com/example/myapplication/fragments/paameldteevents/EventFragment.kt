@@ -7,18 +7,19 @@ import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.Moduls.Påmeld
 import RecyclerView.RecyclerView.OnKommentarItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
-import android.content.Context
 import android.app.AlertDialog
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.BlurMaskFilter
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -26,12 +27,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import com.bumptech.glide.request.target.Target
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.*
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
-import kotlinx.android.synthetic.main.fragment_profil.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +49,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     private lateinit var personViewModel: PersonViewModel
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
-    private var eventViewModel: EventViewModel = EventViewModel(1,"",null)
+    private var eventViewModel: EventViewModel = EventViewModel(1, "", null)
     // private lateinit var eventViewModel: EventViewModel
     lateinit var sendtBundle: Event
     var navController: NavController? = null
@@ -83,8 +85,14 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.kommentar_edit_tekst.layoutParams as ViewGroup.LayoutParams
+            params1.width = 1200
+        }
+
         //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(0, sendtBundle.eventID,null)
+        val viewModelFactory = ViewModelFactory(0, sendtBundle.eventID, null)
 
         //Sender inn viewModel
         kommentarViewModel =
@@ -110,10 +118,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         })
 
         if(loginViewModel.getBruker() != null)
-            personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
+            personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid, false)
 
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
-            if(it){
+            if (it) {
                 view.button_bliMed.setBackgroundColor(Color.WHITE)
                 view.button_bliMed.setTextColor(Color.rgb(51, 0, 204))
                 view.button_bliMed.text = "Meld av"
@@ -126,7 +134,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             }
 
 
-            if(sendtBundle.forfatter == innloggetProfil?.personID) {
+            if (sendtBundle.forfatter == innloggetProfil?.personID) {
                 //view.button_bliMed.text = ""
                 view.button_bliMed.visibility = View.GONE
                 //view.button_bliMed.setBackgroundColor(Color.WHITE)
@@ -159,13 +167,18 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
 
-
-
+        if (bildeAdresse != "") {
+            Glide.with(this@EventFragment)
+                .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
+                .load(bildeAdresse) //hvilket bilde som skal loades
+                .into(view.frontBilde) //Hvor vi ønsker å loade bildet inn i
+        }
 
         Glide.with(this@EventFragment)
-            .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
-            .load(bildeAdresse) //hvilket bilde som skal loades
-            .into(view.frontBilde) //Hvor vi ønsker å loade bildet inn i
+            .applyDefaultRequestOptions(requestOptions)
+            .load(bildeAdresse)
+            .apply(bitmapTransform(BlurTransformation(40, 4)))
+            .into(view.frontBildebg)
 
         return view
     }
@@ -207,7 +220,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 if(sendtBundle.forfatter != innloggetProfil?.personID){
                     if(!erPåmeldt) {
 
-                        var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                        var tall = lagPåmeldteString(
+                            view.button_se_andre_påmeldte.text.toString().length,
+                            view.button_se_andre_påmeldte.text.toString()
+                        )
                         view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
 
                         val påmeld = Påmeld(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
@@ -216,10 +232,17 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
                     } else {
 
-                        var tall = lagPåmeldteString(view.button_se_andre_påmeldte.text.toString().length,view.button_se_andre_påmeldte.text.toString())
+                        var tall = lagPåmeldteString(
+                            view.button_se_andre_påmeldte.text.toString().length,
+                            view.button_se_andre_påmeldte.text.toString()
+                        )
                         view.button_se_andre_påmeldte.text = "" + tall + " påmeldte"
 
-                        eventViewModel.avsluttPåmeldt(loginViewModel.getBruker()!!.uid,sendtBundle.eventID, erPåmeldt)
+                        eventViewModel.avsluttPåmeldt(
+                            loginViewModel.getBruker()!!.uid,
+                            sendtBundle.eventID,
+                            erPåmeldt
+                        )
                     }
                 }
             } else showLoginDialog("Du må logge deg på for å bli med på ett event")
@@ -259,7 +282,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             ) { dialog, which ->
                 navController!!.navigate(R.id.loginFragment2)
             } // A null listener allows the button to dismiss the dialog and take no further action.
-            .setNegativeButton(R.string.dialog_box_n,null )
+            .setNegativeButton(R.string.dialog_box_n, null)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
@@ -271,7 +294,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
-    private fun lagPåmeldteString(length: Int, tekst:String ): Int{
+    private fun lagPåmeldteString(length: Int, tekst: String): Int{
         var endOfString = 1
         if (length > 10)
             endOfString = 2

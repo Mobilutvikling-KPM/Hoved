@@ -20,13 +20,22 @@
             tools:context=".event.EventFragment">
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:id="@+id/frontBildebg"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:contentDescription="Bilde som viser arrangementet"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:tint="#9F000000"/>
             <ImageView
                 android:id="@+id/frontBilde"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:contentDescription="Bilde som viser arrangementet"
-                android:scaleType="fitXY" />
+                android:adjustViewBounds="true" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,8 +47,7 @@
                         android:layout_height="30dp"
                         app:cardCornerRadius="30dp"
                         app:cardElevation="5dp"
-                        android:layout_marginTop="@dimen/page_margin"
-                        >
+                        android:layout_marginTop="@dimen/page_margin" >
 
                         <ImageView
                             android:id="@+id/bilde_profil_event"
@@ -159,12 +167,12 @@
                     android:layout_height="1dp"
                     android:layout_margin="@dimen/page_margin"
                     android:background="@android:color/darker_gray"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/page_margin"
-                    >
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
 
                     <androidx.cardview.widget.CardView
                         android:layout_marginLeft="5dp"
@@ -194,10 +202,14 @@
                         android:inputType="text|textMultiLine"
                         android:minLines="2"
                         android:layout_margin="@dimen/page_margin"
-                        android:hint="@string/hint_kommentarFelt"/>
+                        android:hint="@string/hint_kommentarFelt"
+                        android:imeOptions="flagNoExtractUi"
+                        android:maxWidth="200dp"/>
+                </LinearLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center">
 
                         <Button
                             android:id="@+id/button_post_comment"
@@ -207,9 +219,8 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="10dp"
                             android:drawableEnd="@drawable/ic_baseline_send_24"
-                            android:gravity="center"
                             android:paddingStart="30dp"
-                            android:paddingEnd="30dp" />
+                            android:paddingEnd="30dp"/>
                     </RelativeLayout>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView

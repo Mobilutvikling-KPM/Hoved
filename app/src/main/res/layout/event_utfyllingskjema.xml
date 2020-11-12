@@ -25,12 +25,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <ImageButton
                 android:id="@+id/nyttEventKameraKnapp"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
+                android:layout_weight="0.5"
                 android:layout_marginLeft="100dp"
                 android:background="@color/white"
                 android:src="@drawable/ic_baseline_camera_alt_24" />
@@ -38,6 +41,8 @@
                 android:id="@+id/button_gallery"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
+                android:layout_marginRight="100dp"
+                android:layout_weight="0.5"
                 android:background="@color/white"
                 android:src="@drawable/ic_baseline_collections_24" />
 

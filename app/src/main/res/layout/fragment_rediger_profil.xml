@@ -18,15 +18,19 @@
                 android:id="@+id/rProfil_utfylling_bilde"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_baseline_group_24"/>
+                android:src="@drawable/ic_baseline_group_24"
+                android:adjustViewBounds="true"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum="1">
                 <ImageButton
                     android:id="@+id/ta_bilde_kamera"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
+                    android:layout_weight="0.5"
                     android:layout_marginLeft="100dp"
                     android:background="@color/white"
                     android:src="@drawable/ic_baseline_camera_alt_24" />
@@ -34,6 +38,8 @@
                     android:id="@+id/velg_bilde_collection"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
+                    android:layout_weight="0.5"
+                    android:layout_marginRight="100dp"
                     android:background="@color/white"
                     android:src="@drawable/ic_baseline_collections_24" />
             </LinearLayout>

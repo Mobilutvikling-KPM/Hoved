@@ -4,11 +4,8 @@ package com.example.myapplication
 
 import android.content.res.Configuration
 import android.os.Bundle
-
 import android.view.WindowManager
-
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -23,6 +20,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.event_liste.*
 import java.io.InputStream
 
 class MainActivity : AppCompatActivity(), Communicator {
@@ -36,7 +34,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN) // Fikser at keyboard vindu går over content isteden for å pushe det opp.
-
 
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference

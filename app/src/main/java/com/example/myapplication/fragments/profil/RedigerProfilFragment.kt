@@ -2,24 +2,17 @@ package com.example.myapplication.fragments.profil
 
 import RecyclerView.RecyclerView.Moduls.Person
 import android.app.Activity
-import android.app.AppOpsManager
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
@@ -89,6 +82,15 @@ class RedigerProfilFragment : Fragment(), isLoading {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_rediger_profil, container, false)
+
+
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.ta_bilde_kamera.layoutParams as ViewGroup.MarginLayoutParams
+            params1.setMargins(600, 0 ,0, 0, )
+            val params2 = view.velg_bilde_collection.layoutParams as ViewGroup.MarginLayoutParams
+            params2.setMargins(0, 0 ,600, 0, )
+        }
 
         sendtBundle = arguments?.getParcelable<Person>("Person")!!
         progressBar = ProgressDialog(context)

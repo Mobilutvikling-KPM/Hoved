@@ -25,7 +25,8 @@
                     app:defaultQueryHint="Søk på eventer"
                     app:iconifiedByDefault="false"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_alignParentTop="true"
+                    android:imeOptions="flagNoExtractUi" />
                 <ImageButton
                     android:id="@+id/knapp_åpne_kategori"
                     android:layout_width="wrap_content"
