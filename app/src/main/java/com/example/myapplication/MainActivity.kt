@@ -2,6 +2,7 @@ package com.example.myapplication
 
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 
 import android.view.WindowManager
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     internal var storageReference: StorageReference? = null
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,6 +41,14 @@ class MainActivity : AppCompatActivity(), Communicator {
         storage = FirebaseStorage.getInstance()
         storageReference = storage!!.reference
 
+        /*
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        } else {
+            //Do somehting er i portrett
+        }
+*/
         val navController: NavController = findNavController(R.id.nav_host_fragment)
         //NavigationUI.setupActionBarWithNavController(this, navController)
         bottomNav.setupWithNavController(navController)

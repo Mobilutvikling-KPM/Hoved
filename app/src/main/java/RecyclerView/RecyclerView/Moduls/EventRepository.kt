@@ -72,7 +72,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             val fileRef = mStorageRef!!.child(eventID + ".jpg")
 
             var uploadTask: StorageTask<*>
-            uploadTask = fileRef.putFile(imageURI!!)
+            uploadTask = fileRef.putFile(imageURI)
 
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if(!task.isSuccessful){
@@ -118,7 +118,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         ref.orderByChild("eventID").equalTo(event.eventID).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                if (snapshot!!.exists()) {
+                if (snapshot.exists()) {
 
                     for (pml in snapshot.children) {
                       ref.child(pml.key!!).removeValue()

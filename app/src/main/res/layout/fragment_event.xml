@@ -130,14 +130,9 @@
                         android:id="@+id/button_bliMed"
                         style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@string/knapp_event_bliMed" />
-
-
                 </LinearLayout>
-
-
-
                 <TextView
                     android:id="@+id/tittelBeskrivelse"
                     android:layout_width="wrap_content"
@@ -166,9 +161,10 @@
                     android:background="@android:color/darker_gray"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/page_margin">
+                    android:layout_marginTop="@dimen/page_margin"
+                    >
 
                     <androidx.cardview.widget.CardView
                         android:layout_marginLeft="5dp"
@@ -177,7 +173,7 @@
                         android:layout_height="30dp"
                         app:cardCornerRadius="30dp"
                         app:cardElevation="5dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_gravity="center">
 
                     <ImageView
                         android:id="@+id/kommentar_profil_bilde"
@@ -185,6 +181,7 @@
                         android:layout_height="fill_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_baseline_account_circle_24"/>
+
                     </androidx.cardview.widget.CardView>
                     <EditText
                         android:id="@+id/kommentar_edit_tekst"
@@ -198,16 +195,23 @@
                         android:minLines="2"
                         android:layout_margin="@dimen/page_margin"
                         android:hint="@string/hint_kommentarFelt"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
 
-                    <Button
-                        android:layout_marginLeft="20dp"
-                        android:id="@+id/button_post_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/post"/>
-
+                        <Button
+                            android:id="@+id/button_post_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:drawableEnd="@drawable/ic_baseline_send_24"
+                            android:gravity="center"
+                            android:paddingStart="30dp"
+                            android:paddingEnd="30dp" />
+                    </RelativeLayout>
                 </LinearLayout>
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_kommentar"
                     android:layout_width="match_parent"
