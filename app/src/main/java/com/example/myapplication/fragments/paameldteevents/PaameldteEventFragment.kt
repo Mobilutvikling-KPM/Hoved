@@ -48,8 +48,6 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
 
         val viewModelFactory = ViewModelFactory(0, "",null)
-        view.ingenpaameldteeventerTV.visibility = View.GONE
-        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
 
@@ -78,6 +76,8 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
                 view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.påmeldt_liste_ProgressBar.visibility = View.GONE
+                view.ingenpaameldteeventerTV.visibility = View.VISIBLE
+                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
             }
         })
 /*
