@@ -14,6 +14,15 @@ import com.example.myapplication.R
 import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * RecyclerAdapter for eventer. Tilpasser dataen til recyclerview
+ *
+ * @property clickListener callback interface når event har blitt trykket på
+ * @property knappClickListener callback interface når bruker trykker på rediger eller slett event knapp
+ */
 class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knappClickListener: OnKnappItemClickListener?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object{
@@ -23,7 +32,11 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
 
     private var items: ArrayList<Event> = ArrayList()
 
-    //Sender ut hver individuelle viewholder
+    /**
+     * Lager en viewholder basert på viewType
+     * @param parent
+     * @param viewType viewTypen som avgjører type layout som skal brukes
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if(viewType == VIEW_TYPE_HOVEDLISTE) {
             return EventViewHolder(
@@ -41,7 +54,9 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         }
     }
 
-    //binder hver enkelt view til dataen
+    /**
+     * Binder hver enkelt holder til view
+     */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             //bind dataen til viewholderen som er i synet
@@ -59,43 +74,37 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 holder.initialize(items.get(position),clickListener)
             }
         }
-
-        //Hva skal skje når en item har blitt klikket på
-//        holder.itemView.setOnClickListener{view ->
-//            view.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
-//            Log.i("TEST", "Dette er en test ----------------------------->" )
-//            //ALLE ANDRE FRAGMENTER ENN Event_liste_fragment klikker. Tror det har noe å gjøre med at recycleradapter er definert i main activity
-//        }
     }
 
+    /**
+     * Poster en liste som skal rendres i recyclerview
+     * @param eventListe listen som skal rendres
+     */
     fun submitList(eventListe: List<Event>){
         items = eventListe as ArrayList<Event>
     }
 
-    fun updateFilterListe(){
-        for (item: Event in items){
-            Log.i("lala","items: " + item.title)
-        }
 
-        for (item: Event in items){
-            Log.i("lala","itemsFull: " + item.title)
-        }
-
-        Log.i("lala" ,"        " +
-                "        ")
-    }
-
-
-    //forteller hvor mange items er i lista
+    /**
+     * forteller hvor mange items det er i lista
+     * @return recycler størrelse
+     */
     override fun getItemCount(): Int {
         return items.size
     }
 
+    /**
+     * gir viewType til en spesefik item
+     * @return returnrer viewType
+     */
     override fun getItemViewType(position: Int): Int {
         return items[position].viewType
     }
 
-    //Bygger viewholder til hovedlisten som holder på all infoen som hver enkel item skal ha.
+
+    /**
+     * Bygger viewholder til hovedlisten som holder på all infoen som hver enkel item skal ha.
+     */
     class EventViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
@@ -106,13 +115,16 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         val event_antPåmeldt = itemView.ant_påmeldte_tall
         val event_anKommentar = itemView.antall_kommentar_tall
 
+        /**
+         * Fyller view med data
+         * @param event eventet som skal rendres
+         */
         fun bind(event: Event){
             event_title.setText(event.title)
             event_tid.setText(event.dato)
             event_sted.setText(", " + event.sted)
             event_antPåmeldt.setText(event.antPåmeldte)
             event_anKommentar.setText(event.antKommentar)
-
 
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
             val requestOptions = RequestOptions()
@@ -125,14 +137,18 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 .into(event_image) //Hvor vi ønsker å loade bildet inn i
         }
 
-        //click listener initiliasiering
+
+        /**
+         * Initilialiser event-item
+        * @param item eventet som skal rendres
+        * @param action onClick på hver enkelt event
+        */
         fun initialize(item: Event, action:OnEventItemClickListener){
             event_title.text = item.title
             event_sted.text = item.sted
             event_tid.text = item.dato
             event_antPåmeldt.text = item.antPåmeldte
             event_anKommentar.text = item.antKommentar
-            //Og bilde?
 
             itemView.setOnClickListener{
                 action.onItemClick(item, adapterPosition)
@@ -140,7 +156,9 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         }
     }
 
-    //En view holder som skriver ut info mine eventer listen
+    /**
+     *  En view holder som skriver ut info mine eventer listen
+     */
     class EventAdminViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
@@ -153,6 +171,10 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         val event_antPåmeldt = itemView.ant_påmeldte_tall_admin_liste
         val event_anKommentar = itemView.antall_kommentar_tall_admin_liste
 
+        /**
+         * Fyller view med data
+         * @param event eventet som skal rendres
+         */
         fun bind(event: Event){
             event_title.setText(event.title)
             event_tid.setText(event.dato)
@@ -172,7 +194,12 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 .into(event_image) //Hvor vi ønsker å loade bildet inn i
         }
 
-        //click listener initiliasiering
+        /**
+         * Initilialiser event-item
+         * @param item eventet som skal rendres
+         * @param action onClick på hver enkelt event
+         * @param action2 onClick for knapper inn i event item
+         */
         fun initialize(item: Event, action:OnEventItemClickListener, action2:OnKnappItemClickListener?){
             event_title.text = item.title
 
@@ -209,6 +236,10 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         val event_antPåmeldt = itemView.ant_påmeldte_tall_admin_liste
         val event_anKommentar = itemView.antall_kommentar_tall_admin_liste
 
+        /**
+         * Fyller view med data
+         * @param event eventet som skal rendres
+         */
         fun bind(event: Event){
             event_title.setText(event.title)
             event_tid.setText(event.dato)
@@ -228,7 +259,11 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
                 .into(event_image) //Hvor vi ønsker å loade bildet inn i
         }
 
-        //click listener initiliasiering
+        /**
+         * Initilialiser event-item
+         * @param item eventet som skal rendres
+         * @param action onClick på hver enkelt event
+         */
         fun initialize(item: Event, action:OnEventItemClickListener){
             event_title.text = item.title
 

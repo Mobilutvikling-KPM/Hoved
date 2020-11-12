@@ -25,7 +25,11 @@ import kotlinx.android.synthetic.main.fragment_profil.*
 
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ *
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Hjelpe-Kilde: https://developer.android.com/codelabs/advanced-android-kotlin-training-login#0
+ * Ett fragment som viser en liste med alle events i databasen. Kan filtrere søket
  */
 class LoginFragment : Fragment() {
 
@@ -53,20 +57,19 @@ class LoginFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
     }
 
+    /**
+     * Start logg-inn fra firebase
+     */
     private fun launchSignInFlow() {
-        // Give users the option to sign in / register with their email or Google account.
-        // If users choose to register with their email,
-        // they will need to create a password as well.
+
+        // Innloggingsmuligheter :
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
-            // This is where you can provide more ways for users to register and
-            // sign in.
+
         )
 
-        // Create and launch sign-in intent.
-        // We listen to the response of this activity with the
-        // SIGN_IN_REQUEST_CODE
+        // Lager aktiviteten
         startActivityForResult(
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
@@ -81,37 +84,33 @@ class LoginFragment : Fragment() {
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                // User successfully signed in
+                // Bruker har logget inn suksessfult
                 val bruker = FirebaseAuth.getInstance().currentUser!!
                 val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid,null)
                 personViewModel.opprettBruker(bruker)
-                Log.i(ContentValues.TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
+                Log.i(ContentValues.TAG, "Bruker har suksessfult logget inn ${FirebaseAuth.getInstance().currentUser?.displayName}!")
             } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                Log.i(ContentValues.TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
+                //Innlogging feilet
+                Log.i(ContentValues.TAG, "Innlogging feiliet ${response?.error?.errorCode}")
             }
         }
     }
+
+    /**
+     * Observerer AuthenticationState som kommer fra firebase
+     */
     private fun observeAuthenticationState() {
 
         viewModelLogin.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
             when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
+                //Om bruker er logget inn
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
                         navController!!.popBackStack(R.id.event_liste_fragment2, true)
                         navController!!.navigate(R.id.event_liste_fragment2)
                     }
 
                 else -> {
-                    // TODO 3. Lastly, if there is no logged-in user,
-                    // auth_button should display Login and
-                    // launch the sign in screen when clicked.
+                    // Om bruker ikke er logget inn
                     login_knapp.setOnClickListener {
                         launchSignInFlow()
                     }
@@ -119,6 +118,7 @@ class LoginFragment : Fragment() {
             }
         })
     }
+
     companion object {
         val SIGN_IN_REQUEST_CODE = 123
     }

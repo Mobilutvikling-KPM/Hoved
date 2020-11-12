@@ -23,12 +23,17 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
+import kotlinx.android.synthetic.main.event_liste.view.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 
 
 /**
- * A simple [Fragment] subclass.
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som viser en liste over alle events som den innloggede brukeren har opprettet
  */
 class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemClickListener {
 
@@ -87,8 +92,11 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         //observerer endring i data, og blir trigget dersom det skjer noe
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             //Show og hide progress bar if isUpdating false osv.
-//            view.recycler_view_nyttEvent.smoothScrollToPosition((eventViewModel.getEvents().value?.size
-//                ?: 0) -1)
+            if (it) {
+                view.progress_bar.visibility = View.VISIBLE
+            } else {
+                view.progress_bar.visibility = View.GONE
+            }
         })
 
         return view
@@ -109,19 +117,19 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
        addDataSet()
     }
 
+    /**
+     * Observerer AuthenticationState som kommer fra firebase
+     */
     private fun observeAuthenticationState() {
 
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
+
             when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
+                //om bruker er innlogget
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
                 }
-
+                // om bruker ikke er innlogget
                 else -> {
                     navController!!.navigate(R.id.loginFragment2)
                 }
@@ -129,7 +137,10 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         })
     }
 
-
+    /**
+     *  Dersom bruker trykker på slett knapp åpnes det ett dialog vindu med valg
+     *  @param event eventet som skal slettes
+     */
     private fun showDeleteDialog(event: Event) {
         AlertDialog.Builder(context)
             .setTitle("Slett Event")
@@ -146,13 +157,18 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
     }
 
 
-    //hent data fra viewModel og skriv dem inn i recyclerview
+    /**
+     * hent dataen fra Datasource klassen og putt den inn i adapteren
+     */
     private fun addDataSet() {
         if(loginViewModel.getBruker() != null)
         eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
     }
 
-    //Initierer og kobler recycleView til activityMain
+
+    /**
+     * Initierer og kobler recycleView til activityMain
+     */
     private fun initRecyclerView() {
         //Apply skjønner contexten selv.
         recycler_view_nyttEvent.apply {

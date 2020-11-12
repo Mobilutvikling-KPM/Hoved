@@ -42,21 +42,20 @@ import java.io.IOException
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [RedigerProfilFragment.newInstance] factory method to
- * create an instance of this fragment.
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som lar brukeren fylle ut ett skjema som oppdaterer profil info
  */
 
 private const val FILE_NAME ="photo.jpg"
 
 class RedigerProfilFragment : Fragment(), isLoading {
 
-
-//    var filePath: Uri? = null
     private var storage: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
-//    private var user: FirebaseUser? = null
-//    private var uuid: String? = ""
+
     private var imageURI: Uri? = null
     private lateinit var photoFile: File
 
@@ -66,9 +65,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
     var navController: NavController? = null
     lateinit var sendtBundle: Person
     var progressBar: ProgressDialog? = null
-
-
-
 
     companion object {
         val REQUEST_CODE = 100
@@ -95,9 +91,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
         progressBar!!.setMessage("Oppdaterer profil...")
 
 
-        //legg inn verdiene som skal endres
-
-
+        //legg inn verdiene som skal oppdateres
         view.utfyll_navn.setText(sendtBundle.brukernavn)
         view.utfyll_alder.setText(sendtBundle.alder)
         view.utfyll_bio.setText(sendtBundle.bio)
@@ -129,13 +123,16 @@ class RedigerProfilFragment : Fragment(), isLoading {
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 
+        //Åpne galleri
         velg_bilde_collection.setOnClickListener {
             openGalleryForImage()
         }
+        //Åpne kamera
         ta_bilde_kamera.setOnClickListener {
             dispatchTakePictureIntent()
         }
 
+        //Registrer bruker med validering
         view.button_registrer.setOnClickListener{
             if (utfyll_navn.text.toString().isEmpty()) {
                 utfyll_navn.error = "Du må velge brukernavn!"
@@ -169,12 +166,18 @@ class RedigerProfilFragment : Fragment(), isLoading {
         }
     }
 
+    /**
+     * Initialiserer ett åpne galleri intent
+     */
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_CODE)
     }
 
+    /**
+     * Initialiserer kamera intent
+     */
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = getPhotoFile(FILE_NAME)
@@ -190,6 +193,11 @@ class RedigerProfilFragment : Fragment(), isLoading {
         //}
     }
 
+    /**
+     * Oppretter en fil
+     * @param fileName filen som skal opprettes
+     * @return returnerer en fil
+     */
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
@@ -214,6 +222,11 @@ class RedigerProfilFragment : Fragment(), isLoading {
             view?.rProfil_utfylling_bilde?.setImageBitmap(takenImage)
         }
     }
+
+    /**
+     * Når infoen er ferdig opplastet i datbasen naviger tilbake
+     * @param id
+     */
     override fun loadingFinished(id: String) {
         progressBar!!.dismiss()
         navController!!.navigateUp()

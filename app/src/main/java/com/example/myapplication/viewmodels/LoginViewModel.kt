@@ -9,6 +9,12 @@ import com.example.myapplication.fragments.Firebase.FirebaseUserLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ * ViewModel for login. Kommuniserer med firebase authentication
+ */
 class LoginViewModel : ViewModel() {
 
     val profil: Person = Person()
@@ -22,13 +28,16 @@ class LoginViewModel : ViewModel() {
     val authenticationState = FirebaseUserLiveData().map { user ->
         if (user != null) {
             AuthenticationState.AUTHENTICATED
-//            Log.i("lala", "Bruker er logget inn " + user.uid)
-//            innloggetBruker = user
+
         } else {
             AuthenticationState.UNAUTHENTICATED
         }
     }
 
+    /**
+     * Henter bruker som er innlogget
+     * @return innlogget bruker
+     */
     fun getBruker(): FirebaseUser?{
 
         return FirebaseAuth.getInstance().currentUser

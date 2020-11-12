@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
@@ -31,24 +30,24 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
-import kotlinx.android.synthetic.main.fragment_profil.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 /**
- * Event fragment som viser ett enkelt event og dens
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Event fragment som viser ett enkelt event og dens egenskaper. Bruker kan interagere med knapper og kommentarer
  */
 class EventFragment : Fragment(), OnKommentarItemClickListener {
-
-    //    private lateinit var binding: FragmentEventBinding
 
     private val loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     private lateinit var kommentarAdapter: KommentarRecyclerAdapter
     private lateinit var kommentarViewModel: KommentarViewModel
     private var eventViewModel: EventViewModel = EventViewModel(1,"",null)
-    // private lateinit var eventViewModel: EventViewModel
+
     lateinit var sendtBundle: Event
     var navController: NavController? = null
     var innloggetProfil: Person? = null
@@ -112,6 +111,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         if(loginViewModel.getBruker() != null)
             personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid,false)
 
+        //om innlogget bruker er påmeldt. Endre påmeldt knapp og dens funksjon
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
             if(it){
                 view.button_bliMed.setBackgroundColor(Color.WHITE)
@@ -125,7 +125,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 erPåmeldt = false
             }
 
-
+            // Om bruker er eier av eventet så skal bli med knapp forsvinne
             if(sendtBundle.forfatter == innloggetProfil?.personID) {
                 //view.button_bliMed.text = ""
                 view.button_bliMed.visibility = View.GONE
@@ -137,6 +137,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         if(loginViewModel.getBruker() != null)
             eventViewModel.finnUtOmPåmeldt(loginViewModel.getBruker()!!.uid, sendtBundle.eventID)
 
+        //Henter profil info til innlogget bruker
         personViewModel.getInnloggetProfil().observe(viewLifecycleOwner, Observer {
 
             innloggetProfil = it
@@ -147,9 +148,10 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                 .into(view.kommentar_profil_bilde) //Hvor vi ønsker å loade bildet inn i
         })
 
+        //Finn forfatter av event
         personViewModel.søkEtterPerson(sendtBundle.forfatter)
 
-        //løsning uten databinding og modelview
+        //Hent data fra bundle og render dem inn i view
         view.tittel.text = sendtBundle.title
         view.dato_og_tid.text = sendtBundle.dato
         view.klokkeSlett.text = " klokken " + sendtBundle.klokke
@@ -159,9 +161,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         view.button_se_andre_påmeldte.text = sendtBundle.antPåmeldte + " påmeldte"
         var bildeAdresse = sendtBundle.image
 
-
-
-
+        if(bildeAdresse != "")
         Glide.with(this@EventFragment)
             .applyDefaultRequestOptions(requestOptions) // putt inn requestOption
             .load(bildeAdresse) //hvilket bilde som skal loades
@@ -173,9 +173,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //recycler_view_kommentar.suppressLayout(true)
-        //recycler_view_kommentar.setNestedScrollingEnabled(false);
-        //placeholder logget inn person
+        //Post kommentar
         view.button_post_comment.setOnClickListener {
             view.hideKeyboard()
             kommentar_edit_tekst.clearFocus()
@@ -192,6 +190,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
                             view.kommentar_edit_tekst.text.toString()
                         )
                     )
+                    //Øker antall kommentarer tallet i event
                     eventViewModel.økAntKommentarer(sendtBundle.eventID)
                     kommentar_edit_tekst.setText("")
                 } else
@@ -200,7 +199,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             } else showLoginDialog("Du må logge deg på for å legge ut kommentar")
         }
 
-
+        //Bli med eller meld av knapp
         view.button_bliMed.setOnClickListener {
             if(loginViewModel.getBruker() != null){
 
@@ -227,6 +226,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 
+        //Besøk profil til forfatter av event
         view.brukernavn_event.setOnClickListener {
             if(innloggetProfil != null) {
 
@@ -244,11 +244,18 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         addDataSet()
     }
 
+    /**
+     * Gjem keyboard
+     */
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    /**
+     * Viser loggin dialog
+     * @param handling beskriver hvilken situasjon som fører til at dialogen popper opp på skjermen
+     */
     private fun showLoginDialog(handling: String) {
         AlertDialog.Builder(context)
             .setTitle(handling)
@@ -264,19 +271,23 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
             .show()
     }
 
+    /**
+     * hent dataen fra Datasource klassen og putt den inn i adapteren
+     */
     private fun addDataSet() {
-//        var arr: ArrayList<Person> =  kommentarViewModel.getKommentarPerson().value!!
-//        for(person: Person in arr)
-//        Log.i("lala","addDataSet " + person.brukernavn )
         kommentarAdapter.submitList(kommentarViewModel.getKommentarer().value!!);
     }
 
+    /**
+     * Oppdaterer antall påmeldte teksten utifra om bruker melder seg på eller av
+     * @param length lengden på string
+     * @param tekst teksten som skal endres
+     * @return tallet som ble regnet ut
+     */
     private fun lagPåmeldteString(length: Int, tekst:String ): Int{
         var endOfString = 1
         if (length > 10)
             endOfString = 2
-
-        // Log.i("lala","påmeldt? " + erPåmeldt)
 
         var reformat =
             tekst.substring(0, endOfString)
@@ -289,7 +300,9 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         return tall
     }
 
-    //Initierer og kobler recycleView til activityMain
+    /**
+     * Initierer og kobler recycleView til activityMain
+     */
     private fun initRecyclerView() {
         //Apply skjønner contexten selv.
         var layoutMng:LinearLayoutManager = LinearLayoutManager(context)

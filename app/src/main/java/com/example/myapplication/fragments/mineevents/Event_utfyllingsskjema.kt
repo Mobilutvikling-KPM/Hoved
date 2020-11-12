@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,14 @@ import java.io.File
 import java.io.IOException
 import java.util.*
 import java.util.Calendar.HOUR_OF_DAY
+
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett utfyllingsskjema hvor brukere kan lage ett event
+ */
 
 private const val FILE_NAME ="photo.jpg"
 
@@ -214,22 +223,27 @@ companion object {
                 }
 
                 if(imageURI == null){
-                    loadingFinished("")
+                        if(sendtBundle != null)
+                            loadingFinished(sendtBundle!!.image)
+                        else loadingFinished("")
                 }else progressBar!!.show()
             }
         }
     }
 
+    /**
+     * Starter ett galleri intent
+     */
     private fun velgBilde(){
-//        val progressBar = ProgressDialog(context)
-//        progressBar.setMessage("Bilde blir lastet opp")
-//        progressBar.show()
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, REQUEST_KODE)
     }
 
+    /**
+     * Starter ett kamera intent
+     */
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = getPhotoFile(FILE_NAME)
@@ -245,6 +259,11 @@ companion object {
         //}
     }
 
+    /**
+     * Oppretter en fil
+     * @param filename filen som skal opprettes
+     * @return filen som er ferdig initialisert
+     */
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
@@ -270,6 +289,10 @@ companion object {
         }
     }
 
+    /**
+     * Når alt er ferdig lastet opp i databasen skal det navigeres til det nye eventet
+     * @param id til bildet som er lastet opp
+     */
     override fun loadingFinished(id: String) {
         progressBar!!.dismiss()
         nyEvent!!.image = id

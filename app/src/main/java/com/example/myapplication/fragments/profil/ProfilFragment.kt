@@ -31,9 +31,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
-
 /**
- * Profil fragment som rendrer innlogget brukers profilside
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som viser profilen til den innloggede brukeren
  */
 
 class ProfilFragment : Fragment() {
@@ -44,16 +47,6 @@ class ProfilFragment : Fragment() {
 
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
-
-    private var user: FirebaseUser? = null
-    private var uuid: String? = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        user = FirebaseAuth.getInstance().currentUser
-        uuid = user?.uid
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,7 +87,7 @@ class ProfilFragment : Fragment() {
                 .into(view.bilde_profil_item) //Hvor vi ønsker å loade bildet inn i
 
 
-
+            //Når bruker er lastet inn hvis alle elementer
             view.bilde_profil_item.visibility = View.VISIBLE
             view.strek.visibility = View.VISIBLE
             view.bio.visibility = View.VISIBLE
@@ -105,18 +98,19 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
-
+        //Søk etter bruker info dersom logget in
         if (bruker != null) {
             personViewModel.søkEtterPerson(bruker!!.uid)
         }
 
-
+        //Naviger til rediger bruker fragment
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
             val bundle = bundleOf("Person" to person)
             navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment, bundle)
         }
 
+        //Slett bruker dialog
         view.slettKnapp.setOnClickListener() {
             showDeleteDialog()
         }
@@ -147,7 +141,7 @@ class ProfilFragment : Fragment() {
         observeAuthenticationState()
 
         view.LoggUtKnapp.setOnClickListener {
-            if (user != null) {
+            if (bruker != null) {
                 FirebaseAuth.getInstance().signOut()
             }
         }
@@ -155,103 +149,25 @@ class ProfilFragment : Fragment() {
 
     }
 
-    private fun launchSignInFlow() {
-        // Give users the option to sign in / register with their email or Google account.
-        // If users choose to register with their email,
-        // they will need to create a password as well.
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-            // This is where you can provide more ways for users to register and
-            // sign in.
-        )
-
-        // Create and launch sign-in intent.
-        // We listen to the response of this activity with the
-        // SIGN_IN_REQUEST_CODE
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .build(),
-            SIGN_IN_REQUEST_CODE
-        )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                // User successfully signed in
-                Log.i(
-                    TAG,
-                    "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!"
-                )
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
-            }
-        }
-        if (requestCode == IMAGE_SIGN_IN_CODE) {
-
-        }
-    }
-
+    /**
+     * Observerer AuthenticationState som kommer fra firebase om bruker ikke er logget inn send til loggin
+     */
     private fun observeAuthenticationState() {
-
-
-
-
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
+
             when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
+
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
 
                 }
-
+                //Dersom bruker ikke er logget inn
                 else -> {
                     navController!!.navigate(R.id.loginFragment2)
                 }
             }
         })
     }
-    /*private fun getUserProfile() {
-        // [START get_user_profile]
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            // Name, email address, and profile photo Url
-            val name = user.displayName
-            val email = user.email
-            val photoUrl = user.photoUrl
-
-            // Check if user's email is verified
-            val emailVerified = user.isEmailVerified
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            val uid = user.uid
-
-            Log.i(TAG, "Bucket: "+storageReference)
-
-/*
-            Log.i(TAG, "UserName "+name)
-            Log.i(TAG, "UserEmail "+email)
-            Log.i(TAG, "UserPhoto "+photoUrl)
-            Log.i(TAG, "UserVerifiedEmail "+emailVerified)
-            Log.i(TAG, "UserUID "+uid)
-*/
-        }
-        // [END get_user_profile]
-    }*/
 
     companion object {
         val SIGN_IN_REQUEST_CODE = 123

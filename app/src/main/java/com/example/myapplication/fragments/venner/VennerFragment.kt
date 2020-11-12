@@ -26,7 +26,11 @@ import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
 
 /**
- * A simple [Fragment] subclass.
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som viser en liste med alle personer som innlogget bruker følger
  */
 class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListener {
 
@@ -48,6 +52,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
         view.ingenvennerTV.visibility = View.GONE
         view.recyclerviewfriendsbackgroundimage.visibility = View.GONE
+
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
@@ -64,10 +69,11 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
             }
         })
 
+        //Hent person som bruker følger
         if(loginViewModel.getBruker() != null)
         personViewModel.finnVenner(loginViewModel.getBruker()!!.uid)
 
-        //observerer endring i data, og blir trigget dersom det skjer noe
+        //observerer updating, og gjør noe når listen er ferdig lastet inn
         personViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             //Show og hide progress bar if isUpdating false osv.
             if(it) {
@@ -96,6 +102,9 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         addDataSet()
     }
 
+    /**
+     * Observerer AuthenticationState som kommer fra firebase
+     */
     private fun observeAuthenticationState() {
 
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
@@ -116,11 +125,16 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         })
     }
 
+    /**
+     * hent dataen fra Datasource klassen og putt den inn i adapteren
+     */
     private fun addDataSet() {
         personAdapter.submitList(personViewModel.getPersoner().value!!);
     }
 
-    //Initierer og kobler recycleView til activityMain
+    /**
+     * Initierer og kobler recycleView til activityMain
+     */
     private fun initRecyclerView() {
         //Apply skjønner contexten selv.
         recycler_view_venner.apply {
@@ -133,6 +147,11 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
     }
 
+    /**
+     * Sender bruker til eventet som har blitt klikket på
+     * @param item person som har blitt trykket på
+     * @param position index til den personen
+     */
     override fun onItemClick(item: Person, position: Int) {
         val bundle = bundleOf("Person" to item)
         navController!!.navigate(R.id.action_vennerFragment2_to_besoekProfilFragment, bundle)

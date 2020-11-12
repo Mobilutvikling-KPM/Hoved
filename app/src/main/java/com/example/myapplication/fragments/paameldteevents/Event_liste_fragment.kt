@@ -8,7 +8,6 @@ import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,7 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,10 +33,12 @@ import kotlinx.android.synthetic.main.event_liste.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-
 /**
- * Event fragment som viser ett enkelt event og dens
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som viser en liste med alle events i databasen. Kan filtrere søket
  */
 
 class Event_liste_fragment : Fragment(), OnEventItemClickListener {
@@ -62,7 +62,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.i("lala","onCreateVIew")
+
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
 
@@ -73,9 +73,11 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
             if (eventListe.size == 0)
                 eventListe.addAll(it)
-            eventAdapter.submitList(it)
 
-            eventAdapter.notifyDataSetChanged()
+            if(eventAdapter.itemCount == 0) {
+                eventAdapter.submitList(it)
+                eventAdapter.notifyDataSetChanged()
+            }
         })
 
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
@@ -145,7 +147,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //Log.i("lala","Jeg blir forandra!!")
             }
             override fun afterTextChanged(p0: Editable?) {
                 datoen = dialog.findViewById<TextView>(R.id.kategori_dato).text.toString()
@@ -158,7 +159,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //Log.i("lala","Jeg blir forandra!!")
             }
             override fun afterTextChanged(p0: Editable?) {
                 byNavn = dialog.findViewById<EditText>(R.id.kategori_byNavn).text.toString()
@@ -183,7 +183,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         }
 
         //set verdier dersom de allerede er blitt valgt
-
         if(kategoriValg != "") {
             var spinner = dialog.findViewById<Spinner>(R.id.kategori_spinner)
 
@@ -218,6 +217,9 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     }
 
 
+    /**
+     *  Filtrerer søk basert på inndata verdier endrer på
+     */
     private fun filterSearch(){
         filtrertListe.clear()
 
@@ -241,6 +243,9 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         eventAdapter.notifyDataSetChanged()
     }
 
+    /**
+     * Fjerner søkefilter verdiene, tømmer filtrer listen og sett eventapapter tilbake til standard original resultat
+     */
     private fun removeFilter(){
         //SøkeVerdier
         søkeTekst= ""
@@ -258,7 +263,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i("lala","onVIEWCreated")
         navController = Navigation.findNavController(view) //referanse til navGraph
 
             initRecyclerView()
@@ -266,18 +270,19 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     }
 
 
-    //hent dataen fra Datasource klassen og putt den inn i adapteren
+    /**
+     * hent dataen fra Datasource klassen og putt den inn i adapteren
+     */
     private fun addDataSet(){
-       // val data = DataSource.createDataset()
-       // val data = DataSource.createDataset()
-        Log.i("lala","SIze: " + eventViewModel.getEvents().value!!.size)
         if(eventViewModel.getEvents().value!!.size == 0)
         eventAdapter.submitList(eventViewModel.getEvents().value!!);
         eventAdapter.notifyDataSetChanged()
     }
 
 
-    //Initierer og kobler recycleView til activityMain
+    /**
+     * Initierer og kobler recycleView til fragment
+     */
     private fun initRecyclerView(){
         var spanCount: Int
         //Sjekker om mobilen er i landskapsmodus eller ikke
