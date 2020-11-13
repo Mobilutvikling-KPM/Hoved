@@ -18,9 +18,18 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 
-
-/*
-* Singleton Pattern
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * Repository for events. Bruker singleton pattern. Kommuniserer med databasen og storage i firebase
+ *
+ * @property isLoading callback interface
+ * @property dataCallback callback interface
+ * @property dataCallback2 callback interface
+ * @property dataCallback3 callback interface
+ * @property onFind callback interface
+ * @property dataCallbackHolder callback interface
  */
 class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<Event>, var dataCallback2: DataCallback2<Event>,
                       var dataCallback3: DataCallBack3<Event>, var onFind: OnFind, var dataCallbackHolder: DataCallbackHolderEvent<Event>)  {
@@ -30,7 +39,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
     private var dataset2: ArrayList<Event> = ArrayList()
     private var dataset3: ArrayList<Event> = ArrayList()
 
-    //Bilde fra storage
+    //Referanse til storage
     private var mStorageRef: StorageReference? = null
 
     var ref = FirebaseDatabase.getInstance()
@@ -40,7 +49,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         mStorageRef = FirebaseStorage.getInstance().reference.child("Event bilder")
     }
 
-
+    //Singleton instance
     fun getTheInstance(isLoading: isLoading?,
                        dataCallback: DataCallback<Event>, dataCallback2: DataCallback2<Event>,
                        dataCallback3: DataCallBack3<Event>, onFind: OnFind, dataCallbackHolder: DataCallbackHolderEvent<Event>
@@ -50,7 +59,10 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
     }
 
 
-
+    /**
+     * legger til en event i firebase
+     * @param event eventet som skal legges til
+     */
     fun leggTilEvent(event: Event) {
         ref = FirebaseDatabase.getInstance()
             .getReference("Event") //Henter referanse til det du skriver inn
@@ -63,7 +75,11 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         }
     }
 
-
+    /**
+     * Laster opp bilde i firebase storage
+     * @param imageURI bildeaddressen som skal lastes opp
+     * @param eventID eventet bildet tilhører
+     */
      fun lastOppBilde(imageURI: Uri?, eventID: String){
         ref = FirebaseDatabase.getInstance()
             .getReference("Event").child(eventID) //Henter referanse til det du skriver inn
@@ -100,6 +116,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 
     /**
      * Sletter event og dens tilhørende json objekter
+     * @param event eventet som skal slettes
      **/
     fun slettEvent(event: Event){
         ref = FirebaseDatabase.getInstance()
@@ -141,6 +158,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 
     /**
      * Slett kommentarene som tilhører ett event
+     * @param eventID eventet det gjelder
      */
     fun slettKommentar(eventID: String) {
         //        //
@@ -150,7 +168,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         ref.orderByChild("eventID").equalTo(eventID).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                if (snapshot!!.exists()) {
+                if (snapshot.exists()) {
                     for (kmt in snapshot.children) {
                         ref.child(kmt.key!!).removeValue()
                     }
@@ -167,6 +185,12 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         )
     }
 
+    /**
+     * Avslutter en påmeldeling. Sletter den fra firebase
+     * @param innloggetID brukeren det gjelder
+     * @param eventID eventet det gjelder
+     * @param erPåmeldt om brukeren er påmeldt eller ikke
+     */
     fun avsluttPåmeldt(innloggetID: String, eventID: String, erPåmeldt: Boolean){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Påmeld")
@@ -177,7 +201,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
 
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
 
                     for (pml in p0.children) {
@@ -200,16 +224,23 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         })
     }
 
+    /**
+     * Oppdaterer event i firebase
+     * @param event eventet som skal oppdateres
+     */
     fun updateEvent(event: Event){
         ref = FirebaseDatabase.getInstance()
             .getReference("Event") //Henter referanse til det du skriver inn
 
 
-        ref.child(event.eventID).setValue(event).addOnCompleteListener {
-            //Noe kan skje når databsen er ferdig lastet inn
-        }
+        ref.child(event.eventID).setValue(event)
     }
 
+    /**
+     * Melder bruker på ett event
+     * @param påmeld Påmeld objektet som er opprettet
+     * @param erPåmeldt skjekker om bruker er påmeldt
+     */
     fun påmeldEvent(påmeld: Påmeld, erPåmeldt: Boolean){
         ref = FirebaseDatabase.getInstance()
             .getReference("Påmeld") //Henter referanse til det du skriver inn
@@ -224,6 +255,10 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         onFind.erFunnet(true)
     }
 
+    /**
+     * Skriver ut alle events som en bruker har laget
+     * @param personID personen som eier eventene
+     */
     fun finnLagdeEvents(personID: String){
 
         ref = FirebaseDatabase.getInstance()
@@ -233,16 +268,15 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val arr: ArrayList<Event> = ArrayList()
-                if (snapshot!!.exists()) {
+                if (snapshot.exists()) {
 
                     for (evnt in snapshot.children) {
                         val event = evnt.getValue(Event::class.java)
                         event!!.viewType = 2
-                        arr.add(event!!)
+                        arr.add(event)
                     }
 
                     dataCallback2.onCallBack2(arr)
-                    //onCallBack2(arr)
                 }
             }
 
@@ -253,6 +287,11 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 
     }
 
+    /**
+     * Øk antall medlemer i eventet
+     * @param eventID eventet det gjelder
+     * @param erPåmeldt sjekker om bruker er påmeldt
+     */
     fun økMedlemer(eventID: String, erPåmeldt: Boolean){
 
         ref = FirebaseDatabase.getInstance()
@@ -279,6 +318,10 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 
     }
 
+    /**
+     * Øk antall kommentarer i event
+     * @param eventID eventet det gjelder
+     */
     fun økAntKommentar(eventID: String){
         ref = FirebaseDatabase.getInstance()
             .getReference("Event").child(eventID).child("antKommentar")
@@ -301,6 +344,10 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
     }
 
 
+    /**
+     * Aktiverer henting av alle eventer i firebase og returnerer en tom liste
+     * @param type viewType til recyclerview
+     */
     fun getEvents(type: Int): MutableLiveData<List<Event>> {
         createDataset2(type)
 
@@ -310,6 +357,11 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         return data
     }
 
+    /**
+     * Aktiverer henting av alle eventer som bruker er påmeldt på i firebase og returnerer en tom liste
+     * @param type viewType til recyclerview
+     * @param id brukerens id
+     */
     fun getPåmeldteEvents(type: Int, id: String): MutableLiveData<List<Event>> {
         finnPåmeldteEvents(type, id)
 
@@ -319,6 +371,12 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         return data
     }
 
+
+    /**
+     * Skjekker om en bruker er påmeldt på ett enkelt event eller ikke
+     * @param innloggetID brukerens id
+     * @param eventID eventet som skal skjekkes
+     */
     fun finnUtOmPåmeldt(innloggetID:String, eventID: String){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Påmeld")
@@ -329,7 +387,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
                 var funnetEvent = false
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
 
                     for (pml in p0.children) {
@@ -352,7 +410,12 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         })
     }
 
-    fun getLagdeEvents(type: Int, id: String): MutableLiveData<List<Event>> {
+
+    /**
+     * Aktiverer henting av alle eventer som bruker har laget i firebase og returnerer en tom liste
+     * @param id brukerens id
+     */
+    fun getLagdeEvents( id: String): MutableLiveData<List<Event>> {
         finnLagdeEvents(id)
 
         var data:MutableLiveData<List<Event>> = MutableLiveData()
@@ -361,6 +424,12 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
         return data
     }
 
+
+    /**
+     * Finner eventer som en bruker er påmeldt på
+     * @param type viewType til recyclerview
+     * @param id brukerens id
+     */
     fun finnPåmeldteEvents(type: Int, id: String){
 
         ref = FirebaseDatabase.getInstance()
@@ -370,7 +439,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                if (snapshot!!.exists()) {
+                if (snapshot.exists()) {
 
                     var ref2 = FirebaseDatabase.getInstance()
                         .getReference("Event") //Henter referanse til det du skriver inn
@@ -380,7 +449,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
                         ref2.orderByChild("eventID").equalTo(eventID).addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onDataChange(snapshot: DataSnapshot) {
 
-                                if (snapshot!!.exists()) {
+                                if (snapshot.exists()) {
 
                                     for (evnt in snapshot.children) {
                                         val event = evnt.getValue(Event::class.java)
@@ -412,7 +481,11 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
     }
 
 
-    //Henter tabellen fra firebase og returner den
+
+    /**
+     * Henter alle events fra firebase
+     * @param type viewType til recyclerview
+     */
     fun createDataset2(type: Int) {
                 //setIt("Base create")
         ref = FirebaseDatabase.getInstance()
@@ -423,13 +496,13 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
                 val arr: ArrayList<Event> = ArrayList()
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
                     for (evt in p0.children) {
                         val event = evt.getValue(Event::class.java)
                         event!!.viewType = type
 
-                        arr.add(event!!)
+                        arr.add(event)
 
                     }
                     dataCallback.onCallBack(arr)
@@ -445,6 +518,10 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 
     }
 
+    /**
+     * funksjon som brukes som callback etter søk i firebase er fullført. Fyller dataset med alle eventer
+     * @param liste listen med eventer
+     */
      fun onCallBack(liste: ArrayList<Event>) {
 
         dataset.addAll(liste);

@@ -30,12 +30,14 @@
                     android:scaleX="1.5"
                     android:scaleY="1.5"
                     android:tint="#9F000000"/>
+
             <ImageView
                 android:id="@+id/frontBilde"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:contentDescription="Bilde som viser arrangementet"
                 android:adjustViewBounds="true" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

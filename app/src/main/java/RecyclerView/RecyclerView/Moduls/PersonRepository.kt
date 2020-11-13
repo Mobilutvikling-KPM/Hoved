@@ -16,8 +16,17 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 
-/*
-* Singleton Pattern
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * Repository for personer. Bruker singleton pattern. Kommuniserer med databasen og storage i firebase
+ *
+ * @property isLoading callback interface
+ * @property dataCallbackSingleValue callback interface
+ * @property dataCallback callback interface
+ * @property onFind callback interface
+ * @property dataCallbackHolder callback interface
  */
 class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: DataCallbackSingleValue<Person>,
                        var dataCallback: DataCallback<Person>, var onFind: OnFind, var dataCallbackHolder: DataCallbackHolder<Person>) {
@@ -38,9 +47,10 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         return instance
     }
 
-    //Later som om vi får data fra database
-    fun getPersoner(type: Int): MutableLiveData<List<Person>> {
-        createDataset(type)
+    /**
+     * returnerer en tom liste
+     */
+    fun getPersoner(): MutableLiveData<List<Person>> {
 
         var data: MutableLiveData<List<Person>> = MutableLiveData()
         data.setValue(dataset)
@@ -48,22 +58,27 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         return data
     }
 
+    /**
+     * legger til eller oppdaterer en person i firebase
+     * @param person personen som skal legges til
+     */
     fun leggTilPerson(person: Person) {
 
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
+        Log.i("lala","Inni personRepository")
         ref.child(person.personID).setValue(person)
 
         //Oppdaterer kommentarfelt dersom bruker har postet noe
         val ref2 = FirebaseDatabase.getInstance()
             .getReference("Kommentar") //Henter referanse til det du skriver inn
 
-        ref2.orderByChild("person/personID").equalTo(person.personID).addValueEventListener(object:ValueEventListener{
+        ref2.orderByChild("person/personID").equalTo(person.personID).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for(kmt in snapshot.children){
-
+                    Log.i("lala","Inni kommentar loop firebase")
                     val map = HashMap<String, Any>()
                     map["person"] = person
                     ref2.child(kmt.key!!).updateChildren(map)
@@ -77,6 +92,11 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         })
     }
 
+    /**
+     * Laster opp bilde i firebase storage
+     * @param imageURI bildeaddressen som skal lastes opp
+     * @param personID personen bildet tilhører
+     */
     fun lastOppBilde(imageURI: Uri?, personID: String){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Person").child(personID) //Henter referanse til det du skriver inn
@@ -85,7 +105,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
             val fileRef = mStorageRef!!.child(personID + ".jpg")
 
             var uploadTask: StorageTask<*>
-            uploadTask = fileRef.putFile(imageURI!!)
+            uploadTask = fileRef.putFile(imageURI)
 
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if(!task.isSuccessful){
@@ -111,6 +131,10 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         }
     }
 
+    /**
+     * Finn alle personer som bruker følger
+     * @param personID person sin id
+     */
     fun finnVenner(personID: String){
 
         var ref = FirebaseDatabase.getInstance()
@@ -134,7 +158,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                     ref2.orderByChild("personID").equalTo(personID).addValueEventListener(object : ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
 
-                            if (snapshot!!.exists()) {
+                            if (snapshot.exists()) {
                                 for (prs in snapshot.children) {
                                     val person = prs.getValue(Person::class.java)
                                     dataCallbackHolder.onCallbackHolder(person!!)
@@ -148,18 +172,12 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                         }
 
                     })
-//                        val event = evnt.child("event").getValue(Event::class.java)
-//
-//                        event!!.viewType = type
-//                        arr.add(event!!)
+
                 }
 
                 if(!nullSjekk)
                     dataCallbackHolder.onCallbackHolder(null)
-                // onCallBack3(arr)
             }
-
-
 
             override fun onCancelled(p0: DatabaseError) {
                 Log.i("lala", "NOE GIKK FEIL MED DATABASEKOBLING!")
@@ -168,6 +186,10 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         })
     }
 
+    /**
+     * Følg en person
+     * @param folg forholdet som skal opprettes
+     */
     fun bliVenn(folg: Folg){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Folg") //Henter referanse til det du skriver inn
@@ -180,20 +202,11 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         }
     }
 
-//    fun bliVenn2(personID: String, innloggetID: String){
-//        val ref = FirebaseDatabase.getInstance()
-//            .getReference("Folg") //Henter referanse til det du skriver inn
-//
-//        val vennskapID = ref.push().key!! // Lager en unik id som kan brukes i objektet
-//        onFind.erFunnet(true)
-//        ref.child(innloggetID).push()
-//
-//        ref.child(innloggetID).child(vennskapID).setValue(personID).addOnCompleteListener {
-//            //Noe kan skje når databsen er ferdig lastet inn
-//
-//        }
-//    }
-
+    /**
+     * Skjekk om det er ett etablert forhold
+     * @param innloggetID bruker sin id
+     * @param brukerID personen som skal skjekkes
+     */
     fun finnUtOmVenn(innloggetID:String, brukerID: String){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Folg")
@@ -204,7 +217,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
                 var funnetPerson = false
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
                     // Log.i("lala","folg "+p0.value)
                     for (flg in p0.children) {
@@ -228,6 +241,11 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         })
     }
 
+    /**
+     * Henter profil til innlogget bruker
+     * @param id id til bruker
+     * @param nyBruker skjekker om brukeren er en ny bruker eller ikke
+     */
     fun hentInnloggetProfil(id: String, nyBruker: Boolean){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person")
@@ -251,6 +269,10 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         })
     }
 
+    /**
+     * Finner en person i firebase og skriver den ut
+     * @param id personen som skal hentes
+     */
     fun søkEtterPerson(id: String){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person")
@@ -274,6 +296,11 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
 
     }
 
+    /**
+     * Avslutt ett følgeforhold med en person
+     * @param innloggetID brukerens id
+     * @param brukerID personen det gjelder
+     */
     fun sluttÅFølg(innloggetID: String, brukerID: String){
         var ref = FirebaseDatabase.getInstance()
             .getReference("Folg")
@@ -286,7 +313,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
 
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
 
                     for (flg in p0.children) {
@@ -306,11 +333,6 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
             }
 
         })
-    }
-
-
-    fun createDataset(type: Int) {
-        //dataset.add(Person("","","","","",""))
     }
 
 }

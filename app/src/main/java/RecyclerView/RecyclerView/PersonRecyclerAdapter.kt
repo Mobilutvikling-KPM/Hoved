@@ -13,12 +13,25 @@ import kotlinx.android.synthetic.main.administrer_event_liste_item.view.*
 import kotlinx.android.synthetic.main.layout_event_list_item.view.*
 import kotlinx.android.synthetic.main.person_liste_item.view.*
 
+
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * RecyclerAdapter for personer. Tilpasser dataen til recyclerview
+ *
+ * @property clickListener callback interface når event har blitt trykket på
+ */
 class PersonRecyclerAdapter(var clickListener: OnPersonItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Person> = ArrayList()
 
-    //Sender ut hver individuelle viewholder
+    /**
+     * Lager en viewholder basert på viewType
+     * @param parent
+     * @param viewType viewTypen som avgjører type layout som skal brukes
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return PersonViewHolder(
@@ -28,7 +41,9 @@ class PersonRecyclerAdapter(var clickListener: OnPersonItemClickListener) :
 
     }
 
-    //binder hver enkelt view til dataen
+    /**
+     * Binder hver enkelt holder til view
+     */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             //bind dataen til viewholderen som er i synet
@@ -39,31 +54,37 @@ class PersonRecyclerAdapter(var clickListener: OnPersonItemClickListener) :
 
 
         }
-
-        //Hva skal skje når en item har blitt klikket på
-//        holder.itemView.setOnClickListener{view ->
-//            view.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
-//            Log.i("TEST", "Dette er en test ----------------------------->" )
-//            //ALLE ANDRE FRAGMENTER ENN Event_liste_fragment klikker. Tror det har noe å gjøre med at recycleradapter er definert i main activity
-//        }
     }
 
-    fun submitList(eventListe: List<Person>) {
-        items = eventListe
+    /**
+     * Poster en liste som skal rendres i recyclerview
+     * @param personListe listen som skal rendres
+     */
+    fun submitList(personListe: List<Person>) {
+        items = personListe
     }
 
-    //forteller hvor mange items er i lista
+    /**
+     * forteller hvor mange items det er i lista
+     * @return recycler størrelse
+     */
     override fun getItemCount(): Int {
         return items.size
     }
 
-    //Bygger viewholder til hovedlisten som holder på all infoen som hver enkel item skal ha.
+    /**
+     * Bygger viewholder til personListen som holder på all infoen som hver enkel item skal ha.
+     */
     class PersonViewHolder constructor(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         val person_navn = itemView.brukernavn_item
         val person_bilde = itemView.bilde_profil_item
 
+        /**
+         * Fyller view med data
+         * @param person personen som skal rendres
+         */
         fun bind(person: Person) {
             person_navn.setText(person.brukernavn)
 
@@ -78,15 +99,16 @@ class PersonRecyclerAdapter(var clickListener: OnPersonItemClickListener) :
                 .into(person_bilde) //Hvor vi ønsker å loade bildet inn i
         }
 
-        //click listener initiliasiering
+        /**
+         * Initilialiser person-item
+         * @param item personen som skal rendres
+         * @param action onClick på hver enkelt person-item
+         */
         fun initialize(item: Person, action: OnPersonItemClickListener) {
             person_navn.text = item.brukernavn
 
-            //Og bilde?
-
             itemView.setOnClickListener {
                 action.onItemClick(item, adapterPosition)
-                // itemView.findNavController().navigate(R.id.action_event_liste_fragment_to_eventFragment)
             }
         }
     }

@@ -30,7 +30,11 @@ import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ *
+ * @author Patrick S. Lorentzen - 151685
+ * @author Mikael Wenneck Rønnevik - 226804
+ *
+ * Ett fragment som viser en liste med alle eventer som bruker har meldt seg på
  */
 
 class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItemClickListener {
@@ -46,7 +50,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
 
     ): View? {
-        // Inflate the layout for this fragment
+        // Inflate layout for denne fragmenten
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
 
         // Endringer for Landscape
@@ -60,6 +64,8 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
         val viewModelFactory = ViewModelFactory(0, "",null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
+
+        //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
                 eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                 eventAdapter.notifyDataSetChanged()
@@ -76,6 +82,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
         }
 
+        //Endre  elementer basert på om det lastes inn eller ikke
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
 
             if(it) {
@@ -88,16 +95,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
                 view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
             }
         })
-/*
-        navController = findNavController()
-            val user = FirebaseAuth.getInstance().currentUser
 
-            if (loginViewModel.authenticationState == LoginViewModel.AuthenticationState.AUTHENTICATED) {
-                navController!!.navigate(R.id.mineEventFragment)
-            } else {
-                navController!!.navigate(R.id.loginFragment2)
-            }
-*/
         return view
 
     }
@@ -111,19 +109,20 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         addDataSet()
     }
 
+
+    /**
+     * Observerer AuthenticationState som kommer fra firebase om bruker ikke er logget inn send til loggin
+     */
     private fun observeAuthenticationState() {
 
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
+
             when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
+
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
                     }
-
+                // Om bruker ikke er logget inn
                 else -> {
                     navController!!.navigate(R.id.loginFragment2)
                     }
@@ -131,14 +130,18 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             })
     }
 
-
+    /**
+     * hent dataen fra Datasource klassen og putt den inn i adapteren
+     */
     private fun addDataSet(){
 
         if(loginViewModel.getBruker() != null)
         eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
     }
 
-    //Initierer og kobler recycleView til activityMain
+    /**
+     * Initierer og kobler recycleView til fragmentet
+     */
     private fun initRecyclerView(){
         //Apply skjønner contexten selv.
         recycler_view_påmeldte.apply {
@@ -159,11 +162,9 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     }
 
     override fun onSlettClick(item: Event, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onRedigerClick(item: Event, position: Int) {
-        TODO("Not yet implemented")
     }
 
 

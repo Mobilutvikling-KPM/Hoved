@@ -1,19 +1,20 @@
 package RecyclerView.RecyclerView.Moduls
 
-import android.text.format.DateFormat.format
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.lang.String.format
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
-/*
-* Singleton Pattern
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * Repository for kommentarer. Bruker singleton pattern. Kommuniserer med databasen og storage i firebase
+ *
+ * @property callback callback interface
  */
 class KommentarRepository(val callback: DataCallback<Kommentar>) {
 
@@ -29,9 +30,12 @@ class KommentarRepository(val callback: DataCallback<Kommentar>) {
         return instance
     }
 
-    //Henter data fra databasen
-    fun getKommentarer(type: Int, eventID: String): MutableLiveData<List<Kommentar>> {
-        createDataset(type, eventID)
+    /**
+     * Aktiverer henting av alle kommentarer i ett spesefikikt event i firebase og returnerer en tom liste
+     * @param type viewType til recyclerview
+     */
+    fun getKommentarer(eventID: String): MutableLiveData<List<Kommentar>> {
+        createDataset(eventID)
 
         var data: MutableLiveData<List<Kommentar>> = MutableLiveData()
         data.setValue(dataset)
@@ -39,24 +43,30 @@ class KommentarRepository(val callback: DataCallback<Kommentar>) {
         return data
     }
 
+    /**
+     * Legger til en kommentarer i firebase
+     * @param kommentar kommentaren som skal legges til
+     */
     fun leggTilKommentar(kommentar: Kommentar) {
         val kommentarId = ref.push().key // Lager en unik id som kan brukes i objektet
 
         if (kommentarId != null) {
-            ref.child(kommentarId).setValue(kommentar).addOnCompleteListener {
-                //Noe kan skje når databsen er ferdig lastet inn
-
-            }
+            ref.child(kommentarId).setValue(kommentar)
         }
     }
 
-    fun createDataset(type: Int, eventIDEN: String) {
+    /**
+     * Henter alle kommentarer som matcher eventID
+     * @param type viewType til recyclerview
+     * @param eventIDEN eventet det gjelder
+     */
+    fun createDataset( eventIDEN: String) {
         ref.orderByChild("eventID").equalTo(eventIDEN).addValueEventListener(object : ValueEventListener {
 
             //Inneholder alle verdier fra tabellen
             override fun onDataChange(p0: DataSnapshot) {
                 val arr: ArrayList<Kommentar> = ArrayList()
-                if (p0!!.exists()) {
+                if (p0.exists()) {
 
                     for (kmt in p0.children) {
                         val kommentar = kmt.getValue(Kommentar::class.java)

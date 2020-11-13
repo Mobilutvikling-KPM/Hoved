@@ -4,18 +4,22 @@ import RecyclerView.RecyclerView.Moduls.*
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.StorageTask
-import com.google.firebase.storage.UploadTask
 
+/**
+ *
+ * @author Patrick S. Lorentzen - 151685
+ *
+ * ViewModel for personer. Tar vare på data og henter data fra repository
+ *
+ * @property type viewtype til recyclerview
+ * @property id id til innlogget bruker
+ * @property isLoading interface brukes til callback til view
+ */
 class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewModel(), DataCallbackSingleValue<Person>,
     DataCallback<Person>, OnFind, DataCallbackHolder<Person> {
 
@@ -37,46 +41,70 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     //Bilde fra storage
     private var mStorageRef: StorageReference? = null
 
+    //viewType til recyclerview
     var type: Int = type
 
     init {
-        mPersoner = personRepo.getPersoner(type)  //Henter data fra databasen. EVent Repository
+        mPersoner = personRepo.getPersoner()  //Henter data fra databasen. EVent Repository
         mStorageRef = FirebaseStorage.getInstance().reference.child("Profil bilder")
     }
 
+    /**
+     * legger til/oppdaterer en person i firebase
+     * @param person personen som skal legges til
+     */
     fun leggTilPerson(person: Person){
         mIsUpdating.setValue(true)
 
+        Log.i("lala","Inni modelviewPerson")
         personRepo.leggTilPerson(person)
 
         var liste: ArrayList<Person> = mPersoner.value as ArrayList<Person>
-        if (liste != null) {
+
             liste.add(person)
             mPersoner.postValue(liste)
             mIsUpdating.setValue(false)
-        }
+
     }
 
+    /**
+     * legger til ett at en personen følger en annen i firebase
+     * @param folg forholdet
+     */
     fun bliVenn(folg: Folg){
         personRepo.bliVenn(folg)
     }
 
-//    fun bliVenn2(personID: String,innloggetID: String){
-//        personRepo.bliVenn2(personID,innloggetID)
-//    }
-
+    /**
+     * Avslutter ett følge forhold
+     * @param innloggetID den som avslutter
+     * @param brukerID personen som blir avsluttet
+     */
     fun sluttÅFølg(innloggetID: String, brukerID: String){
         personRepo.sluttÅFølg(innloggetID,brukerID)
     }
 
+    /**
+     * Finn ut om innlogget bruker har fulgt denne personen
+     * @param innloggetID den som avslutter
+     * @param brukerID personen som blir avsluttet
+     */
     fun finnUtOmVenn(innloggetID:String, brukerID: String){
         personRepo.finnUtOmVenn(innloggetID,brukerID)
     }
 
+    /**
+     * Oppretter en ny bruker
+     * @param bruker brukeren som skal opprettes
+     */
     fun opprettBruker(bruker: FirebaseUser){
         hentInnloggetProfil(bruker.uid,true)
     }
 
+    /**
+     * Finner alle personer innlogget bruker har fulgt
+     * @param personID innlogget bruker sin id
+     */
     fun finnVenner(personID: String){
         mIsUpdating.setValue(true)
         mPersonHolder.clear()
@@ -84,14 +112,28 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
 
     }
 
+    /**
+     * Henter profilen til innlogget bruker
+     * @param id brukerens id
+     * @param nyBruker om brukeren er ny eller ikke
+     */
     fun hentInnloggetProfil(id: String, nyBruker: Boolean){
         personRepo.hentInnloggetProfil(id,nyBruker)
     }
 
+    /**
+     * Henter brukeren til en enkelt person
+     * @param id personid til personen som skal hentes
+     */
     fun søkEtterPerson(id: String){
         personRepo.søkEtterPerson(id)
     }
 
+    /**
+     * Laster opp ett bilde i firebase-storage
+     * @param imageURI bildeaddressen
+     * @param personID brukeren det gjelder
+     */
     fun lastOppBilde(imageURI: Uri?, personID: String){
         personRepo.lastOppBilde(imageURI,personID)
     }
@@ -116,27 +158,49 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
         return erBekjent
     }
 
+    /**
+     * Trigges når databasen er ferdig med å finne verdien
+     * @param verdi personen som har blitt funnet
+     */
     override fun onValueRead(verdi: MutableLiveData<Person>) {
         enkeltPerson.setValue(verdi.value)
     }
 
+    /**
+     * Trigges når databasen er ferdig med å finne verdien og legger dermen til en ny person i firebase
+     * @param verdi personen som har blitt funnet
+     * @param nyBruker om personen er en ny bruker eller ikke
+     * @param id id til personen som skal oppdateres
+     */
     override fun onValueReadInnlogget(verdi: MutableLiveData<Person>, nyBruker: Boolean, id:String) {
         innloggetSinProfil.setValue(verdi.value)
         if(verdi.value == null)
             personRepo.leggTilPerson(Person(id,"","","","",""))
     }
 
+    /**
+     * Trigges når databasen er ferdig med å finne verdien
+     * @param liste liste med personer som har blitt funnet
+     */
     override fun onCallBack(liste: ArrayList<Person>) {
         mIsUpdating.setValue(false)
         Log.i("lala","hey ho")
         mPersoner.setValue(liste)
     }
 
+    /**
+     * Trigges når databasen er ferdig med søket.
+     * @param skjekk om verdien finnes i firebase eller ikke
+     */
     override fun erFunnet(skjekk: Boolean) {
 
         erBekjent.setValue(skjekk)
     }
 
+    /**
+     * Trigges når databasen er ferdig med å finne verdien .
+     * @param person personen som har blitt funnet
+     */
     override fun onCallbackHolder(person: Person?) {
         if(person != null) {
             mPersonHolder.add(person);
