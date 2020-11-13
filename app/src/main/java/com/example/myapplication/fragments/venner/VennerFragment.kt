@@ -3,6 +3,7 @@ package com.example.myapplication.fragments.venner
 import RecyclerView.RecyclerView.Moduls.Person
 import RecyclerView.RecyclerView.PersonRecyclerAdapter
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.view.*
+import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
@@ -47,11 +49,23 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_venner, container, false)
-        //Lager en viewModel med argumenter
-        val viewModelFactory = ViewModelFactory(1,"",null)
+
 
         view.ingenvennerTV.visibility = View.GONE
         view.recyclerviewfriendsbackgroundimage.visibility = View.GONE
+
+        // Endringer for Landscape
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.ingenvennerTV.layoutParams as ViewGroup.MarginLayoutParams
+            params1.setMargins(0, 480, 0, 0,)
+            val params2 =
+                view.recyclerviewfriendsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
+            params2.setMargins(0, 280, 0, 0,)
+        }
+
+        //Lager en viewModel med argumenter
+        val viewModelFactory = ViewModelFactory(1,"",null)
 
         //Sender inn viewModel
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
@@ -86,7 +100,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
                     view.recyclerviewfriendsbackgroundimage.visibility = View.VISIBLE
             }
         })
-        // Inflate the layout for this fragment
+
         return view
 
     }

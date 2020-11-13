@@ -5,6 +5,7 @@ import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener
 import RecyclerView.RecyclerView.OnKnappItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.example.myapplication.viewmodels.LoginViewModel
 
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
+import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
@@ -51,15 +53,22 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         // Inflate layout for denne fragmenten
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
 
+        // Endringer for Landscape
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.ingenpaameldteeventerTV.layoutParams as ViewGroup.MarginLayoutParams
+            params1.setMargins(0, 480 ,0, 0, )
+            val params2 = view.recyclerviewpåmeldteeventsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
+            params2.setMargins(0, 230 ,0, 0, )
+        }
+
         val viewModelFactory = ViewModelFactory(0, "",null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
-
-        //obsererverer listen over påmeldte events
+        //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
                 eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                 eventAdapter.notifyDataSetChanged()
-
                 if (eventViewModel.getPåmeldteEvents().value!!.isNotEmpty()) {
                     ingenpaameldteeventerTV.visibility = View.GONE
                     recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE

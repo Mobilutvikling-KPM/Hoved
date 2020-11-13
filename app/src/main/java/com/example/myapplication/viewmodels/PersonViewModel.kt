@@ -56,6 +56,7 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     fun leggTilPerson(person: Person){
         mIsUpdating.setValue(true)
 
+        Log.i("lala","Inni modelviewPerson")
         personRepo.leggTilPerson(person)
 
         var liste: ArrayList<Person> = mPersoner.value as ArrayList<Person>

@@ -67,17 +67,18 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
+        Log.i("lala","Inni personRepository")
         ref.child(person.personID).setValue(person)
 
         //Oppdaterer kommentarfelt dersom bruker har postet noe
         val ref2 = FirebaseDatabase.getInstance()
             .getReference("Kommentar") //Henter referanse til det du skriver inn
 
-        ref2.orderByChild("person/personID").equalTo(person.personID).addValueEventListener(object:ValueEventListener{
+        ref2.orderByChild("person/personID").equalTo(person.personID).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for(kmt in snapshot.children){
-
+                    Log.i("lala","Inni kommentar loop firebase")
                     val map = HashMap<String, Any>()
                     map["person"] = person
                     ref2.child(kmt.key!!).updateChildren(map)

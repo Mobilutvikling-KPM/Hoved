@@ -1,6 +1,5 @@
 package com.example.myapplication.event
 
-
 import RecyclerView.RecyclerView.EventRecyclerAdapter
 import RecyclerView.RecyclerView.Moduls.Event
 import RecyclerView.RecyclerView.OnEventItemClickListener

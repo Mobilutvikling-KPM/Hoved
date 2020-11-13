@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -36,7 +37,6 @@ import kotlinx.android.synthetic.main.event_utfyllingskjema.view.*
 import java.io.File
 import java.io.IOException
 import java.util.*
-import java.util.Calendar.HOUR_OF_DAY
 
 /**
  *
@@ -83,6 +83,14 @@ companion object {
     ): View? {
 
         val view = inflater.inflate(R.layout.event_utfyllingskjema, container, false)
+
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params1 = view.nyttEventKameraKnapp.layoutParams as ViewGroup.MarginLayoutParams
+            params1.setMargins(600, 0 ,0, 0, )
+            val params2 = view.button_gallery.layoutParams as ViewGroup.MarginLayoutParams
+            params2.setMargins(0, 0 ,600, 0, )
+        }
 
         //Progess bar
         progressBar = ProgressDialog(context)

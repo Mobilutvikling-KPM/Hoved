@@ -53,14 +53,6 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_mine_eventer, container, false)
 
-        //Lager en viewModel med argumenter
-        if(loginViewModel.getBruker() != null)
-        viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid,null)
-        else viewModelFactory = ViewModelFactory(2,"",null)
-
-        //Sender inn viewModel
-        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
-
         // Endringer for Landscape
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -69,6 +61,14 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             val params2 = view.recyclerviewmineeventsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
             params2.setMargins(0, 250 ,0, 0, )
         }
+
+        //Lager en viewModel med argumenter
+        if(loginViewModel.getBruker() != null)
+        viewModelFactory = ViewModelFactory(2,loginViewModel.getBruker()!!.uid,null)
+        else viewModelFactory = ViewModelFactory(2,"",null)
+
+        //Sender inn viewModel
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
         //Observerer endringer i event listen
         if(loginViewModel.getBruker() != null)
