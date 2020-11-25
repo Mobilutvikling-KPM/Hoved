@@ -72,39 +72,37 @@
                 android:id="@+id/constraint_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <!-- Skift navnet til denne id'n -->
                 <TextView
                     android:id="@+id/event_tid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
                     android:text="21-09-20"
-
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/antall_påmeldte_frame"
-                    android:layout_width="?attr/actionBarSize"
+                    android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" >
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:layout_gravity="center"
+                        android:layout_marginEnd="15dp"
+                        android:layout_gravity="bottom|right"
                         android:src="@drawable/ic_baseline_group_24" />
 
                     <TextView
                         android:id="@+id/ant_påmeldte_tall"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="12dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="15dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge"
                         android:gravity="center"
@@ -114,7 +112,7 @@
                         android:textSize="10sp" />
                 </FrameLayout>
 
-                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <FrameLayout
                     android:id="@+id/antall_kommentar_frame"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
@@ -125,16 +123,16 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_gravity="bottom|right"
                         android:src="@drawable/ic_baseline_comment_24" />
 
                     <TextView
                         android:id="@+id/antall_kommentar_tall"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="19dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="35dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge"
                         android:gravity="center"

@@ -26,5 +26,8 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/bot_menu"/>
+        app:itemBackground="@color/grey"
+        app:menu="@menu/bot_menu"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/red"/>
 </RelativeLayout>
