@@ -38,6 +38,7 @@
 
             <TextView
                 android:id="@+id/event_sted"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="1dp"
@@ -75,6 +76,7 @@
                 <!-- Skift navnet til denne id'n -->
                 <TextView
                     android:id="@+id/event_tid"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21-09-20"
