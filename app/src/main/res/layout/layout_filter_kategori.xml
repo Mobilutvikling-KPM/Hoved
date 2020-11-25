@@ -27,6 +27,7 @@
             android:textSize="16sp"
             android:clickable="true"
             style="@style/utfylling_tekstboks"
+            android:textColorHint="@color/black"
             android:hint="@string/utfylling_dato"
             android:gravity="center"
             android:focusable="true" />

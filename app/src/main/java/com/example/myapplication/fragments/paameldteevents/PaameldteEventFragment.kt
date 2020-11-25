@@ -44,6 +44,8 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
 
+
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -69,13 +71,14 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
                 eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                 eventAdapter.notifyDataSetChanged()
+
                 if (eventViewModel.getPåmeldteEvents().value!!.isNotEmpty()) {
-                    ingenpaameldteeventerTV.visibility = View.GONE
-                    recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+                    view.ingenpaameldteeventerTV.visibility = View.GONE
+                    view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
                 } else {
-                    ingenpaameldteeventerTV.visibility = View.VISIBLE
-                    recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
-                }
+                        view.ingenpaameldteeventerTV.visibility = View.VISIBLE
+                        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
+                    }
             })
 
             if(loginViewModel.getBruker() != null) {
@@ -84,7 +87,6 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
         //Endre  elementer basert på om det lastes inn eller ikke
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-
             if(it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
                 view.ingenpaameldteeventerTV.visibility = View.GONE
@@ -102,11 +104,13 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        observeAuthenticationState()
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
         initRecyclerView()
         addDataSet()
+
+
     }
 
 

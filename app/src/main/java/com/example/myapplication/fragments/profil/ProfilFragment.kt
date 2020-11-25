@@ -92,7 +92,6 @@ class ProfilFragment : Fragment() {
             view.strek.visibility = View.VISIBLE
             view.bio.visibility = View.VISIBLE
             view.redigerKnapp.visibility = View.VISIBLE
-            view.slettKnapp.visibility = View.VISIBLE
             view.strek2.visibility = View.VISIBLE
 
             view.profil_progress.visibility = View.GONE
@@ -109,12 +108,6 @@ class ProfilFragment : Fragment() {
             val bundle = bundleOf("Person" to person)
             navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment, bundle)
         }
-
-        //Slett bruker dialog
-        view.slettKnapp.setOnClickListener() {
-            showDeleteDialog()
-        }
-
         return view
     }
 

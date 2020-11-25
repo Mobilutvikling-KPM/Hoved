@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@id/mineEventFragment"
-        android:title="Påmeldte Events"
+        android:title="Påmeldt"
         android:icon="@drawable/ic_baseline_list_alt_24"
         app:showAsAction="ifRoom"/>
     <item
