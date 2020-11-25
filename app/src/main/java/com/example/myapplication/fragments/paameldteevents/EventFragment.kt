@@ -119,7 +119,7 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         })
 
         if(loginViewModel.getBruker() != null)
-            personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!.uid, false)
+            personViewModel.hentInnloggetProfil(loginViewModel.getBruker()!!)
 
         //om innlogget bruker er påmeldt. Endre påmeldt knapp og dens funksjon
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {

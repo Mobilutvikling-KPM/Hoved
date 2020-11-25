@@ -37,6 +37,9 @@ import kotlin.collections.ArrayList
  * @author Patrick S. Lorentzen - 151685
  * @author Mikael Wenneck Rønnevik - 226804
  *
+ * Datepicker av Atif Pervaiz- mars, 10 2018:
+ * https://devofandroid.blogspot.com/2018/03/date-picker-dialog-kotlin-android-studio.html
+ *
  * Ett fragment som viser en liste med alle events i databasen. Kan filtrere søket
  */
 

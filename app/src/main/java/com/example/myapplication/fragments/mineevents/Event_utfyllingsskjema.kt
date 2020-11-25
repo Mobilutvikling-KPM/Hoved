@@ -262,9 +262,9 @@ companion object {
             photoFile
         )
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-        //if (takePictureIntent.resolveActivity(activity!!.packageManager) != null) {
+
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        //}
+
     }
 
     /**

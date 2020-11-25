@@ -7,6 +7,7 @@ import com.example.myapplication.viewmodels.OnFind
 import com.example.myapplication.viewmodels.isLoading
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -67,7 +68,6 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person") //Henter referanse til det du skriver inn
 
-        Log.i("lala","Inni personRepository")
         ref.child(person.personID).setValue(person)
 
         //Oppdaterer kommentarfelt dersom bruker har postet noe
@@ -78,7 +78,6 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for(kmt in snapshot.children){
-                    Log.i("lala","Inni kommentar loop firebase")
                     val map = HashMap<String, Any>()
                     map["person"] = person
                     ref2.child(kmt.key!!).updateChildren(map)
@@ -246,10 +245,10 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
      * @param id id til bruker
      * @param nyBruker skjekker om brukeren er en ny bruker eller ikke
      */
-    fun hentInnloggetProfil(id: String, nyBruker: Boolean){
+    fun hentInnloggetProfil(bruker: FirebaseUser){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Person")
-        ref.child(id).addListenerForSingleValueEvent(object: ValueEventListener{
+        ref.child(bruker.uid).addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 var mellom: MutableLiveData<Person> = MutableLiveData()
                 if(p0.exists()){
@@ -259,7 +258,7 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
 
                 }
 
-                dataCallbackSingleValue.onValueReadInnlogget(mellom, nyBruker, id)
+                dataCallbackSingleValue.onValueReadInnlogget(mellom, bruker)
             }
 
             override fun onCancelled(p0: DatabaseError) {

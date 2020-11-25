@@ -90,16 +90,10 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
      * @param brukerID personen som blir avsluttet
      */
     fun finnUtOmVenn(innloggetID:String, brukerID: String){
+
         personRepo.finnUtOmVenn(innloggetID,brukerID)
     }
 
-    /**
-     * Oppretter en ny bruker
-     * @param bruker brukeren som skal opprettes
-     */
-    fun opprettBruker(bruker: FirebaseUser){
-        hentInnloggetProfil(bruker.uid,true)
-    }
 
     /**
      * Finner alle personer innlogget bruker har fulgt
@@ -113,12 +107,11 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     }
 
     /**
-     * Henter profilen til innlogget bruker
-     * @param id brukerens id
-     * @param nyBruker om brukeren er ny eller ikke
+     * Henter profilen til innlogget bruker. Dersom brukeren er ny vil det være en alternativ rute
+     * @param bruker om brukeren er ny eller ikke
      */
-    fun hentInnloggetProfil(id: String, nyBruker: Boolean){
-        personRepo.hentInnloggetProfil(id,nyBruker)
+    fun hentInnloggetProfil(bruker: FirebaseUser){
+        personRepo.hentInnloggetProfil(bruker)
     }
 
     /**
@@ -167,15 +160,14 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     }
 
     /**
-     * Trigges når databasen er ferdig med å finne verdien og legger dermen til en ny person i firebase
+     * Trigges når databasen er ferdig med å finne brukeren til personen som har logget inn. Dersom det er en ny bruker trigges leggTilPerson()
      * @param verdi personen som har blitt funnet
-     * @param nyBruker om personen er en ny bruker eller ikke
-     * @param id id til personen som skal oppdateres
+     * @param bruker Brukeren som har logget inn
      */
-    override fun onValueReadInnlogget(verdi: MutableLiveData<Person>, nyBruker: Boolean, id:String) {
+    override fun onValueReadInnlogget(verdi: MutableLiveData<Person>,bruker: FirebaseUser) {
         innloggetSinProfil.setValue(verdi.value)
         if(verdi.value == null)
-            personRepo.leggTilPerson(Person(id,"","","","",""))
+            personRepo.leggTilPerson(Person(bruker.uid,bruker.displayName!!,"","","",""))
     }
 
     /**

@@ -43,7 +43,4 @@ class LoginViewModel : ViewModel() {
         return FirebaseAuth.getInstance().currentUser
     }
 
-    fun getFirebase():FirebaseAuth{
-        return FirebaseAuth.getInstance()
-    }
 }

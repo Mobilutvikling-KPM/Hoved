@@ -86,12 +86,6 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.11.0"
     implementation "jp.wasabeef:glide-transformations:4.0.0"
 
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    // OkHttp
-    //implementation("com.squareup.okhttp3:okhttp:4.9.0")
-
     //Navigation
     def nav_version = "2.3.0"
 

@@ -79,22 +79,6 @@ class LoginFragment : Fragment() {
         )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                // Bruker har logget inn suksessfult
-                val bruker = FirebaseAuth.getInstance().currentUser!!
-                val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid,null)
-                personViewModel.opprettBruker(bruker)
-                Log.i(ContentValues.TAG, "Bruker har suksessfult logget inn ${FirebaseAuth.getInstance().currentUser?.displayName}!")
-            } else {
-                //Innlogging feilet
-                Log.i(ContentValues.TAG, "Innlogging feiliet ${response?.error?.errorCode}")
-            }
-        }
-    }
 
     /**
      * Observerer AuthenticationState som kommer fra firebase
@@ -105,6 +89,11 @@ class LoginFragment : Fragment() {
             when (authenticationState) {
                 //Om bruker er logget inn
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
+                    // Bruker har logget inn suksessfult
+                    val bruker = FirebaseAuth.getInstance().currentUser!!
+                    val personViewModel: PersonViewModel = PersonViewModel(1,bruker.uid,null)
+                    personViewModel.hentInnloggetProfil(bruker)
                         navController!!.popBackStack(R.id.event_liste_fragment2, true)
                         navController!!.navigate(R.id.event_liste_fragment2)
                     }
@@ -113,6 +102,7 @@ class LoginFragment : Fragment() {
                     // Om bruker ikke er logget inn
                     login_knapp.setOnClickListener {
                         launchSignInFlow()
+
                     }
                 }
             }
