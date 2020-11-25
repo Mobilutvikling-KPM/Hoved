@@ -36,11 +36,11 @@
     <string name="panel_background">Panel Background</string>
     <string name="velg_kategori">Velg kategori</string>
 
-    <string name="utfylling_tittel">Tittel</string>
+    <string name="utfylling_tittel">Tittel *</string>
     <string name="utfylling_beskrivelse">Beskrivelse</string>
-    <string name="utfylling_dato">Dato</string>
+    <string name="utfylling_dato">Dato *</string>
     <string name="utfylling_klokke">Klokke</string>
-    <string name="utfylling_sted">Sted</string>
+    <string name="utfylling_sted">Sted *</string>
     <string name="Kategori">Kategori</string>
 
     <string name="ok">Ok</string>

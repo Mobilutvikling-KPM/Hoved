@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="Henriette Bergensen" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/kommentar_dato"
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/brukernavnLin"
             android:layout_marginLeft="50dp"
+            android:textColor="@color/black"
             android:text="@string/input"/>
 
     </RelativeLayout>

@@ -63,7 +63,7 @@
         <EditText
             android:id="@+id/event_utfyll_tittel"
             style="@style/utfylling_tekstboks"
-            android:hint="@string/utfylling_tittel" />
+            android:hint="@string/utfylling_tittel"/>
 
         <Spinner
             android:id="@+id/utfylling_spinner"

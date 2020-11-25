@@ -17,12 +17,12 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tittel_nyttEvent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:visibility="gone"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        android:layout_marginTop="250dp"
+        android:layout_centerHorizontal="true"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:contentDescription="@string/lag_nytt_event"
         android:src="@drawable/ic_baseline_add_24"
-        />
+        app:backgroundTint="@color/colorPrimary" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -51,13 +51,15 @@
             android:layout_marginTop="320dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
         <ImageView
             android:id="@+id/recyclerviewmineeventsbackgroundimage"
             android:src="@drawable/recyclerviewbackgroundmineeventer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="220dp"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:visibility="gone"/>
     </RelativeLayout>
 </RelativeLayout>

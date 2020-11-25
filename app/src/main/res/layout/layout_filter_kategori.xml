@@ -27,8 +27,7 @@
             android:textSize="16sp"
             android:clickable="true"
             style="@style/utfylling_tekstboks"
-            android:textColorHint="@color/black"
-            android:hint="@string/utfylling_dato"
+            android:hint="Dato"
             android:gravity="center"
             android:focusable="true" />
 
@@ -49,13 +48,12 @@
         android:layout_height="wrap_content"
         android:hint="Skriv inn bynavn"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
         style="@style/utfylling_tekstboks" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
+        android:gravity="center"
         android:layout_marginTop="30dp">
         <Button
             android:id="@+id/negative_button"

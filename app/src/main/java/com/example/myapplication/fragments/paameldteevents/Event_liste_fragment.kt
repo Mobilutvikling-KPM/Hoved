@@ -64,10 +64,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-
-
         val view = inflater.inflate(R.layout.event_liste, container, false)
-
         val viewModelFactory = ViewModelFactory(1, "", null)
 
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
@@ -99,7 +96,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         view.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-
                 return false
             }
 
@@ -222,23 +218,33 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     /**
      *  Filtrerer søk basert på inndata verdier endrer på
      */
-    private fun filterSearch(){
+    private fun filterSearch() {
         filtrertListe.clear()
 
         var filterMønster: String = søkeTekst.toLowerCase().trim()
 
-        for (item: Event in eventListe){
+        for (item: Event in eventListe) {
 
-            if( item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase().contains(
-                    filterMønster
-                )
-                && item.kategori.toLowerCase().contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(
+            if (item.sted.toLowerCase().contains(byNavn.toLowerCase()) && item.title.toLowerCase()
+                    .contains(
+                        filterMønster
+                    )
+                && item.kategori.toLowerCase()
+                    .contains(kategoriValg.toLowerCase()) && item.dato.toLowerCase().contains(
                     datoen.toLowerCase()
-                )) {
+                )
+            ) {
 
                 filtrertListe.add(item)
             }
 
+        }
+        if (filtrertListe.isEmpty()) {
+            ingentreffsok.visibility = View.VISIBLE
+            feilsoking.visibility = View.VISIBLE
+        } else {
+            ingentreffsok.visibility = View.GONE
+            feilsoking.visibility = View.GONE
         }
 
         eventAdapter.submitList(filtrertListe)
@@ -260,6 +266,9 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         eventAdapter.submitList(filtrertListe)
         eventAdapter.notifyDataSetChanged()
+
+        ingentreffsok.visibility = View.GONE
+        feilsoking.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -70,18 +70,14 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
         //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
+
                 if(eventAdapter.itemCount == 0) {
                     eventAdapter.clear();
                     eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                     eventAdapter.notifyDataSetChanged()
                 }
 
-                if (eventViewModel.getPåmeldteEvents().value!!.isNotEmpty()) {
-
-                    view.ingenpaameldteeventerTV.visibility = View.GONE
-                    view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
-                } else {
-
+                if (eventViewModel.getPåmeldteEvents().value!!.isEmpty()) {
                         view.ingenpaameldteeventerTV.visibility = View.VISIBLE
                         view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
                     }
@@ -95,6 +91,8 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             if(it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
+                view.ingenpaameldteeventerTV.visibility = View.GONE
+                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.påmeldt_liste_ProgressBar.visibility = View.GONE
             }

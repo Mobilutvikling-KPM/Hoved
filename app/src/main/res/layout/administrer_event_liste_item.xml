@@ -9,6 +9,7 @@
     app:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -40,6 +41,7 @@
 
             <TextView
                 android:id="@+id/tittel_admin_liste"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dette er en tittel"
@@ -51,6 +53,7 @@
                 android:layout_marginTop="5dp">
             <TextView
                 android:id="@+id/dato_admin_liste"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -90,7 +93,7 @@
                     android:layout_width="@dimen/badgeSize"
                     android:layout_height="@dimen/badgeSize"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/antall_påmeldte_frame">
+                    app:layout_constraintLeft_toRightOf="@id/antall_påmeldte_frame" >
 
                     <ImageView
                         android:layout_width="22dp"
