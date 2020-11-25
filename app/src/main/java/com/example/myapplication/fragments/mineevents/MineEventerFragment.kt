@@ -75,7 +75,7 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         eventViewModel.getLagdeEvents().observe(viewLifecycleOwner, Observer {
             if(loginViewModel.getBruker() != null)
                 eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
-            eventAdapter.notifyDataSetChanged()
+                eventAdapter.notifyDataSetChanged()
         // Fjerner bakgrunn om det er noe i listen - ellers viser det
             if (eventViewModel.getLagdeEvents().value!!.isNotEmpty()) {
                 ingeneventerTV.visibility = View.GONE

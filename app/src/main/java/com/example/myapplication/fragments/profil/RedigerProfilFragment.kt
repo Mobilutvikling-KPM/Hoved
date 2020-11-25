@@ -185,6 +185,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
     /**
      * Initialiserer kamera intent
      */
+
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = getPhotoFile(FILE_NAME)
@@ -195,9 +196,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
             photoFile
         )
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-        //if (takePictureIntent.resolveActivity(activity!!.packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        //}
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
     }
 
     /**
@@ -205,6 +204,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
      * @param fileName filen som skal opprettes
      * @return returnerer en fil
      */
+
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)

@@ -127,18 +127,7 @@
                 android:layout_below="@+id/redigerKnapp"
                 android:layout_centerHorizontal="true"
                 android:text="Logg ut"/>
-            <Button
-                android:layout_marginTop="10dp"
-                android:id="@+id/slettKnapp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/LoggUtKnapp"
-                android:layout_centerHorizontal="true"
-                android:text="@string/slett_bruker"
-                app:backgroundTint="@color/red"/>
-
         </RelativeLayout>
-
         <TextView
             android:id="@+id/venner_lagdeEvent_tittel"
             android:layout_width="wrap_content"
