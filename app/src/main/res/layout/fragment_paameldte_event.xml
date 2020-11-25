@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_alignBaseline="@id/tittel_påmeldteEventer"
         app:spanCount="1"
-        android:id="@+id/recycler_view_påmeldte"/>
+        android:id="@+id/recycler_view_påmeldte" />
 
     <RelativeLayout
         android:layout_width="match_parent"

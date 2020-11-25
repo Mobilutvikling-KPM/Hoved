@@ -27,6 +27,7 @@
 
         <TextView
             style="@style/profilInfo"
+            android:textColor="@color/black"
             android:id="@+id/pnavn"
             android:layout_toEndOf="@id/bilde_frame"
             android:layout_marginTop="40dp"
@@ -59,6 +60,7 @@
 
         <TextView
             style="@style/profilInfo"
+            android:textColor="@color/black"
             android:id="@+id/palder"
             android:textSize="15dp"
             android:layout_width="wrap_content"
@@ -67,6 +69,7 @@
 
         <TextView
             style="@style/profilInfo"
+            android:textColor="@color/black"
             android:id="@+id/pBosted"
             android:textSize="15dp"
             android:layout_width="wrap_content"
@@ -83,6 +86,7 @@
 
         <TextView
             style="@style/profilInfo"
+            android:textColor="@color/black"
             android:id="@+id/bio"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
@@ -92,6 +96,7 @@
             android:text="@string/bio" />
         <TextView
             android:id="@+id/biotext"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

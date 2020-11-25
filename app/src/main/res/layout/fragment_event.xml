@@ -85,10 +85,12 @@
                     android:id="@+id/dato_og_tid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="21.08.21" />
 
                     <TextView
                         android:id="@+id/klokkeSlett"
+                        android:textColor="@color/black"
                         android:text=" klokken 15:00"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -99,11 +101,13 @@
                     style="@style/Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="En Tittel" />
+                    android:text="En Tittel"
+                    android:textColor="@color/black"/>
 
 
                 <TextView
                     android:id="@+id/by"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nedre Bakkeveg 6" />
@@ -145,6 +149,7 @@
                 </LinearLayout>
                 <TextView
                     android:id="@+id/tittelBeskrivelse"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Beskrivelse_Event"
@@ -152,6 +157,7 @@
 
                 <TextView
                     android:id="@+id/beskrivelse"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/page_margin"
@@ -159,6 +165,7 @@
 
                 <TextView
                     android:id="@+id/event_kategori"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/page_margin"

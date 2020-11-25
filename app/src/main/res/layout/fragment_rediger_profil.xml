@@ -55,7 +55,7 @@
             <EditText
                 android:id="@+id/utfyll_navn"
                 style="@style/utfylling_tekstboks"
-                android:hint="Navn" />
+                android:hint="Navn *" />
 
             <EditText
                 android:id="@+id/utfyll_alder"

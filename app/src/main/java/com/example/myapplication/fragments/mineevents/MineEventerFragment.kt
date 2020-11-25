@@ -26,6 +26,7 @@ import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.view.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
+import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
 
 /**
@@ -77,10 +78,8 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
                 eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
                 eventAdapter.notifyDataSetChanged()
         // Fjerner bakgrunn om det er noe i listen - ellers viser det
-            if (eventViewModel.getLagdeEvents().value!!.isNotEmpty()) {
-                ingeneventerTV.visibility = View.GONE
-                recyclerviewmineeventsbackgroundimage.visibility = View.GONE
-            } else {
+
+            if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
                 ingeneventerTV.visibility = View.VISIBLE
                 recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
             }
@@ -94,6 +93,8 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             //Show og hide progress bar if isUpdating false osv.
             if (it) {
                 view.progress_bar.visibility = View.VISIBLE
+                view.ingeneventerTV.visibility = View.GONE
+                view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.progress_bar.visibility = View.GONE
             }
@@ -108,7 +109,6 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
-
         view.floating_action_button.setOnClickListener {
             navController!!.navigate(R.id.action_nyttEventFragment_to_event_utfyllingsskjema)
         }
