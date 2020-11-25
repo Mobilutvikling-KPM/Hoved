@@ -125,11 +125,11 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         eventViewModel.getErPåmeldt().observe(viewLifecycleOwner, Observer {
             if (it) {
                 view.button_bliMed.setBackgroundColor(Color.WHITE)
-                view.button_bliMed.setTextColor(Color.rgb(51, 0, 204))
+                view.button_bliMed.setTextColor(Color.parseColor("#338f77"))
                 view.button_bliMed.text = "Meld av"
                 erPåmeldt = true
             } else {
-                view.button_bliMed.setBackgroundColor(Color.rgb(98, 0, 238))
+                view.button_bliMed.setBackgroundColor(Color.parseColor("#338f77"))
                 view.button_bliMed.setTextColor(Color.WHITE)
                 view.button_bliMed.text = "Bli med"
                 erPåmeldt = false

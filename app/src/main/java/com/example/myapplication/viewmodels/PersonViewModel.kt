@@ -56,7 +56,6 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
     fun leggTilPerson(person: Person){
         mIsUpdating.setValue(true)
 
-        Log.i("lala","Inni modelviewPerson")
         personRepo.leggTilPerson(person)
 
         var liste: ArrayList<Person> = mPersoner.value as ArrayList<Person>
@@ -127,8 +126,8 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
      * @param imageURI bildeaddressen
      * @param personID brukeren det gjelder
      */
-    fun lastOppBilde(imageURI: Uri?, personID: String){
-        personRepo.lastOppBilde(imageURI,personID)
+    fun lastOppBilde(imageURI: Uri?, person:Person){
+        personRepo.lastOppBilde(imageURI,person)
     }
 
     fun getInnloggetProfil(): LiveData<Person>{

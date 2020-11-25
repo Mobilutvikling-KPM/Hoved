@@ -82,6 +82,8 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                     map["person"] = person
                     ref2.child(kmt.key!!).updateChildren(map)
                 }
+                if(isLoading != null)
+                isLoading!!.loadingFinished("")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -96,12 +98,12 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
      * @param imageURI bildeaddressen som skal lastes opp
      * @param personID personen bildet tilhører
      */
-    fun lastOppBilde(imageURI: Uri?, personID: String){
+    fun lastOppBilde(imageURI: Uri?, person: Person){
         var ref = FirebaseDatabase.getInstance()
-            .getReference("Person").child(personID) //Henter referanse til det du skriver inn
+            .getReference("Person").child(person.personID) //Henter referanse til det du skriver inn
 
         if(imageURI != null){
-            val fileRef = mStorageRef!!.child(personID + ".jpg")
+            val fileRef = mStorageRef!!.child(person.personID + ".jpg")
 
             var uploadTask: StorageTask<*>
             uploadTask = fileRef.putFile(imageURI)
@@ -121,7 +123,9 @@ class PersonRepository(var isLoading: isLoading?, var dataCallbackSingleValue: D
                     val map = HashMap<String, Any>()
                     map["profilBilde"] = url
                     ref.updateChildren(map).addOnCompleteListener {
-                        isLoading!!.loadingFinished("")
+                        person.profilBilde = url
+                        leggTilPerson(person)
+                       // isLoading!!.loadingFinished("")
                     }
 
                 }

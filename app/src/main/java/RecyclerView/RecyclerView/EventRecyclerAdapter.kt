@@ -84,6 +84,10 @@ class EventRecyclerAdapter(var clickListener: OnEventItemClickListener, var knap
         items = eventListe as ArrayList<Event>
     }
 
+    fun clear(){
+        items.clear()
+    }
+
 
     /**
      * forteller hvor mange items det er i lista

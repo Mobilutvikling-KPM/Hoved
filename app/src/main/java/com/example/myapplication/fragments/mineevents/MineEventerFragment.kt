@@ -8,6 +8,7 @@ import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.app.AlertDialog
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -73,14 +74,21 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         //Observerer endringer i event listen
         if(loginViewModel.getBruker() != null)
         eventViewModel.getLagdeEvents().observe(viewLifecycleOwner, Observer {
-            if(loginViewModel.getBruker() != null)
-                eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
-                eventAdapter.notifyDataSetChanged()
+            if(loginViewModel.getBruker() != null) {
+                if(eventAdapter.itemCount == 0) {
+                    eventAdapter.clear(); //Sletter i tilfelle kopi
+                    eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
+                    eventAdapter.notifyDataSetChanged()
+                }
+            }
+
         // Fjerner bakgrunn om det er noe i listen - ellers viser det
             if (eventViewModel.getLagdeEvents().value!!.isNotEmpty()) {
+                Log.i("lala","Jeg er not empty LAGDE EVENTS")
                 ingeneventerTV.visibility = View.GONE
                 recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             } else {
+                Log.i("lala","Jeg er ER empty LAGDE EVENTS")
                 ingeneventerTV.visibility = View.VISIBLE
                 recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
             }

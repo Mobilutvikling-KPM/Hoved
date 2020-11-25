@@ -146,9 +146,9 @@ class RedigerProfilFragment : Fragment(), isLoading {
 
             else if (! utfyll_navn.text.toString().isEmpty() && utfyll_alder.text.toString().isDigitsOnly()){
 
-                var image = sendtBundle.profilBilde
-                if(imageURI != null)
-                    image = imageURI.toString()
+//                var image = sendtBundle.profilBilde
+//                if(imageURI != null)
+//                    image = imageURI.toString()
 
                 val person = Person(
                     sendtBundle.personID, //genereres automatisk
@@ -156,15 +156,14 @@ class RedigerProfilFragment : Fragment(), isLoading {
                     view.utfyll_alder.text.toString(),
                     view.utfyll_bosted.text.toString(),
                     view.utfyll_bio.text.toString(),
-                    image
+                    sendtBundle.profilBilde
                 ) //LEGG TIL BILDEADRESSE HER!!
-                personViewModel.leggTilPerson(person)
 
-                Log.i("lala","Inni redigerprofil" + imageURI)
+
                 if(imageURI == null){
-                    loadingFinished("");
+                    personViewModel.leggTilPerson(person)
                 }else{
-                    personViewModel.lastOppBilde(imageURI, loginViewModel.getBruker()!!.uid)
+                    personViewModel.lastOppBilde(imageURI, person)
                     progressBar!!.show()
                 }
 
@@ -232,9 +231,10 @@ class RedigerProfilFragment : Fragment(), isLoading {
 
     /**
      * Når infoen er ferdig opplastet i datbasen naviger tilbake
-     * @param id
+     * @param id til bilde som er lastet opp
      */
     override fun loadingFinished(id: String) {
+
         progressBar!!.dismiss()
         navController!!.navigateUp()
     }
