@@ -1,21 +1,11 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="next">Next</string>
+    <string name="app_name">Eventer</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hjem">Hjem</string>
     <string name="mine_eventer">Påmeldte eventer</string>
     <string name="nytt_event">Mine Eventer</string>
     <string name="min_profil">Min Profil</string>
     <string name="mine_venner">Følger</string>
-    <string name="title_activity_traverse_app">TraverseAppActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="previous">Previous</string>
+
     <string name="Beskrivelse_Event">Beskrivelse</string>
     <string name="knapp_event_bliMed">Bli med</string>
     <string name="knapp_event_sePåmeldte">0 Påmeldte</string>
@@ -30,35 +20,22 @@
         It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="rediger_informasjon">Rediger informasjon</string>
-    <string name="instillinger">Instillinger</string>
-    <string name="slett_bruker">Slett bruker</string>
     <string name="bio">Bio</string>
     <string name="panel_background">Panel Background</string>
-    <string name="velg_kategori">Velg kategori</string>
 
     <string name="utfylling_tittel">Tittel *</string>
     <string name="utfylling_beskrivelse">Beskrivelse</string>
     <string name="utfylling_dato">Dato *</string>
     <string name="utfylling_klokke">Klokke</string>
     <string name="utfylling_sted">Sted *</string>
-    <string name="Kategori">Kategori</string>
 
     <string name="ok">Ok</string>
     <string name="lag_Event">Publiser</string>
-    <string name="cancel">Avbryt</string>
-    <string name="pick_color">pick color</string>
-    <string name="title">tittel</string>
-    <string name="supporting_text">sei</string>
-    <string name="decline">decline</string>
-    <string name="accept">accept</string>
-    <string name="pick_toppings">toppings</string>
-    <string name="dialog_fire_missiles">hoho</string>
-    <string name="fire">haha</string>
+
     <string name="kommentarfeilmelding">Kommentarfelt kan ikke være tomt</string>
 
-
     <string-array name="Kategorier">
-        <item>Velg Kategori</item>
+        <item>Kategori</item>
         <item>Underholdning</item>
         <item>Sport</item>
         <item>Musikk</item>
@@ -71,27 +48,7 @@
         <item>Dugnad</item>
     </string-array>
 
-    <string name="default_value">0</string>
     <string name="bli_venn">Følg</string>
-    <string name="text_error">Error</string>
-    <string name="text_success">Success</string>
-    <string name="text_ok">OK</string>
-    <string name="text_cancel">Cancel</string>
-    <string name="are_you_sure">Are you sure?</string>
-    <string name="text_yes">yes</string>
-    <string name="ascending_or_descending_order">Ascending or descending order</string>
-    <string name="text_filter_options">Filtrer søkeresultat</string>
-    <string name="filter_by_author_or_date">Filter by author or date</string>
-    <string name="text_author">Author</string>
-    <string name="text_date">Date</string>
-    <string name="text_filter">Filter</string>
-    <string name="filter_author">Author</string>
-    <string name="filter_date">Date</string>
-    <string name="key_filter">filter</string>
-    <string name="key_order">order</string>
-    <string name="order_asc">ASC</string>
-    <string name="order_desc">DESC</string>
-    <string name="spinner_title">Velg kategori</string>
     <string name="dialog_box_n">Avbryt</string>
     <string name="dialog_box_message_login">Ønsker du å logge inn?</string>
     <string name="loginn">Log inn</string>

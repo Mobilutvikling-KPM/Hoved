@@ -1,9 +1,11 @@
 package com.example.myapplication.viewmodels
 
-import RecyclerView.RecyclerView.Moduls.*
+import com.example.myapplication.Moduls.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.callback_interface.DataCallback
+import com.example.myapplication.repository.KommentarRepository
 
 
 /**

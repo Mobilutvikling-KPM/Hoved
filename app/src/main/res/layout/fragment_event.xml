@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="modelEvent"
-            type="com.example.myapplication.fragments.paameldteevents.ModelEvent" />
-    </data>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".event.EventFragment">
+            tools:context=".fragments.hjem.EventFragment">
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >

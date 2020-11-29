@@ -1,6 +1,6 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.Moduls.Person
+import com.example.myapplication.Moduls.Person
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,10 +22,9 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
-import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import com.example.myapplication.viewmodels.isLoading
+import com.example.myapplication.callback_interface.isLoading
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_rediger_profil.*
@@ -53,8 +51,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
     private var imageURI: Uri? = null
     private lateinit var photoFile: File
 
-
-    private var loginViewModel: LoginViewModel  = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     var navController: NavController? = null
     lateinit var sendtBundle: Person
@@ -145,11 +141,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
             }
 
             else if (! utfyll_navn.text.toString().isEmpty() && utfyll_alder.text.toString().isDigitsOnly()){
-
-//                var image = sendtBundle.profilBilde
-//                if(imageURI != null)
-//                    image = imageURI.toString()
-
                 val person = Person(
                     sendtBundle.personID, //genereres automatisk
                     view.utfyll_navn.text.toString(),
@@ -157,8 +148,7 @@ class RedigerProfilFragment : Fragment(), isLoading {
                     view.utfyll_bosted.text.toString(),
                     view.utfyll_bio.text.toString(),
                     sendtBundle.profilBilde
-                ) //LEGG TIL BILDEADRESSE HER!!
-
+                )
 
                 if(imageURI == null){
                     personViewModel.leggTilPerson(person)
@@ -184,7 +174,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
     /**
      * Initialiserer kamera intent
      */
-
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = getPhotoFile(FILE_NAME)
@@ -203,7 +192,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
      * @param fileName filen som skal opprettes
      * @return returnerer en fil
      */
-
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
@@ -221,7 +209,6 @@ class RedigerProfilFragment : Fragment(), isLoading {
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            //val takenImage = data?.extras?.get("data") as Bitmap
             val myUri = Uri.fromFile(File(photoFile.absolutePath))
             val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
             imageURI = myUri

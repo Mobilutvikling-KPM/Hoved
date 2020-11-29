@@ -1,11 +1,16 @@
 package com.example.myapplication.viewmodels
 
-import RecyclerView.RecyclerView.Moduls.*
+import com.example.myapplication.Moduls.*
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.callback_interface.DataCallback
+import com.example.myapplication.callback_interface.DataCallbackSingleValue
+import com.example.myapplication.callback_interface.OnFind
+import com.example.myapplication.callback_interface.isLoading
+import com.example.myapplication.repository.DataCallbackHolder
+import com.example.myapplication.repository.PersonRepository
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -20,7 +25,8 @@ import com.google.firebase.storage.StorageReference
  * @property id id til innlogget bruker
  * @property isLoading interface brukes til callback til view
  */
-class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewModel(), DataCallbackSingleValue<Person>,
+class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewModel(),
+    DataCallbackSingleValue<Person>,
     DataCallback<Person>, OnFind, DataCallbackHolder<Person> {
 
     private var mPersoner: MutableLiveData<List<Person>>
@@ -183,7 +189,6 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
      * @param skjekk om verdien finnes i firebase eller ikke
      */
     override fun erFunnet(skjekk: Boolean) {
-
         erBekjent.setValue(skjekk)
     }
 

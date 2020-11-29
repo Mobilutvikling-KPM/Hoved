@@ -1,7 +1,6 @@
 package com.example.myapplication.viewmodels
 
-import RecyclerView.RecyclerView.Moduls.Person
-import android.util.Log
+import com.example.myapplication.Moduls.Person
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 

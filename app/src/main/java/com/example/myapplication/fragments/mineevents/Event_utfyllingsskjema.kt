@@ -1,6 +1,6 @@
 package com.example.myapplication.fragments.mineevents
 
-import RecyclerView.RecyclerView.Moduls.Event
+import com.example.myapplication.Moduls.Event
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
@@ -12,11 +12,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -29,7 +27,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import com.example.myapplication.viewmodels.isLoading
+import com.example.myapplication.callback_interface.isLoading
 import kotlinx.android.synthetic.main.event_utfyllingskjema.*
 import kotlinx.android.synthetic.main.event_utfyllingskjema.event_utfyll_dato
 import kotlinx.android.synthetic.main.event_utfyllingskjema.event_utfyll_klokke
@@ -44,6 +42,9 @@ import java.util.*
  * @author Mikael Wenneck Rønnevik - 226804
  *
  * Ett utfyllingsskjema hvor brukere kan lage ett event
+ *
+ *  Datepicker av Atif Pervaiz- mars, 10 2018:
+ * https://devofandroid.blogspot.com/2018/03/date-picker-dialog-kotlin-android-studio.html
  */
 
 private const val FILE_NAME ="photo.jpg"
@@ -154,7 +155,7 @@ companion object {
                 DatePickerDialog(
                     it1,
                     { _, year, monthOfYear, dayOfMonth ->
-                        // Display Selected date in textbox
+                        // Vis valgt dato
                         event_utfyll_dato.text = "" + dayOfMonth + "." + monthOfYear + "." + year
                     }, year, month, day
                 )
@@ -175,7 +176,7 @@ companion object {
                 hour,
                 minute,
                 true
-            ) //Yes 24 hour time
+            )
             mTimePicker.setTitle("Velg Klokkeslett")
             mTimePicker.show()
         }
@@ -289,7 +290,6 @@ companion object {
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            //val takenImage = data?.extras?.get("data") as Bitmap
             val myUri = Uri.fromFile(File(photoFile.absolutePath))
             val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
             imageURI = myUri

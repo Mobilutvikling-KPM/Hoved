@@ -1,10 +1,7 @@
 package com.example.myapplication.fragments.login
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.Intent
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.example.myapplication.MainActivity
 import com.example.myapplication.R
-import com.example.myapplication.fragments.profil.ProfilFragment
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_profil.*
 
 
 /**
@@ -35,11 +28,6 @@ class LoginFragment : Fragment() {
 
     val viewModelLogin = LoginViewModel()
     var navController: NavController? = null
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +63,7 @@ class LoginFragment : Fragment() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build(),
-            ProfilFragment.SIGN_IN_REQUEST_CODE
+            SIGN_IN_REQUEST_CODE
         )
     }
 

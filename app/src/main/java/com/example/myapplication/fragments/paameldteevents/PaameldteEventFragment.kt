@@ -1,19 +1,17 @@
 package com.example.myapplication.fragments.paameldteevents
 
-import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.OnEventItemClickListener
-import RecyclerView.RecyclerView.OnKnappItemClickListener
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import com.example.myapplication.RecyclerView.EventRecyclerAdapter
+import com.example.myapplication.Moduls.Event
+import com.example.myapplication.RecyclerView.OnEventItemClickListener
+import com.example.myapplication.RecyclerView.OnKnappItemClickListener
+import com.example.myapplication.RecyclerView.TopSpacingItemDecoration
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -21,16 +19,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
-
 import com.example.myapplication.viewmodels.LoginViewModel
-
 import com.example.myapplication.viewmodels.ViewModelFactory
-import com.example.myapplication.viewmodels.isLoading
-import kotlinx.android.synthetic.main.fragment_mine_eventer.*
-import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
-import org.w3c.dom.Text
+
 
 
 /**
@@ -48,34 +41,43 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
 
-
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
 
 
     ): View? {
+
         // Inflate layout for denne fragmenten
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
+
+        view.ingenpaameldteeventerTV.visibility = View.GONE
+        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
 
         // Endringer for Landscape
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val params1 = view.ingenpaameldteeventerTV.layoutParams as ViewGroup.MarginLayoutParams
-            params1.setMargins(0, 480 ,0, 0, )
+            params1.setMargins(0, 480, 0, 0)
             val params2 = view.recyclerviewpåmeldteeventsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
-            params2.setMargins(0, 230 ,0, 0, )
+            params2.setMargins(0, 230, 0, 0)
         }
 
-        val viewModelFactory = ViewModelFactory(0, "",null)
+        val viewModelFactory = ViewModelFactory(0, "", null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
         //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
+
                 if(loginViewModel.getBruker() != null) {
-                    eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
-                    eventAdapter.notifyDataSetChanged()
+
+                    if (eventAdapter.itemCount == 0) {
+                        eventAdapter.clear()
+                        eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
+                        eventAdapter.notifyDataSetChanged()
+                    }
                 }
+
 
                 if (it.isEmpty()) {
 
@@ -88,20 +90,22 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
                 }
             })
 
+
         //Om bruker er logget inn så hentes det påmeldte events
-            if(loginViewModel.getBruker() != null) {
+        if(loginViewModel.getBruker() != null) {
             eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
         }
 
-        //Endre  elementer basert på om det lastes inn eller ikke
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            if(it) {
+            if (it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
             } else {
-                view.påmeldt_liste_ProgressBar.visibility = View.GONE
+            view.påmeldt_liste_ProgressBar.visibility = View.GONE
             }
         })
 
+
+        //Endre  elementer basert på om det lastes inn eller ikke
         return view
 
     }
@@ -120,16 +124,14 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
      */
     private fun observeAuthenticationState() {
 
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+        loginViewModel.authenticationState.observe(
+            viewLifecycleOwner,
+            Observer { authenticationState ->
 
-            when (authenticationState) {
-
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-
-                    }
-                // Om bruker ikke er logget inn
-                else -> {
-                    navController!!.navigate(R.id.loginFragment2)
+                when (authenticationState) {
+                    //om bruker ikke er innlogget
+                    LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
+                        navController!!.navigate(R.id.loginFragment2)
                     }
                 }
             })
@@ -153,7 +155,10 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment,this@PaameldteEventFragment)
+            eventAdapter = EventRecyclerAdapter(
+                this@PaameldteEventFragment,
+                this@PaameldteEventFragment
+            )
             adapter = eventAdapter
         }
 
@@ -172,4 +177,10 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     override fun onRedigerClick(item: Event, position: Int) {
     }
 
+
 }
+
+
+
+
+

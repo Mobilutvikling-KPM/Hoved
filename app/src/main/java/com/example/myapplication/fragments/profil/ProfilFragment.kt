@@ -1,13 +1,7 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.Moduls.Person
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.ContentValues.TAG
-import android.content.Intent
-import android.net.Uri
+import com.example.myapplication.Moduls.Person
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +17,7 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
 /**
@@ -63,9 +52,6 @@ class ProfilFragment : Fragment() {
         view.bio.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
 
-        //view.redigerKnapp.visibility = View.GONE
-        //view.slettKnapp.visibility = View.GONE
-
         val viewModelFactory = ViewModelFactory(1, "",null)
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
@@ -99,7 +85,7 @@ class ProfilFragment : Fragment() {
 
         //Søk etter bruker info dersom logget in
         if (bruker != null) {
-            personViewModel.søkEtterPerson(bruker!!.uid)
+            personViewModel.søkEtterPerson(bruker.uid)
         }
 
         //Naviger til rediger bruker fragment
@@ -109,22 +95,6 @@ class ProfilFragment : Fragment() {
             navController!!.navigate(R.id.action_profilFragment2_to_redigerProfilFragment, bundle)
         }
         return view
-    }
-
-
-    private fun showDeleteDialog() {
-        AlertDialog.Builder(context)
-            .setTitle("Slett bruker")
-            .setMessage("Er du sikker på at du vil slette denne brukeren?") // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton(
-                android.R.string.yes
-            ) { dialog, which ->
-                // Continue with delete operation
-            } // A null listener allows the button to dismiss the dialog and take no further action.
-            .setNegativeButton(android.R.string.no, null)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -150,20 +120,11 @@ class ProfilFragment : Fragment() {
 
             when (authenticationState) {
 
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-
-
-                }
-                //Dersom bruker ikke er logget inn
-                else -> {
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
                     navController!!.navigate(R.id.loginFragment2)
                 }
             }
         })
     }
 
-    companion object {
-        val SIGN_IN_REQUEST_CODE = 123
-        val IMAGE_SIGN_IN_CODE = 438
-    }
 }

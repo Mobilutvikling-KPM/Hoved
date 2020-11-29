@@ -1,8 +1,8 @@
 package com.example.myapplication.fragments.venner
 
-import RecyclerView.RecyclerView.Moduls.Person
-import RecyclerView.RecyclerView.PersonRecyclerAdapter
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import com.example.myapplication.Moduls.Person
+import com.example.myapplication.RecyclerView.PersonRecyclerAdapter
+import com.example.myapplication.RecyclerView.TopSpacingItemDecoration
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.size
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -21,9 +20,6 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.PersonViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.event_liste.view.*
-import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
-import kotlinx.android.synthetic.main.fragment_profil.view.*
 import kotlinx.android.synthetic.main.fragment_venner.*
 import kotlinx.android.synthetic.main.fragment_venner.view.*
 
@@ -90,7 +86,6 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
 
         //observerer updating, og gjør noe når listen er ferdig lastet inn
         personViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            //Show og hide progress bar if isUpdating false osv.
             if(it) {
                 view.venner_liste_ProgressBar.visibility = View.VISIBLE
                 view.ingenvennerTV.visibility = View.GONE
@@ -123,17 +118,8 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
     private fun observeAuthenticationState() {
 
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            // TODO 1. Use the authenticationState variable you just added
-            // in LoginViewModel and change the UI accordingly.
             when (authenticationState) {
-                // TODO 2.  If the user is logged in,
-                // you can customize the welcome message they see by
-                // utilizing the getFactWithPersonalization() function provided
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-
-                }
-
-                else -> {
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
                     navController!!.navigate(R.id.loginFragment2)
                 }
             }
@@ -151,7 +137,6 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
      * Initierer og kobler recycleView til activityMain
      */
     private fun initRecyclerView() {
-        //Apply skjønner contexten selv.
         recycler_view_venner.apply {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)

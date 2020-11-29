@@ -1,20 +1,18 @@
 package com.example.myapplication.fragments.mineevents
 
-import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.OnEventItemClickListener
-import RecyclerView.RecyclerView.OnKnappItemClickListener
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import com.example.myapplication.RecyclerView.EventRecyclerAdapter
+import com.example.myapplication.Moduls.Event
+import com.example.myapplication.RecyclerView.OnEventItemClickListener
+import com.example.myapplication.RecyclerView.OnKnappItemClickListener
+import com.example.myapplication.RecyclerView.TopSpacingItemDecoration
 import android.app.AlertDialog
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -24,10 +22,8 @@ import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.event_liste.view.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
-import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
 
 /**
@@ -52,10 +48,9 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_mine_eventer, container, false)
 
-        // Endringer for Landscape
+        // Endringer for Landscape modus
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val params1 = view.ingeneventerTV.layoutParams as ViewGroup.MarginLayoutParams
@@ -84,11 +79,9 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
         // Fjerner bakgrunn om det er noe i listen - ellers viser det
             if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
-
                 ingeneventerTV.visibility = View.VISIBLE
                 recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
             }else {
-
                 view.ingeneventerTV.visibility = View.GONE
                 view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             }
@@ -99,11 +92,8 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
 
         //observerer endring i data, og blir trigget dersom det skjer noe
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            //Show og hide progress bar if isUpdating false osv.
             if (it) {
                 view.progress_bar.visibility = View.VISIBLE
-                view.ingeneventerTV.visibility = View.GONE
-                view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.progress_bar.visibility = View.GONE
                 ingeneventerTV.visibility = View.VISIBLE
@@ -117,12 +107,12 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         navController = Navigation.findNavController(view) //referanse til navGraph
         observeAuthenticationState()
         view.floating_action_button.setOnClickListener {
             navController!!.navigate(R.id.action_nyttEventFragment_to_event_utfyllingsskjema)
         }
+
         observeAuthenticationState()
         initRecyclerView()
        addDataSet()
@@ -136,14 +126,11 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
 
             when (authenticationState) {
-                //om bruker er innlogget
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-
-                }
-                // om bruker ikke er innlogget
-                else -> {
+                //om bruker ikke er innlogget
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
                     navController!!.navigate(R.id.loginFragment2)
                 }
+
             }
         })
     }
@@ -155,13 +142,12 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
     private fun showDeleteDialog(event: Event) {
         AlertDialog.Builder(context)
             .setTitle("Slett Event")
-            .setMessage("Er du sikker på at du vil slette dette eventet?") // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setMessage("Er du sikker på at du vil slette dette eventet?")
             .setPositiveButton(
                 android.R.string.yes
             ) { dialog, which ->
                 eventViewModel.slettEvent(event)
-            } // A null listener allows the button to dismiss the dialog and take no further action.
+            }
             .setNegativeButton(android.R.string.no,null )
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()

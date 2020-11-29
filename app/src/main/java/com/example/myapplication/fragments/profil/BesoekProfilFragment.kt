@@ -1,14 +1,12 @@
 package com.example.myapplication.fragments.profil
 
-import RecyclerView.RecyclerView.BottomSpacingItemDecoration
-import RecyclerView.RecyclerView.EventRecyclerAdapter
-import RecyclerView.RecyclerView.Moduls.Event
-import RecyclerView.RecyclerView.Moduls.Folg
-import RecyclerView.RecyclerView.Moduls.Person
-import RecyclerView.RecyclerView.OnEventItemClickListener
-import RecyclerView.RecyclerView.TopSpacingItemDecoration
+import com.example.myapplication.RecyclerView.EventRecyclerAdapter
+import com.example.myapplication.Moduls.Event
+import com.example.myapplication.Moduls.Folg
+import com.example.myapplication.Moduls.Person
+import com.example.myapplication.RecyclerView.OnEventItemClickListener
+import com.example.myapplication.RecyclerView.TopSpacingItemDecoration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +21,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.*
-import kotlinx.android.synthetic.main.fragment_login.view.*
-import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_profil.*
 import kotlinx.android.synthetic.main.fragment_profil.view.*
 
@@ -124,6 +120,9 @@ class BesoekProfilFragment : Fragment(), OnEventItemClickListener {
 
         //Finn eventene til den som besøkes og submit i recyclerview
         eventViewModel.getLagdeEvents().observe(viewLifecycleOwner, Observer {
+            if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
+
+            }
             if (loginViewModel.getBruker() != null) {
                 var arr: ArrayList<Event> = ArrayList()
 
@@ -177,7 +176,6 @@ class BesoekProfilFragment : Fragment(), OnEventItemClickListener {
         venners_recycler.apply {
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(10)
-            val bottomSpacingItemDecoration= BottomSpacingItemDecoration(15)
             addItemDecoration(topSpacingDecoration)
             eventAdapter = EventRecyclerAdapter(this@BesoekProfilFragment, null)
             adapter = eventAdapter

@@ -1,9 +1,11 @@
 package com.example.myapplication.viewmodels
 
-import RecyclerView.RecyclerView.Moduls.*
+import com.example.myapplication.Moduls.*
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.*
+import com.example.myapplication.callback_interface.*
+import com.example.myapplication.repository.DataCallbackHolderEvent
+import com.example.myapplication.repository.EventRepository
 
 
 /**
@@ -17,7 +19,8 @@ import androidx.lifecycle.*
  * @property isLoading interface brukes til callback til view
  */
 
-class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewModel(), DataCallback<Event>, DataCallback2<Event>,
+class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewModel(),
+    DataCallback<Event>, DataCallback2<Event>,
     DataCallBack3<Event>, OnFind, DataCallbackHolderEvent<Event> {
 
     private var mEvents: MutableLiveData<List<Event>>
