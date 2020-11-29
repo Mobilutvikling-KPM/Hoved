@@ -54,6 +54,7 @@
 
             <EditText
                 android:id="@+id/utfyll_navn"
+                android:maxLength="20"
                 style="@style/utfylling_tekstboks"
                 android:hint="Navn *" />
 

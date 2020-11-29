@@ -24,16 +24,15 @@
                 android:id="@+id/bilde_admin_liste"
                 android:layout_width="50dp"
                 android:layout_height="70dp"
-
                 android:src="@drawable/ic_launcher_background" />
 
         </FrameLayout>
 
         <LinearLayout
             android:id="@+id/container_tekst"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="60dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/bilde_frame"
             android:orientation="vertical">
@@ -47,7 +46,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
                 <TextView
@@ -61,9 +60,7 @@
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/antall_påmeldte_frame"
                     android:layout_width="@dimen/badgeSize"
-                    android:layout_height="@dimen/badgeSize"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/container_tekst">
+                    android:layout_height="@dimen/badgeSize" >
 
                     <ImageView
                         android:layout_width="22dp"
@@ -90,9 +87,7 @@
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/antall_kommentar_frame"
                     android:layout_width="@dimen/badgeSize"
-                    android:layout_height="@dimen/badgeSize"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/antall_påmeldte_frame">
+                    android:layout_height="@dimen/badgeSize">
 
                     <ImageView
                         android:layout_width="22dp"

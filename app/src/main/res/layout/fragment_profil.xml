@@ -36,10 +36,11 @@
         <Button
             android:id="@+id/bli_venn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginHorizontal="@dimen/page_margin"
-            android:layout_marginVertical="@dimen/page_margin"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:text="@string/bli_venn"/>
 
 
@@ -148,6 +149,4 @@
             android:layout_below="@id/venner_lagdeEvent_tittel"
             android:paddingBottom="10dp"/>
         </RelativeLayout>
-
-
 </ScrollView>

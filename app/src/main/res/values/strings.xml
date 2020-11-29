@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Eventer</string>
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
 
@@ -58,7 +58,7 @@
 
 
     <string-array name="Kategorier">
-        <item>Velg Kategori</item>
+        <item>Kategori</item>
         <item>Underholdning</item>
         <item>Sport</item>
         <item>Musikk</item>

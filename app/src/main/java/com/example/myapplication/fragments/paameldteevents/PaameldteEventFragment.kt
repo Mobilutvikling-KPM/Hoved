@@ -7,12 +7,13 @@ import RecyclerView.RecyclerView.OnKnappItemClickListener
 import RecyclerView.RecyclerView.TopSpacingItemDecoration
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -20,12 +21,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.viewmodels.EventViewModel
-
 import com.example.myapplication.viewmodels.LoginViewModel
-
 import com.example.myapplication.viewmodels.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_mine_eventer.*
-import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
 
@@ -44,63 +41,79 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     private lateinit var eventViewModel :EventViewModel
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
-
+    private val mHandler: Handler = Handler()
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
 
 
     ): View? {
+
         // Inflate layout for denne fragmenten
         val view = inflater.inflate(R.layout.fragment_paameldte_event, container, false)
+
+        view.ingenpaameldteeventerTV.visibility = View.GONE
+        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+
+        val a = Handler().postDelayed({
+            if (eventAdapter.itemCount == 0) {
+                view.påmeldt_liste_ProgressBar.visibility = View.GONE
+                view.ingenpaameldteeventerTV.visibility = View.VISIBLE
+                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
+            } else {
+                view.påmeldt_liste_ProgressBar.visibility = View.GONE
+                view.ingenpaameldteeventerTV.visibility = View.GONE
+                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+            }
+        }, 300)
+
 
         // Endringer for Landscape
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val params1 = view.ingenpaameldteeventerTV.layoutParams as ViewGroup.MarginLayoutParams
-            params1.setMargins(0, 480 ,0, 0, )
+            params1.setMargins(0, 480, 0, 0)
             val params2 = view.recyclerviewpåmeldteeventsbackgroundimage.layoutParams as ViewGroup.MarginLayoutParams
-            params2.setMargins(0, 230 ,0, 0, )
+            params2.setMargins(0, 230, 0, 0)
         }
-
-        val viewModelFactory = ViewModelFactory(0, "",null)
+        val viewModelFactory = ViewModelFactory(0, "", null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
-
         //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
-
-                if(eventAdapter.itemCount == 0) {
-                    eventAdapter.clear();
+                if (eventAdapter.itemCount == 0) {
+                    eventAdapter.clear()
                     eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                     eventAdapter.notifyDataSetChanged()
+                    a.run { true }
                 }
-
-                if (eventViewModel.getPåmeldteEvents().value!!.isEmpty()) {
-                        view.ingenpaameldteeventerTV.visibility = View.VISIBLE
-                        view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
-                    }
             })
 
-            if(loginViewModel.getBruker() != null) {
+        if(loginViewModel.getBruker() != null) {
             eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
         }
-
-        //Endre  elementer basert på om det lastes inn eller ikke
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
-            if(it) {
+            if (it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
-                view.ingenpaameldteeventerTV.visibility = View.GONE
-                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+
             } else {
-                view.påmeldt_liste_ProgressBar.visibility = View.GONE
+            //view.påmeldt_liste_ProgressBar.visibility = View.GONE
             }
         })
 
+
+        //Endre  elementer basert på om det lastes inn eller ikke
         return view
 
     }
+
+
+    /*
+    fun stopRepeating(v: View?) {
+        mHandler.removeCallbacks(mToastRunnable)
+    }
+    */
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,16 +132,18 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
      */
     private fun observeAuthenticationState() {
 
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+        loginViewModel.authenticationState.observe(
+            viewLifecycleOwner,
+            Observer { authenticationState ->
 
-            when (authenticationState) {
+                when (authenticationState) {
 
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
 
                     }
-                // Om bruker ikke er logget inn
-                else -> {
-                    navController!!.navigate(R.id.loginFragment2)
+                    // Om bruker ikke er logget inn
+                    else -> {
+                        navController!!.navigate(R.id.loginFragment2)
                     }
                 }
             })
@@ -152,7 +167,10 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
             layoutManager = LinearLayoutManager(context)
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)
-            eventAdapter = EventRecyclerAdapter(this@PaameldteEventFragment,this@PaameldteEventFragment)
+            eventAdapter = EventRecyclerAdapter(
+                this@PaameldteEventFragment,
+                this@PaameldteEventFragment
+            )
             adapter = eventAdapter
         }
 
@@ -173,3 +191,4 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
 
 }
+

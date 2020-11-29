@@ -10,10 +10,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -29,8 +29,10 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.event_liste.*
 import kotlinx.android.synthetic.main.event_liste.view.*
+import kotlinx.android.synthetic.main.layout_filter_kategori.*
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  *
@@ -52,6 +54,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     var eventListe = ArrayList<Event>()
     var filtrertListe = ArrayList<Event>() //Listen som tar vare på det filtrerte resultatet
 
+
+
     //SøkeVerdier
     var søkeTekst: String = ""
     var byNavn: String = ""
@@ -65,15 +69,18 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     ): View? {
 
         val view = inflater.inflate(R.layout.event_liste, container, false)
-        val viewModelFactory = ViewModelFactory(1, "", null)
 
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        view.searchview.clearFocus()
+
+        val viewModelFactory = ViewModelFactory(1, "", null)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
 
             if (eventListe.size == 0)
                 eventListe.addAll(it)
 
-            if(eventAdapter.itemCount == 0) {
+            if (eventAdapter.itemCount == 0) {
                 eventAdapter.submitList(it)
                 eventAdapter.notifyDataSetChanged()
             }
@@ -92,6 +99,12 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             showFilterDialog()
         }
 
+        // tømmer søk og lukker keyboard på X-knapp i søkebaren
+        val closeButton: View = view.searchview.findViewById(R.id.search_close_btn)
+        closeButton.setOnClickListener {
+            view.searchview.setQuery("", false)
+            view.searchview.clearFocus()
+        }
 
         view.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -120,22 +133,24 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     /**
      * Åpner en dialogbox med søkevalg som kan filtrere eventlisten
      */
+
     private fun showFilterDialog() {
         val context: Context = requireContext()
-
         var dialog = MaterialDialog(context)
             .noAutoDismiss()
             .customView(R.layout.layout_filter_kategori)
         var dato = dialog.findViewById<TextView>(R.id.kategori_dato)
         var spinner = dialog.findViewById<Spinner>(R.id.kategori_spinner)
 
+
         dialog.findViewById<Spinner>(R.id.kategori_spinner).setOnItemSelectedListener(object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if(spinner.selectedItemPosition != 0)
-                kategoriValg =
-                    dialog.findViewById<Spinner>(R.id.kategori_spinner).selectedItem.toString()
+                if (spinner.selectedItemPosition != 0)
+                    kategoriValg =
+                        dialog.findViewById<Spinner>(R.id.kategori_spinner).selectedItem.toString()
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         })
@@ -144,8 +159,10 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 datoen = dialog.findViewById<TextView>(R.id.kategori_dato).text.toString()
 
@@ -156,8 +173,10 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 byNavn = dialog.findViewById<EditText>(R.id.kategori_byNavn).text.toString()
             }
@@ -198,17 +217,15 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         if(byNavn != "")
         dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
 
-        dialog.findViewById<Button>(R.id.positive_button).setOnClickListener({
-
+        dialog.findViewById<Button>(R.id.positive_button).setOnClickListener {
             filterSearch()
-
             dialog.hide()
-        })
+        }
 
-        dialog.findViewById<Button>(R.id.negative_button).setOnClickListener({
+        dialog.findViewById<Button>(R.id.negative_button).setOnClickListener {
             removeFilter()
             dialog.hide()
-        })
+        }
 
         dialog.show()
 
@@ -276,6 +293,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
 
         navController = Navigation.findNavController(view) //referanse til navGraph
 
+
             initRecyclerView()
             addDataSet()
     }
@@ -305,7 +323,10 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         }
         //Apply skjønner contexten selv.
         recycler_view.apply {
-            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = StaggeredGridLayoutManager(
+                spanCount,
+                StaggeredGridLayoutManager.VERTICAL
+            )
             val topSpacingDecoration = TopSpacingItemDecoration(20)
             //val bottomSpacingItemDecoration = BottomSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecoration)

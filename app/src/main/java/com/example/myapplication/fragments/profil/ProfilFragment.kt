@@ -111,22 +111,6 @@ class ProfilFragment : Fragment() {
         return view
     }
 
-
-    private fun showDeleteDialog() {
-        AlertDialog.Builder(context)
-            .setTitle("Slett bruker")
-            .setMessage("Er du sikker på at du vil slette denne brukeren?") // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton(
-                android.R.string.yes
-            ) { dialog, which ->
-                // Continue with delete operation
-            } // A null listener allows the button to dismiss the dialog and take no further action.
-            .setNegativeButton(android.R.string.no, null)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view) //referanse til navGraph

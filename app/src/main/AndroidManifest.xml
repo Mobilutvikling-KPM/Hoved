@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/applogo"
         android:label="Eventer"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/applogocircle"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
