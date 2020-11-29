@@ -3,7 +3,6 @@ package RecyclerView.RecyclerView.Moduls
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.OnFind
 import com.example.myapplication.viewmodels.isLoading
 import com.google.android.gms.tasks.Continuation
@@ -363,7 +362,7 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
      * @param id brukerens id
      */
     fun getPåmeldteEvents(type: Int, id: String): MutableLiveData<List<Event>> {
-        finnPåmeldteEvents(type, id)
+        //finnPåmeldteEvents(type, id)
 
         var data:MutableLiveData<List<Event>> = MutableLiveData()
         data.setValue(dataset3)
@@ -530,5 +529,5 @@ class EventRepository(var isLoading: isLoading?,var dataCallback: DataCallback<E
 }
 
 interface DataCallbackHolderEvent<E>{
-    fun onCallbackHolder(event: Event)
+    fun onCallbackHolder(event: Event?)
 }

@@ -5,11 +5,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.*
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-
 
 /**
  *
@@ -31,17 +26,56 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
                                             .getTheInstance(isLoading, this@EventViewModel,this@EventViewModel,
                                                 this@EventViewModel,this@EventViewModel,this@EventViewModel)
     private var mLagdeEvents: MutableLiveData<List<Event>>
-    private var mPåmeldteEvents: MutableLiveData<List<Event>>
+    private var mPåmeldteEvents: MutableLiveData<List<Event>> = MutableLiveData()
     private var mPåmeldteEventsHolder: ArrayList<Event> = ArrayList()
     private var mIsUpdating: MutableLiveData<Boolean> = MutableLiveData()
     private var erPåmeldt: MutableLiveData<Boolean> = MutableLiveData()
 
+    private var kategoriListe: ArrayList<String> = ArrayList() //Kategori liste som skal huske på kategorivalg i appen.
+    private var søkeTekst = ""
     var type: Int = type
 
     init {
         mEvents = eventRepo.getEvents(type)  //Henter data fra databasen. EVent Repository
          mLagdeEvents = eventRepo.getLagdeEvents(id)
         mPåmeldteEvents = eventRepo.getPåmeldteEvents(type,id)
+    }
+
+    /**
+     * @param kategoriene kategoriene som skal legges inn i kategorilisten.
+     * Disse skal brukes til å filtrere eventlisten
+     */
+    fun leggTilKategoriListe(kategoriene: ArrayList<String>){
+        kategoriListe.addAll(kategoriene)
+    }
+
+    /**
+     * Tar vare på søkeresultatet til bruker
+     * @param søk søketeksten som brukeren har skrevet inn
+     */
+    fun leggTilSøkeTekst(søk: String){
+        søkeTekst = søk
+    }
+
+    /**
+     * @return kategoriListe listen med kategorier
+     */
+    fun getKategoriValg(): ArrayList<String>{
+        return kategoriListe
+    }
+
+    /**
+     * @return søkeTekst
+     */
+    fun getSøkeTekst(): String{
+        return søkeTekst
+    }
+
+    /**
+     * Tøm kategorilisten
+     */
+    fun fjernKategoriValg(){
+        kategoriListe.clear();
     }
 
     /**
@@ -220,10 +254,8 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
      * @param liste påmeldte eventer som har blitt funnet
      */
     override fun onCallBack3(liste: ArrayList<Event>) {
-        mIsUpdating.setValue(false)
-
         mPåmeldteEvents.setValue(liste)
-
+        mIsUpdating.setValue(false)
     }
 
     /**
@@ -238,10 +270,9 @@ class EventViewModel(type: Int, id: String, val isLoading: isLoading?) : ViewMod
      * Trigges når databasen er ferdig med å finne verdien. Finner enkelt event
      * @param event eventet som har blitt funnet
      */
-    override fun onCallbackHolder(event: Event) {
-        mPåmeldteEventsHolder.add(event)
-
-        for(ev: Event in mPåmeldteEventsHolder)
-            onCallBack3(mPåmeldteEventsHolder)
+    override fun onCallbackHolder(event: Event?) {
+            mPåmeldteEventsHolder.add(event!!)
+            for (ev: Event in mPåmeldteEventsHolder)
+                onCallBack3(mPåmeldteEventsHolder)
     }
 }

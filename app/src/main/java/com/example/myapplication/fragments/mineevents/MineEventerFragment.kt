@@ -76,17 +76,21 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         if(loginViewModel.getBruker() != null)
         eventViewModel.getLagdeEvents().observe(viewLifecycleOwner, Observer {
             if(loginViewModel.getBruker() != null) {
-                if(eventAdapter.itemCount == 0) {
-                    eventAdapter.clear(); //Sletter i tilfelle kopi
+
                     eventAdapter.submitList(eventViewModel.getLagdeEvents().value!!);
                     eventAdapter.notifyDataSetChanged()
-                }
+
             }
 
         // Fjerner bakgrunn om det er noe i listen - ellers viser det
             if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
+
                 ingeneventerTV.visibility = View.VISIBLE
                 recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
+            }else {
+
+                view.ingeneventerTV.visibility = View.GONE
+                view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             }
         })
 
@@ -102,6 +106,8 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
                 view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.progress_bar.visibility = View.GONE
+                ingeneventerTV.visibility = View.VISIBLE
+                recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
             }
         })
 

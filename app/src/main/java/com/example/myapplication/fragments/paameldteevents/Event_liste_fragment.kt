@@ -40,7 +40,7 @@ import kotlin.collections.ArrayList
  * Datepicker av Atif Pervaiz- mars, 10 2018:
  * https://devofandroid.blogspot.com/2018/03/date-picker-dialog-kotlin-android-studio.html
  *
- * Ett fragment som viser en liste med alle events i databasen. Kan filtrere søket
+ * Ett fragment som viser en liste med alle events i databasen. Kan filtrere eventene basert på søkevalg
  */
 
 class Event_liste_fragment : Fragment(), OnEventItemClickListener {
@@ -50,7 +50,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
     var navController: NavController? = null
     private lateinit var eventViewModel: EventViewModel
     var eventListe = ArrayList<Event>()
-    var filtrertListe = ArrayList<Event>() //Listen som tar vare på det filtrerte resultatet
+    var filtrertListe = ArrayList<Event>() //Listen som tar vare på det filtrerte søkeresultatet
 
     //SøkeVerdier
     var søkeTekst: String = ""
@@ -70,13 +70,23 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
         eventViewModel.getEvents().observe(viewLifecycleOwner, Observer {
 
-            if (eventListe.size == 0)
+            if (eventListe.size == 0) {
                 eventListe.addAll(it)
-
+            }
             if(eventAdapter.itemCount == 0) {
                 eventAdapter.submitList(it)
                 eventAdapter.notifyDataSetChanged()
             }
+
+            søkeTekst = eventViewModel.getSøkeTekst()
+
+            if(eventViewModel.getKategoriValg().isNotEmpty()) {
+                byNavn = eventViewModel.getKategoriValg().get(0)
+                kategoriValg = eventViewModel.getKategoriValg().get(1)
+                datoen = eventViewModel.getKategoriValg().get(2)
+            }
+
+            filterSearch() //Filtrer eventlisten basert på filtrertliste.
         })
 
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
@@ -103,10 +113,13 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
                 filtrertListe.clear()
                 if (newText == null || newText.length == 0) {
                     søkeTekst = ""
+                    eventViewModel.leggTilSøkeTekst("")
                     filterSearch()
+
                 } else {
                     var filterMønster: String = newText.toString().toLowerCase().trim()
                     søkeTekst = filterMønster
+                    eventViewModel.leggTilSøkeTekst(filterMønster)
                 }
 
                 filterSearch()
@@ -132,9 +145,10 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         dialog.findViewById<Spinner>(R.id.kategori_spinner).setOnItemSelectedListener(object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if(spinner.selectedItemPosition != 0)
-                kategoriValg =
-                    dialog.findViewById<Spinner>(R.id.kategori_spinner).selectedItem.toString()
+                if(spinner.selectedItemPosition != 0) {
+                    kategoriValg =
+                        dialog.findViewById<Spinner>(R.id.kategori_spinner).selectedItem.toString()
+                }
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
@@ -148,7 +162,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             }
             override fun afterTextChanged(p0: Editable?) {
                 datoen = dialog.findViewById<TextView>(R.id.kategori_dato).text.toString()
-
             }
         })
 
@@ -173,7 +186,7 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
                 DatePickerDialog(
                     it1,
                     { _, year, monthOfYear, dayOfMonth ->
-                        // Display Selected date in textbox
+                        // Vis valgt dato i tekstboks
                         dato.text = "" + dayOfMonth + "." + monthOfYear + "." + year
                     }, year, month, day
                 )
@@ -199,6 +212,12 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         dialog.findViewById<TextView>(R.id.kategori_byNavn).text = byNavn
 
         dialog.findViewById<Button>(R.id.positive_button).setOnClickListener({
+            eventViewModel.fjernKategoriValg()
+            var kategoriListeHolder: ArrayList<String> = ArrayList()
+            kategoriListeHolder.add(byNavn)
+            kategoriListeHolder.add(kategoriValg)
+            kategoriListeHolder.add(datoen)
+            eventViewModel.leggTilKategoriListe(kategoriListeHolder)
 
             filterSearch()
 
@@ -239,6 +258,8 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
             }
 
         }
+
+        if(eventListe.isNotEmpty())
         if (filtrertListe.isEmpty()) {
             ingentreffsok.visibility = View.VISIBLE
             feilsoking.visibility = View.VISIBLE
@@ -256,7 +277,6 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
      */
     private fun removeFilter(){
         //SøkeVerdier
-        søkeTekst= ""
         byNavn = ""
         kategoriValg = ""
         datoen = ""
@@ -264,11 +284,15 @@ class Event_liste_fragment : Fragment(), OnEventItemClickListener {
         filtrertListe.clear()
         filtrertListe.addAll(eventListe)
 
+        eventViewModel.fjernKategoriValg()
+
         eventAdapter.submitList(filtrertListe)
         eventAdapter.notifyDataSetChanged()
 
         ingentreffsok.visibility = View.GONE
         feilsoking.visibility = View.GONE
+
+        filterSearch()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

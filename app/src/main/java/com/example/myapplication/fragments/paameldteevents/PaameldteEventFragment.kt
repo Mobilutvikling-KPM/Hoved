@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,10 +25,12 @@ import com.example.myapplication.viewmodels.EventViewModel
 import com.example.myapplication.viewmodels.LoginViewModel
 
 import com.example.myapplication.viewmodels.ViewModelFactory
+import com.example.myapplication.viewmodels.isLoading
 import kotlinx.android.synthetic.main.fragment_mine_eventer.*
 import kotlinx.android.synthetic.main.fragment_mine_eventer.view.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.*
 import kotlinx.android.synthetic.main.fragment_paameldte_event.view.*
+import org.w3c.dom.Text
 
 
 /**
@@ -44,7 +47,6 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
     private lateinit var eventViewModel :EventViewModel
     private lateinit var eventAdapter: EventRecyclerAdapter
     var navController: NavController? = null
-
 
 
     override fun onCreateView(
@@ -70,19 +72,23 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
         //observerer listen over påmeldte eventsbs
             eventViewModel.getPåmeldteEvents().observe(viewLifecycleOwner, Observer {
-
-                if(eventAdapter.itemCount == 0) {
-                    eventAdapter.clear();
+                if(loginViewModel.getBruker() != null) {
                     eventAdapter.submitList(eventViewModel.getPåmeldteEvents().value!!)
                     eventAdapter.notifyDataSetChanged()
                 }
 
-                if (eventViewModel.getPåmeldteEvents().value!!.isEmpty()) {
+                if (it.isEmpty()) {
+
                         view.ingenpaameldteeventerTV.visibility = View.VISIBLE
                         view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.VISIBLE
-                    }
+
+                }else {
+                    view.ingenpaameldteeventerTV.visibility = View.GONE
+                    view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
+                }
             })
 
+        //Om bruker er logget inn så hentes det påmeldte events
             if(loginViewModel.getBruker() != null) {
             eventViewModel.finnPåmeldteEvents(0, loginViewModel.getBruker()!!.uid)
         }
@@ -91,8 +97,6 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         eventViewModel.getIsUpdating().observe(viewLifecycleOwner, Observer {
             if(it) {
                 view.påmeldt_liste_ProgressBar.visibility = View.VISIBLE
-                view.ingenpaameldteeventerTV.visibility = View.GONE
-                view.recyclerviewpåmeldteeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.påmeldt_liste_ProgressBar.visibility = View.GONE
             }
@@ -109,10 +113,7 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
         observeAuthenticationState()
         initRecyclerView()
         addDataSet()
-
-
     }
-
 
     /**
      * Observerer AuthenticationState som kommer fra firebase om bruker ikke er logget inn send til loggin
@@ -170,6 +171,5 @@ class PaameldteEventFragment : Fragment(), OnEventItemClickListener, OnKnappItem
 
     override fun onRedigerClick(item: Event, position: Int) {
     }
-
 
 }

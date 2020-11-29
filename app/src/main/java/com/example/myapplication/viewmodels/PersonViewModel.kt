@@ -175,7 +175,6 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
      */
     override fun onCallBack(liste: ArrayList<Person>) {
         mIsUpdating.setValue(false)
-        Log.i("lala","hey ho")
         mPersoner.setValue(liste)
     }
 
@@ -196,8 +195,7 @@ class PersonViewModel(type: Int, id :String, val isLoading: isLoading?): ViewMod
         if(person != null) {
             mPersonHolder.add(person);
             mIsUpdating.setValue(false)
-            Log.i("lala", "hey ho")
-            // for(prs: Person in mPersonHolder)
+
             onCallBack(mPersonHolder)
         } else  mIsUpdating.setValue(false)
     }
