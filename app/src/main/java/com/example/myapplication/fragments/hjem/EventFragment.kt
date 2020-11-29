@@ -96,7 +96,6 @@ class EventFragment : Fragment(), OnKommentarItemClickListener {
         kommentarViewModel =
             ViewModelProvider(this, viewModelFactory).get(KommentarViewModel::class.java)
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
-        // eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
         //Observerer endringer i event listen
         kommentarViewModel.getKommentarer().observe(viewLifecycleOwner, Observer {
