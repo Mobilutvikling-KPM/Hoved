@@ -74,6 +74,7 @@ class VennerFragment : Fragment(), PersonRecyclerAdapter.OnPersonItemClickListen
         personViewModel.getPersoner().observe(viewLifecycleOwner, Observer {
             personAdapter.submitList(personViewModel.getPersoner().value!!)
             personAdapter.notifyDataSetChanged()
+
             if (personViewModel.getPersoner().value!!.isNotEmpty()) {
                 ingenvennerTV.visibility = View.GONE
                 recyclerviewfriendsbackgroundimage.visibility = View.GONE

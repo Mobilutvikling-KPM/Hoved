@@ -51,15 +51,13 @@
             android:layout_marginTop="320dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
+            android:layout_centerHorizontal="true"/>
         <ImageView
             android:id="@+id/recyclerviewmineeventsbackgroundimage"
             android:src="@drawable/recyclerviewbackgroundmineeventer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="220dp"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:visibility="gone"/>
+            android:layout_height="100dp"/>
     </RelativeLayout>
 </RelativeLayout>

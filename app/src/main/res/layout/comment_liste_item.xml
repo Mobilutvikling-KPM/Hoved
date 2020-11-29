@@ -35,16 +35,25 @@
 
         <Button
             android:id="@+id/brukernavn_kommentar"
+            android:textColorHint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="11.5sp"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="@color/black" />
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
         <TextView
             android:id="@+id/kommentar_dato"
+            android:text="25/11/2020"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"/>
+            android:textSize="11.5sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
         <TextView

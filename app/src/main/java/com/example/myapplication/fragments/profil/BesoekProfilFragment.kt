@@ -124,6 +124,9 @@ class BesoekProfilFragment : Fragment(), OnEventItemClickListener {
 
         //Finn eventene til den som besøkes og submit i recyclerview
         eventViewModel.getLagdeEvents().observe(viewLifecycleOwner, Observer {
+            if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
+
+            }
             if (loginViewModel.getBruker() != null) {
                 var arr: ArrayList<Event> = ArrayList()
 

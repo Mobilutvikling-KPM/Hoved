@@ -55,6 +55,9 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_mine_eventer, container, false)
 
+        
+
+
         // Endringer for Landscape
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -87,6 +90,9 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             if (eventViewModel.getLagdeEvents().value!!.isEmpty()) {
                 ingeneventerTV.visibility = View.VISIBLE
                 recyclerviewmineeventsbackgroundimage.visibility = View.VISIBLE
+            } else {
+                ingeneventerTV.visibility = View.GONE
+                recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             }
         })
 
@@ -98,8 +104,6 @@ class MineEventerFragment : Fragment(), OnEventItemClickListener, OnKnappItemCli
             //Show og hide progress bar if isUpdating false osv.
             if (it) {
                 view.progress_bar.visibility = View.VISIBLE
-                view.ingeneventerTV.visibility = View.GONE
-                view.recyclerviewmineeventsbackgroundimage.visibility = View.GONE
             } else {
                 view.progress_bar.visibility = View.GONE
             }
